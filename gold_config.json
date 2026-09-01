@@ -1,0 +1,26 @@
+{
+  "version": "1.0.0",
+  "risk_management": {
+    "max_risk_per_trade_percent": 1.5,
+    "default_stop_loss_dollars": 10.0,
+    "contract_size_oz": 100.0,
+    "max_daily_drawdown_percent": 4.0
+  },
+  "technical_parameters": {
+    "fast_ema_period": 8,
+    "slow_ema_period": 21,
+    "king_levels_lookback_bars": 50,
+    "timeframe": "M15"
+  },
+  "affiliate_monetization": {
+    "preferred_broker": "Vantage",
+    "vantage_affiliate_url": "https://www.vantagemarkets.com/",
+    "exness_affiliate_url": "https://www.exness.com/",
+    "enable_cta_pulse_animations": true
+  },
+  "trading_rules": {
+    "buy_dip_confluence": "H4/D1 == BULL and M15 == BEAR",
+    "short_breakdown_confluence": "M15 == BEAR and H1 == BEAR and H4 == BEAR",
+    "prohibit_trading_on_neutral": true
+  }
+}
