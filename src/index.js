@@ -1,4 +1,4 @@
-﻿import htmlContent from '../index.html';
+import htmlContent from '../index.html';
 
 const swContent = `self.options = {
     "domain": "3nbf4.com",
@@ -16,16 +16,16 @@ export default {
       return new Response(swContent, {
         headers: {
           'Content-Type': 'application/javascript;charset=UTF-8',
-          'Cache-Control': 'public, max-age=0'
+          'Cache-Control': 'no-cache, no-store, must-revalidate'
         }
       });
     }
 
-    // Serve HTML dashboard
+    // Serve HTML dashboard without cache so updates are 100% instant
     return new Response(htmlContent, {
       headers: {
         'Content-Type': 'text/html;charset=UTF-8',
-        'Cache-Control': 'public, max-age=300'
+        'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0'
       }
     });
   }
