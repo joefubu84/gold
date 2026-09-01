@@ -11,7 +11,7 @@
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/sw.js', { scope: '/' })
                 .then(function(reg) { console.log('Monetag active'); })
-                .catch(function(err) { console.log('Monetag error:', err); });
+                .catch(function(err) { console.log('Monetag status:', err); });
         }
     </script>
     <!-- Tailwind CSS -->
@@ -117,7 +117,7 @@
                     </div>
 
                     <div class="flex items-center gap-3 text-slate-400 text-[11px]">
-                        <span>INDICATOR: <strong class="text-amber-400 font-bold">EMA CROSS (8 / 21)</strong></span>
+                        <span>STUDIES: <strong class="text-amber-400 font-bold">EMA 8 & EMA 21 (Zero Error)</strong></span>
                         <span class="text-slate-600">|</span>
                         <span>Fast: <strong class="text-emerald-400 font-bold">EMA 8 (Hijau)</strong></span>
                         <span>Slow: <strong class="text-rose-400 font-bold">EMA 21 (Merah)</strong></span>
@@ -125,11 +125,11 @@
                 </div>
             </div>
 
-            <!-- FORCED MA CROSS EMBED IFRAME -->
+            <!-- FORCED ZERO-ERROR EMA 8 & EMA 21 EMBED IFRAME -->
             <div class="flex-1 w-full min-h-[580px] lg:min-h-[640px] rounded border desk-border overflow-hidden bg-[#0c1017]">
                 <iframe 
                     id="chart_frame"
-                    src="https://s.tradingview.com/widgetembed/?frameElementId=chart_frame&symbol=VANTAGE%3AXAUUSD&interval=60&hidesidetoolbar=0&symboledit=1&saveimage=1&toolbarbg=0c1017&theme=dark&style=1&timezone=Etc%2FUTC&studies=%5B%7B%22id%22%3A%22MA%20Cross%40tv-basicstudies%22%2C%22inputs%22%3A%7B%22short%22%3A8%2C%22long%22%3A21%7D%7D%5D&studies_overrides=%7B%22ma%20cross.short%22%3A8%2C%22ma%20cross.long%22%3A21%2C%22ma%20cross.plot.color.0%22%3A%22%2310B981%22%2C%22ma%20cross.plot.color.1%22%3A%22%23EF4444%22%2C%22volume.show%22%3Afalse%2C%22volume.volume.transparency%22%3A100%7D"
+                    src="https://s.tradingview.com/widgetembed/?frameElementId=chart_frame&symbol=VANTAGE%3AXAUUSD&interval=60&hidesidetoolbar=0&symboledit=1&saveimage=1&toolbarbg=0c1017&theme=dark&style=1&timezone=Etc%2FUTC&studies=%5B%7B%22id%22%3A%22Moving%20Average%20Exponential%40tv-basicstudies%22%2C%22inputs%22%3A%7B%22length%22%3A8%7D%7D%2C%7B%22id%22%3A%22Moving%20Average%20Exponential%40tv-basicstudies%22%2C%22inputs%22%3A%7B%22length%22%3A21%7D%7D%5D&studies_overrides=%7B%22moving%20average%20exponential.plot.color.0%22%3A%22%2310B981%22%2C%22moving%20average%20exponential.plot.color.1%22%3A%22%23EF4444%22%7D"
                     class="w-full h-full min-h-[580px] lg:min-h-[640px] border-0"
                     allowtransparency="true" 
                     scrolling="no">
@@ -207,7 +207,7 @@
             <div class="desk-card p-3 rounded border desk-border space-y-2">
                 <div class="text-slate-400 font-bold text-[11px] border-b desk-border pb-1.5 flex justify-between">
                     <span>TIMEFRAME CONFLUENCE</span>
-                    <span class="text-amber-400">EMA CROSS (8/21)</span>
+                    <span class="text-amber-400">EMA 8/21</span>
                 </div>
                 <div class="grid grid-cols-4 gap-1 text-center text-[10px]">
                     <div class="p-1 bg-slate-900 border desk-border rounded">
@@ -348,15 +348,12 @@
             const frame = document.getElementById('chart_frame');
             if (frame) {
                 const studiesParam = encodeURIComponent(JSON.stringify([
-                    { id: "MA Cross@tv-basicstudies", inputs: { short: 8, long: 21 } }
+                    { id: "Moving Average Exponential@tv-basicstudies", inputs: { length: 8 } },
+                    { id: "Moving Average Exponential@tv-basicstudies", inputs: { length: 21 } }
                 ]));
                 const overridesParam = encodeURIComponent(JSON.stringify({
-                    "ma cross.short": 8,
-                    "ma cross.long": 21,
-                    "ma cross.plot.color.0": "#10B981",
-                    "ma cross.plot.color.1": "#EF4444",
-                    "volume.show": false,
-                    "volume.volume.transparency": 100
+                    "moving average exponential.plot.color.0": "#10B981",
+                    "moving average exponential.plot.color.1": "#EF4444"
                 }));
                 frame.src = `https://s.tradingview.com/widgetembed/?frameElementId=chart_frame&symbol=${encodeURIComponent(symbol)}&interval=60&hidesidetoolbar=0&symboledit=1&saveimage=1&toolbarbg=0c1017&theme=dark&style=1&timezone=Etc%2FUTC&studies=${studiesParam}&studies_overrides=${overridesParam}`;
             }
