@@ -117,46 +117,22 @@
                     </div>
 
                     <div class="flex items-center gap-3 text-slate-400 text-[11px]">
-                        <span>STUDY: <strong class="text-amber-400 font-bold">EMA Cross 8/21 (Built-In)</strong></span>
+                        <span>TOOLBAR: <strong class="text-amber-400 font-bold">FULL INTERACTIVE TOOLS</strong></span>
                         <span class="text-slate-600">|</span>
-                        <span>Fast: <strong class="text-emerald-400 font-bold">EMA 8 (Hijau)</strong></span>
-                        <span>Slow: <strong class="text-rose-400 font-bold">EMA 21 (Merah)</strong></span>
+                        <span>INDICATORS: <strong class="text-emerald-400 font-bold">1-CLICK UNRESTRICTED</strong></span>
                     </div>
                 </div>
             </div>
 
-            <!-- Pre-Configured Advanced Chart Widget Container with Server-Compiled Studies -->
-            <div id="chart_wrapper" class="flex-1 w-full min-h-[580px] lg:min-h-[640px] rounded border desk-border overflow-hidden bg-[#0c1017]">
-                <!-- Advanced Chart Widget -->
-                <div class="tradingview-widget-container" style="height:100%;width:100%">
-                    <div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
-                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
-                    {
-                        "autosize": true,
-                        "symbol": "VANTAGE:XAUUSD",
-                        "interval": "60",
-                        "timezone": "Etc/UTC",
-                        "theme": "dark",
-                        "style": "1",
-                        "locale": "en",
-                        "enable_publishing": false,
-                        "hide_top_toolbar": false,
-                        "hide_legend": false,
-                        "save_image": false,
-                        "calendar": false,
-                        "hide_volume": true,
-                        "studies": [
-                            "STD;Cross",
-                            "STD;EMA",
-                            "STD;EMA"
-                        ],
-                        "studies_overrides": {
-                            "volume.show": false
-                        },
-                        "support_host": "https://www.tradingview.com"
-                    }
-                    </script>
-                </div>
+            <!-- Bulletproof Native High-Performance TradingView Frame -->
+            <div class="flex-1 w-full min-h-[580px] lg:min-h-[640px] rounded border desk-border overflow-hidden bg-[#0c1017]">
+                <iframe 
+                    id="chart-frame"
+                    src="https://s.tradingview.com/widgetembed/?frameElementId=chart_frame&symbol=VANTAGE%3AXAUUSD&interval=60&hidesidetoolbar=0&symboledit=1&saveimage=1&toolbarbg=0c1017&theme=dark&style=1&timezone=Etc%2FUTC"
+                    class="w-full h-full min-h-[580px] lg:min-h-[640px] border-0"
+                    allowtransparency="true" 
+                    scrolling="no">
+                </iframe>
             </div>
 
         </div>
@@ -230,7 +206,7 @@
             <div class="desk-card p-3 rounded border desk-border space-y-2">
                 <div class="text-slate-400 font-bold text-[11px] border-b desk-border pb-1.5 flex justify-between">
                     <span>TIMEFRAME CONFLUENCE</span>
-                    <span class="text-amber-400">EMA CROSS (8/21)</span>
+                    <span class="text-amber-400">EMA 8/21</span>
                 </div>
                 <div class="grid grid-cols-4 gap-1 text-center text-[10px]">
                     <div class="p-1 bg-slate-900 border desk-border rounded">
@@ -368,38 +344,9 @@
             document.getElementById('active-symbol-badge').innerText = config.badge;
             document.getElementById('active-symbol-desc').innerText = config.desc;
 
-            // Re-render widget with new symbol and pre-compiled studies
-            const wrapper = document.getElementById('chart_wrapper');
-            if (wrapper) {
-                wrapper.innerHTML = `
-                    <div class="tradingview-widget-container" style="height:100%;width:100%">
-                        <div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
-                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
-                        {
-                            "autosize": true,
-                            "symbol": "${symbol}",
-                            "interval": "60",
-                            "timezone": "Etc/UTC",
-                            "theme": "dark",
-                            "style": "1",
-                            "locale": "en",
-                            "enable_publishing": false,
-                            "hide_top_toolbar": false,
-                            "hide_legend": false,
-                            "save_image": false,
-                            "calendar": false,
-                            "hide_volume": true,
-                            "studies": [
-                                "STD;Cross"
-                            ],
-                            "studies_overrides": {
-                                "volume.show": false
-                            },
-                            "support_host": "https://www.tradingview.com"
-                        }
-                        <\/script>
-                    </div>
-                `;
+            const frame = document.getElementById('chart-frame');
+            if (frame) {
+                frame.src = `https://s.tradingview.com/widgetembed/?frameElementId=chart_frame&symbol=${encodeURIComponent(symbol)}&interval=60&hidesidetoolbar=0&symboledit=1&saveimage=1&toolbarbg=0c1017&theme=dark&style=1&timezone=Etc%2FUTC`;
             }
         }
     </script>
