@@ -119,15 +119,17 @@
                     <div class="flex items-center gap-3 text-slate-400 text-[11px]">
                         <span>EMA 8: <strong class="text-emerald-400">#10B981 (Hijau)</strong></span>
                         <span>EMA 21: <strong class="text-rose-400">#EF4444 (Merah)</strong></span>
+                        <span class="text-slate-600">|</span>
+                        <span class="text-slate-400">Volume: <strong class="text-slate-500">DISABLED 🚫</strong></span>
                     </div>
                 </div>
             </div>
 
-            <!-- Direct TradingView Workspace Frame -->
+            <!-- Direct TradingView Workspace Frame with Volume DISABLED -->
             <div class="flex-1 w-full min-h-[580px] lg:min-h-[640px] rounded border desk-border overflow-hidden bg-[#0c1017]">
                 <iframe 
                     id="chart-frame"
-                    src="https://s.tradingview.com/widgetembed/?frameElementId=chart_frame&symbol=VANTAGE%3AXAUUSD&interval=60&hidesidetoolbar=0&symboledit=1&saveimage=1&toolbarbg=0c1017&theme=dark&style=1&timezone=Etc%2FUTC"
+                    src="https://s.tradingview.com/widgetembed/?frameElementId=chart_frame&symbol=VANTAGE%3AXAUUSD&interval=60&hidesidetoolbar=0&symboledit=1&saveimage=1&toolbarbg=0c1017&theme=dark&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%22volume.show%22%3Afalse%2C%22volume.volume.transparency%22%3A100%7D"
                     class="w-full h-full min-h-[580px] lg:min-h-[640px] border-0"
                     allowtransparency="true" 
                     scrolling="no">
@@ -303,7 +305,7 @@
 
             const frame = document.getElementById('chart-frame');
             if (frame) {
-                frame.src = `https://s.tradingview.com/widgetembed/?frameElementId=chart_frame&symbol=${encodeURIComponent(symbol)}&interval=60&hidesidetoolbar=0&symboledit=1&saveimage=1&toolbarbg=0c1017&theme=dark&style=1&timezone=Etc%2FUTC`;
+                frame.src = `https://s.tradingview.com/widgetembed/?frameElementId=chart_frame&symbol=${encodeURIComponent(symbol)}&interval=60&hidesidetoolbar=0&symboledit=1&saveimage=1&toolbarbg=0c1017&theme=dark&style=1&timezone=Etc%2FUTC&studies_overrides=%7B%22volume.show%22%3Afalse%2C%22volume.volume.transparency%22%3A100%7D`;
             }
         }
     </script>
