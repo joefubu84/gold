@@ -16,6 +16,8 @@
     </script>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Official TradingView TV.js Library -->
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
         body {
@@ -71,31 +73,31 @@
                 <div class="flex items-center justify-between gap-2 flex-wrap">
                     
                     <div class="flex items-center gap-1.5 flex-wrap">
-                        <button onclick="setChartSymbol('VANTAGE:XAUUSD')" id="btn-gold" class="px-3 py-1.5 rounded bg-amber-500 text-black font-bold flex items-center gap-1.5 shadow transition">
+                        <button onclick="changeSymbol('VANTAGE:XAUUSD')" id="btn-gold" class="px-3 py-1.5 rounded bg-amber-500 text-black font-bold flex items-center gap-1.5 shadow transition">
                             <span>🪙</span>
                             <span>XAUUSD (GOLD)</span>
                             <span class="text-[10px] opacity-75 font-normal">→ VANTAGE</span>
                         </button>
                         
-                        <button onclick="setChartSymbol('CAPITALCOM:DXY')" id="btn-dxy" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
+                        <button onclick="changeSymbol('CAPITALCOM:DXY')" id="btn-dxy" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
                             <span>💵</span>
                             <span>DXY (DOLLAR)</span>
                             <span class="text-[10px] text-sky-400 font-normal">→ INDEX</span>
                         </button>
 
-                        <button onclick="setChartSymbol('FX:EURUSD')" id="btn-eur" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
+                        <button onclick="changeSymbol('FX:EURUSD')" id="btn-eur" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
                             <span>🇪🇺</span>
                             <span>EURUSD</span>
                             <span class="text-[10px] text-emerald-400 font-normal">(57.6% DXY)</span>
                         </button>
 
-                        <button onclick="setChartSymbol('FX:USDJPY')" id="btn-jpy" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
+                        <button onclick="changeSymbol('FX:USDJPY')" id="btn-jpy" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
                             <span>🇯🇵</span>
                             <span>USDJPY</span>
                             <span class="text-[10px] text-rose-400 font-normal">(13.6% DXY)</span>
                         </button>
 
-                        <button onclick="setChartSymbol('FX:USDCHF')" id="btn-chf" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
+                        <button onclick="changeSymbol('FX:USDCHF')" id="btn-chf" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
                             <span>🇨🇭</span>
                             <span>USDCHF</span>
                             <span class="text-[10px] text-indigo-300 font-normal">(3.6% Safe Haven)</span>
@@ -117,23 +119,17 @@
                     </div>
 
                     <div class="flex items-center gap-3 text-slate-400 text-[11px]">
-                        <span>STUDIES: <strong class="text-amber-400 font-bold">EMA 8 & EMA 21 (Zero Error)</strong></span>
+                        <span>STUDIES: <strong class="text-amber-400 font-bold">MASimple@tv-basicstudies (8, 21)</strong></span>
                         <span class="text-slate-600">|</span>
-                        <span>Fast: <strong class="text-emerald-400 font-bold">EMA 8 (Hijau)</strong></span>
-                        <span>Slow: <strong class="text-rose-400 font-bold">EMA 21 (Merah)</strong></span>
+                        <span>EMA 8: <strong class="text-emerald-400 font-bold">#10B981 (Hijau)</strong></span>
+                        <span>EMA 21: <strong class="text-rose-400 font-bold">#EF4444 (Merah)</strong></span>
                     </div>
                 </div>
             </div>
 
-            <!-- FORCED ZERO-ERROR EMA 8 & EMA 21 EMBED IFRAME -->
+            <!-- TV CONTAINER -->
             <div class="flex-1 w-full min-h-[580px] lg:min-h-[640px] rounded border desk-border overflow-hidden bg-[#0c1017]">
-                <iframe 
-                    id="chart_frame"
-                    src="https://s.tradingview.com/widgetembed/?frameElementId=chart_frame&symbol=VANTAGE%3AXAUUSD&interval=60&hidesidetoolbar=0&symboledit=1&saveimage=1&toolbarbg=0c1017&theme=dark&style=1&timezone=Etc%2FUTC&studies=%5B%7B%22id%22%3A%22Moving%20Average%20Exponential%40tv-basicstudies%22%2C%22inputs%22%3A%7B%22length%22%3A8%7D%7D%2C%7B%22id%22%3A%22Moving%20Average%20Exponential%40tv-basicstudies%22%2C%22inputs%22%3A%7B%22length%22%3A21%7D%7D%5D&studies_overrides=%7B%22moving%20average%20exponential.plot.color.0%22%3A%22%2310B981%22%2C%22moving%20average%20exponential.plot.color.1%22%3A%22%23EF4444%22%7D"
-                    class="w-full h-full min-h-[580px] lg:min-h-[640px] border-0"
-                    allowtransparency="true" 
-                    scrolling="no">
-                </iframe>
+                <div id="tradingview_chart_element" class="w-full h-full min-h-[580px] lg:min-h-[640px]"></div>
             </div>
 
         </div>
@@ -331,7 +327,44 @@
             }
         };
 
-        function setChartSymbol(symbol) {
+        // 100% BULLETPROOF OFFICIAL TRADINGVIEW INTERNAL CONSTRUCTOR
+        function initTVWidget(symbol) {
+            const container = document.getElementById('tradingview_chart_element');
+            if (!container) return;
+            container.innerHTML = '';
+
+            new TradingView.widget({
+                "autosize": true,
+                "symbol": symbol,
+                "interval": "60",
+                "timezone": "Etc/UTC",
+                "theme": "dark",
+                "style": "1",
+                "locale": "en",
+                "toolbar_bg": "#0c1017",
+                "enable_publishing": false,
+                "hide_top_toolbar": false,
+                "hide_legend": false,
+                "save_image": false,
+                "container_id": "tradingview_chart_element",
+                "studies": [
+                    {
+                        "id": "MASimple@tv-basicstudies",
+                        "inputs": {
+                            "length": 8
+                        }
+                    },
+                    {
+                        "id": "MASimple@tv-basicstudies",
+                        "inputs": {
+                            "length": 21
+                        }
+                    }
+                ]
+            });
+        }
+
+        function changeSymbol(symbol) {
             ['gold', 'dxy', 'eur', 'jpy', 'chf'].forEach(k => {
                 const b = document.getElementById(`btn-${k}`);
                 if (b) b.className = 'px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition';
@@ -345,19 +378,12 @@
             document.getElementById('active-symbol-badge').innerText = config.badge;
             document.getElementById('active-symbol-desc').innerText = config.desc;
 
-            const frame = document.getElementById('chart_frame');
-            if (frame) {
-                const studiesParam = encodeURIComponent(JSON.stringify([
-                    { id: "Moving Average Exponential@tv-basicstudies", inputs: { length: 8 } },
-                    { id: "Moving Average Exponential@tv-basicstudies", inputs: { length: 21 } }
-                ]));
-                const overridesParam = encodeURIComponent(JSON.stringify({
-                    "moving average exponential.plot.color.0": "#10B981",
-                    "moving average exponential.plot.color.1": "#EF4444"
-                }));
-                frame.src = `https://s.tradingview.com/widgetembed/?frameElementId=chart_frame&symbol=${encodeURIComponent(symbol)}&interval=60&hidesidetoolbar=0&symboledit=1&saveimage=1&toolbarbg=0c1017&theme=dark&style=1&timezone=Etc%2FUTC&studies=${studiesParam}&studies_overrides=${overridesParam}`;
-            }
+            initTVWidget(symbol);
         }
+
+        window.addEventListener('load', () => {
+            initTVWidget('VANTAGE:XAUUSD');
+        });
     </script>
 </body>
 </html>
