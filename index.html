@@ -33,7 +33,7 @@
     <!-- TOP TICKER BAR -->
     <header class="border-b desk-border bg-[#0b0e14] px-4 py-2 text-xs font-mono">
         <div class="max-w-[1600px] mx-auto flex flex-wrap items-center justify-between gap-3">
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-3 flex-wrap">
                 <span class="font-bold text-white tracking-wider flex items-center gap-1.5">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                     GOLD/DXY DESK
@@ -43,7 +43,9 @@
                 <span class="text-slate-600">|</span>
                 <span class="text-slate-400">DXY: <strong class="text-sky-400 font-bold">99.605</strong></span>
                 <span class="text-slate-600">|</span>
-                <span class="text-slate-400">EURUSD: <strong class="text-emerald-400 font-bold">1.1582</strong> (57.6% DXY)</span>
+                <span class="text-slate-400">EURUSD: <strong class="text-emerald-400 font-bold">1.1582</strong> (57.6%)</span>
+                <span class="text-slate-600">|</span>
+                <span class="text-slate-400">USDCHF: <strong class="text-rose-400 font-bold">0.8420</strong> (3.6%)</span>
             </div>
 
             <!-- Global Clocks -->
@@ -64,9 +66,9 @@
         <!-- LEFT 9 COLS: MAIN CHART WORKSPACE -->
         <div class="lg:col-span-9 flex flex-col gap-2">
             
-            <!-- Chart Controls Bar -->
+            <!-- Chart Controls Bar with USDCHF Added -->
             <div class="flex items-center justify-between bg-[#0f141c] p-2 rounded border desk-border text-xs font-mono">
-                <div class="flex items-center gap-1.5">
+                <div class="flex items-center gap-1.5 flex-wrap">
                     <span class="text-slate-400 text-[11px] mr-1">SYMBOL:</span>
                     <button onclick="setSymbol('VANTAGE:XAUUSD')" id="btn-gold" class="px-2.5 py-1 rounded bg-amber-500 text-black font-bold">
                         XAUUSD (GOLD)
@@ -79,6 +81,9 @@
                     </button>
                     <button onclick="setSymbol('FX:USDJPY')" id="btn-jpy" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold">
                         USDJPY
+                    </button>
+                    <button onclick="setSymbol('FX:USDCHF')" id="btn-chf" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold">
+                        USDCHF
                     </button>
                 </div>
 
@@ -146,9 +151,12 @@
                 <div class="flex justify-between text-emerald-400"><span>S3</span><strong>4,374.44</strong></div>
             </div>
 
-            <!-- Currency Weights -->
+            <!-- Currency Weights & Safe Haven Flow -->
             <div class="desk-card p-3 rounded border desk-border space-y-1.5 text-[11px]">
-                <div class="text-slate-400 font-bold border-b desk-border pb-1">DXY BASKET TRANSMISSION</div>
+                <div class="text-slate-400 font-bold border-b desk-border pb-1 flex justify-between">
+                    <span>DXY BASKET WEIGHTS</span>
+                    <span class="text-sky-400">SAFE HAVEN</span>
+                </div>
                 <div class="flex justify-between">
                     <span class="text-slate-400">EURUSD (57.6%)</span>
                     <span class="text-emerald-400 font-bold">1.1582</span>
@@ -221,7 +229,7 @@
         calcLot();
 
         function setSymbol(symbol) {
-            ['gold', 'dxy', 'eur', 'jpy'].forEach(k => {
+            ['gold', 'dxy', 'eur', 'jpy', 'chf'].forEach(k => {
                 const b = document.getElementById(`btn-${k}`);
                 if (b) b.className = 'px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold';
             });
@@ -230,6 +238,7 @@
             if (symbol.includes('DXY')) activeId = 'btn-dxy';
             else if (symbol.includes('EURUSD')) activeId = 'btn-eur';
             else if (symbol.includes('USDJPY')) activeId = 'btn-jpy';
+            else if (symbol.includes('USDCHF')) activeId = 'btn-chf';
 
             const activeBtn = document.getElementById(activeId);
             if (activeBtn) activeBtn.className = 'px-2.5 py-1 rounded bg-amber-500 text-black font-bold';
