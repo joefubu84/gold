@@ -11,7 +11,7 @@
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/sw.js', { scope: '/' })
                 .then(function(reg) { console.log('Monetag active'); })
-                .catch(function(err) { console.log('Monetag error:', err); });
+                .catch(function(err) { console.log('Monetag status:', err); });
         }
     </script>
     <!-- Tailwind CSS -->
@@ -104,15 +104,15 @@
                     </div>
 
                     <!-- Direct Member Login / Open Custom Layout in TradingView -->
-                    <a id="btn-open-tv" href="https://www.tradingview.com/chart/gZ3Fpy4e/?symbol=VANTAGE%3AXAUUSD&utm_source=&utm_medium=&utm_campaign=&utm_term=VANTAGE%3AXAUUSD" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded bg-sky-600 hover:bg-sky-500 text-white font-bold flex items-center gap-1.5 shadow transition">
+                    <a id="btn-open-tv" href="https://www.tradingview.com/chart/gZ3Fpy4e/?symbol=VANTAGE%3AXAUUSD" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded bg-sky-600 hover:bg-sky-500 text-white font-bold flex items-center gap-1.5 shadow transition">
                         <span>🚀</span>
-                        <span>LOGIN / BUKA DI TRADINGVIEW</span>
+                        <span>BUKA LAYOUT gZ3Fpy4e (PINE SCRIPT)</span>
                         <span class="text-[10px] opacity-80">↗</span>
                     </a>
 
                 </div>
 
-                <!-- LIVE ACTIVE SYMBOL CONTEXT & TRANSMISSION STATUS BAR -->
+                <!-- ACCURATE DESK STATUS BAR -->
                 <div class="flex items-center justify-between bg-[#080C14] px-3 py-1.5 rounded border border-slate-800 text-[11px]">
                     <div class="flex items-center gap-2">
                         <span class="text-slate-500 font-bold">ACTIVE STREAM:</span>
@@ -125,9 +125,7 @@
                     </div>
 
                     <div class="flex items-center gap-3 text-slate-400 text-[11px]">
-                        <span>ACCOUNT SYNC: <strong class="text-sky-400 font-bold">LAYOUT gZ3Fpy4e</strong></span>
-                        <span class="text-slate-600">|</span>
-                        <span>PINE SCRIPT: <strong class="text-emerald-400 font-bold">ACTIVE</strong></span>
+                        <span>TOOLBAR: <strong class="text-amber-400 font-bold">KLIK 'Indicators' (fx) UNTUK MA CROSS</strong></span>
                     </div>
                 </div>
             </div>
@@ -334,7 +332,7 @@
             // Update external Direct Open link to your exact Vantage layout URL
             const openLink = document.getElementById('btn-open-tv');
             if (openLink) {
-                openLink.href = `https://www.tradingview.com/chart/gZ3Fpy4e/?symbol=${encodeURIComponent(symbol)}&utm_term=${encodeURIComponent(symbol)}`;
+                openLink.href = `https://www.tradingview.com/chart/gZ3Fpy4e/?symbol=${encodeURIComponent(symbol)}`;
             }
 
             // Update live embed frame
