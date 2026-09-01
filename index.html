@@ -16,8 +16,6 @@
     </script>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Official TradingView TV.js Library -->
-    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
         body {
@@ -73,31 +71,31 @@
                 <div class="flex items-center justify-between gap-2 flex-wrap">
                     
                     <div class="flex items-center gap-1.5 flex-wrap">
-                        <button onclick="changeChartSymbol('VANTAGE:XAUUSD')" id="btn-gold" class="px-3 py-1.5 rounded bg-amber-500 text-black font-bold flex items-center gap-1.5 shadow transition">
+                        <button onclick="setChartSymbol('VANTAGE:XAUUSD')" id="btn-gold" class="px-3 py-1.5 rounded bg-amber-500 text-black font-bold flex items-center gap-1.5 shadow transition">
                             <span>🪙</span>
                             <span>XAUUSD (GOLD)</span>
                             <span class="text-[10px] opacity-75 font-normal">→ VANTAGE</span>
                         </button>
                         
-                        <button onclick="changeChartSymbol('CAPITALCOM:DXY')" id="btn-dxy" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
+                        <button onclick="setChartSymbol('CAPITALCOM:DXY')" id="btn-dxy" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
                             <span>💵</span>
                             <span>DXY (DOLLAR)</span>
                             <span class="text-[10px] text-sky-400 font-normal">→ INDEX</span>
                         </button>
 
-                        <button onclick="changeChartSymbol('FX:EURUSD')" id="btn-eur" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
+                        <button onclick="setChartSymbol('FX:EURUSD')" id="btn-eur" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
                             <span>🇪🇺</span>
                             <span>EURUSD</span>
                             <span class="text-[10px] text-emerald-400 font-normal">(57.6% DXY)</span>
                         </button>
 
-                        <button onclick="changeChartSymbol('FX:USDJPY')" id="btn-jpy" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
+                        <button onclick="setChartSymbol('FX:USDJPY')" id="btn-jpy" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
                             <span>🇯🇵</span>
                             <span>USDJPY</span>
                             <span class="text-[10px] text-rose-400 font-normal">(13.6% DXY)</span>
                         </button>
 
-                        <button onclick="changeChartSymbol('FX:USDCHF')" id="btn-chf" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
+                        <button onclick="setChartSymbol('FX:USDCHF')" id="btn-chf" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
                             <span>🇨🇭</span>
                             <span>USDCHF</span>
                             <span class="text-[10px] text-indigo-300 font-normal">(3.6% Safe Haven)</span>
@@ -119,17 +117,46 @@
                     </div>
 
                     <div class="flex items-center gap-3 text-slate-400 text-[11px]">
-                        <span>SINGLE STUDY: <strong class="text-amber-400 font-bold">MA Cross (8, 21)</strong></span>
+                        <span>STUDY: <strong class="text-amber-400 font-bold">EMA Cross 8/21 (Built-In)</strong></span>
                         <span class="text-slate-600">|</span>
-                        <span>Short EMA: <strong class="text-emerald-400 font-bold">8 (Hijau)</strong></span>
-                        <span>Long EMA: <strong class="text-rose-400 font-bold">21 (Merah)</strong></span>
+                        <span>Fast: <strong class="text-emerald-400 font-bold">EMA 8 (Hijau)</strong></span>
+                        <span>Slow: <strong class="text-rose-400 font-bold">EMA 21 (Merah)</strong></span>
                     </div>
                 </div>
             </div>
 
-            <!-- Single Unified EMA Cross Container -->
-            <div class="flex-1 w-full min-h-[580px] lg:min-h-[640px] rounded border desk-border overflow-hidden bg-[#0c1017]">
-                <div id="tv_chart_container" class="w-full h-full min-h-[580px] lg:min-h-[640px]"></div>
+            <!-- Pre-Configured Advanced Chart Widget Container with Server-Compiled Studies -->
+            <div id="chart_wrapper" class="flex-1 w-full min-h-[580px] lg:min-h-[640px] rounded border desk-border overflow-hidden bg-[#0c1017]">
+                <!-- Advanced Chart Widget -->
+                <div class="tradingview-widget-container" style="height:100%;width:100%">
+                    <div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+                    {
+                        "autosize": true,
+                        "symbol": "VANTAGE:XAUUSD",
+                        "interval": "60",
+                        "timezone": "Etc/UTC",
+                        "theme": "dark",
+                        "style": "1",
+                        "locale": "en",
+                        "enable_publishing": false,
+                        "hide_top_toolbar": false,
+                        "hide_legend": false,
+                        "save_image": false,
+                        "calendar": false,
+                        "hide_volume": true,
+                        "studies": [
+                            "STD;Cross",
+                            "STD;EMA",
+                            "STD;EMA"
+                        ],
+                        "studies_overrides": {
+                            "volume.show": false
+                        },
+                        "support_host": "https://www.tradingview.com"
+                    }
+                    </script>
+                </div>
             </div>
 
         </div>
@@ -203,7 +230,7 @@
             <div class="desk-card p-3 rounded border desk-border space-y-2">
                 <div class="text-slate-400 font-bold text-[11px] border-b desk-border pb-1.5 flex justify-between">
                     <span>TIMEFRAME CONFLUENCE</span>
-                    <span class="text-amber-400">MA CROSS (8/21)</span>
+                    <span class="text-amber-400">EMA CROSS (8/21)</span>
                 </div>
                 <div class="grid grid-cols-4 gap-1 text-center text-[10px]">
                     <div class="p-1 bg-slate-900 border desk-border rounded">
@@ -327,50 +354,7 @@
             }
         };
 
-        let tvWidget = null;
-        let currentSymbol = 'VANTAGE:XAUUSD';
-
-        // FORCE INJECT OFFICIAL SINGLE "MA Cross" INDICATOR (Short: 8, Long: 21)
-        function loadTradingViewChart(symbol) {
-            currentSymbol = symbol;
-            const container = document.getElementById('tv_chart_container');
-            if (container) container.innerHTML = '';
-
-            tvWidget = new TradingView.widget({
-                "autosize": true,
-                "symbol": symbol,
-                "interval": "60",
-                "timezone": "Etc/UTC",
-                "theme": "dark",
-                "style": "1",
-                "locale": "en",
-                "toolbar_bg": "#0c1017",
-                "enable_publishing": false,
-                "allow_symbol_change": true,
-                "container_id": "tv_chart_container",
-                "hide_volume": true,
-                "studies": [
-                    {
-                        "id": "MA Cross@tv-basicstudies",
-                        "inputs": {
-                            "short": 8,
-                            "long": 21
-                        }
-                    }
-                ],
-                "studies_overrides": {
-                    "ma cross.short": 8,
-                    "ma cross.long": 21,
-                    "ma cross.plot.color.0": "#10B981", // Short MA (8) Hijau
-                    "ma cross.plot.linewidth.0": 2,
-                    "ma cross.plot.color.1": "#EF4444", // Long MA (21) Merah
-                    "ma cross.plot.linewidth.1": 2,
-                    "volume.show": false
-                }
-            });
-        }
-
-        function changeChartSymbol(symbol) {
+        function setChartSymbol(symbol) {
             ['gold', 'dxy', 'eur', 'jpy', 'chf'].forEach(k => {
                 const b = document.getElementById(`btn-${k}`);
                 if (b) b.className = 'px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition';
@@ -384,12 +368,40 @@
             document.getElementById('active-symbol-badge').innerText = config.badge;
             document.getElementById('active-symbol-desc').innerText = config.desc;
 
-            loadTradingViewChart(symbol);
+            // Re-render widget with new symbol and pre-compiled studies
+            const wrapper = document.getElementById('chart_wrapper');
+            if (wrapper) {
+                wrapper.innerHTML = `
+                    <div class="tradingview-widget-container" style="height:100%;width:100%">
+                        <div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
+                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+                        {
+                            "autosize": true,
+                            "symbol": "${symbol}",
+                            "interval": "60",
+                            "timezone": "Etc/UTC",
+                            "theme": "dark",
+                            "style": "1",
+                            "locale": "en",
+                            "enable_publishing": false,
+                            "hide_top_toolbar": false,
+                            "hide_legend": false,
+                            "save_image": false,
+                            "calendar": false,
+                            "hide_volume": true,
+                            "studies": [
+                                "STD;Cross"
+                            ],
+                            "studies_overrides": {
+                                "volume.show": false
+                            },
+                            "support_host": "https://www.tradingview.com"
+                        }
+                        <\/script>
+                    </div>
+                `;
+            }
         }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            loadTradingViewChart('VANTAGE:XAUUSD');
-        });
     </script>
 </body>
 </html>
