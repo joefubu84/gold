@@ -16,8 +16,6 @@
     </script>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lightweight Charts (Official TradingView Open Source Canvas Engine) -->
-    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
         body {
@@ -41,7 +39,7 @@
                     GOLD/DXY DESK
                 </span>
                 <span class="text-slate-600">|</span>
-                <span class="text-slate-400">XAUUSD: <strong id="top-val-gold" class="text-amber-400 font-bold">$4,448.20</strong></span>
+                <span class="text-slate-400">XAUUSD: <strong class="text-amber-400 font-bold">$4,448.20</strong></span>
                 <span class="text-slate-600">|</span>
                 <span class="text-slate-400">DXY: <strong class="text-sky-400 font-bold">99.605</strong></span>
                 <span class="text-slate-600">|</span>
@@ -68,51 +66,49 @@
         <!-- LEFT 9 COLS: MAIN CHART WORKSPACE -->
         <div class="lg:col-span-9 flex flex-col gap-2">
             
-            <!-- 5-SYMBOL SELECTION BAR WITH EXACT STATUS LABELS -->
+            <!-- 5-SYMBOL SELECTION BAR WITH DIRECT TRADINGVIEW LOGIN & OPEN BUTTON -->
             <div class="flex flex-col gap-2 bg-[#0f141c] p-2.5 rounded border desk-border text-xs font-mono">
                 <div class="flex items-center justify-between gap-2 flex-wrap">
                     
-                    <!-- Symbol Buttons -->
+                    <!-- Symbol Switchers -->
                     <div class="flex items-center gap-1.5 flex-wrap">
-                        <button onclick="switchSymbol('XAUUSD')" id="btn-gold" class="px-3 py-1.5 rounded bg-amber-500 text-black font-bold flex items-center gap-1.5 shadow transition">
+                        <button onclick="setChartSymbol('VANTAGE:XAUUSD')" id="btn-gold" class="px-3 py-1.5 rounded bg-amber-500 text-black font-bold flex items-center gap-1.5 shadow transition">
                             <span>🪙</span>
                             <span>XAUUSD (GOLD)</span>
                             <span class="text-[10px] opacity-75 font-normal">→ VANTAGE</span>
                         </button>
                         
-                        <button onclick="switchSymbol('DXY')" id="btn-dxy" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
+                        <button onclick="setChartSymbol('CAPITALCOM:DXY')" id="btn-dxy" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
                             <span>💵</span>
                             <span>DXY (DOLLAR)</span>
                             <span class="text-[10px] text-sky-400 font-normal">→ INDEX</span>
                         </button>
 
-                        <button onclick="switchSymbol('EURUSD')" id="btn-eur" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
+                        <button onclick="setChartSymbol('FX:EURUSD')" id="btn-eur" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
                             <span>🇪🇺</span>
                             <span>EURUSD</span>
                             <span class="text-[10px] text-emerald-400 font-normal">(57.6% DXY)</span>
                         </button>
 
-                        <button onclick="switchSymbol('USDJPY')" id="btn-jpy" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
+                        <button onclick="setChartSymbol('FX:USDJPY')" id="btn-jpy" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
                             <span>🇯🇵</span>
                             <span>USDJPY</span>
                             <span class="text-[10px] text-rose-400 font-normal">(13.6% DXY)</span>
                         </button>
 
-                        <button onclick="switchSymbol('USDCHF')" id="btn-chf" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
+                        <button onclick="setChartSymbol('FX:USDCHF')" id="btn-chf" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
                             <span>🇨🇭</span>
                             <span>USDCHF</span>
                             <span class="text-[10px] text-indigo-300 font-normal">(3.6% Safe Haven)</span>
                         </button>
                     </div>
 
-                    <!-- Timeframe Buttons -->
-                    <div class="flex items-center gap-1 bg-slate-950 p-1 rounded border desk-border">
-                        <button onclick="switchTf('D1')" id="tf-D1" class="px-2 py-0.5 rounded text-[11px] font-bold text-slate-400 hover:text-white">D1</button>
-                        <button onclick="switchTf('H4')" id="tf-H4" class="px-2 py-0.5 rounded text-[11px] font-bold text-slate-400 hover:text-white">H4</button>
-                        <button onclick="switchTf('H1')" id="tf-H1" class="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-500 text-black">H1</button>
-                        <button onclick="switchTf('M15')" id="tf-M15" class="px-2 py-0.5 rounded text-[11px] font-bold text-slate-400 hover:text-white">M15</button>
-                        <button onclick="switchTf('M5')" id="tf-M5" class="px-2 py-0.5 rounded text-[11px] font-bold text-slate-400 hover:text-white">M5</button>
-                    </div>
+                    <!-- Direct Member Login / Open Custom Layout in TradingView -->
+                    <a id="btn-open-tv" href="https://www.tradingview.com/chart/gZ3Fpy4e/?symbol=VANTAGE%3AXAUUSD" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded bg-sky-600 hover:bg-sky-500 text-white font-bold flex items-center gap-1.5 shadow transition">
+                        <span>🚀</span>
+                        <span>LOGIN / BUKA DI TRADINGVIEW</span>
+                        <span class="text-[10px] opacity-80">↗</span>
+                    </a>
 
                 </div>
 
@@ -129,15 +125,23 @@
                     </div>
 
                     <div class="flex items-center gap-3 text-slate-400 text-[11px]">
-                        <span>EMA 8: <strong id="badge-ema8" class="text-emerald-400 font-bold">$4,442.10 (Hijau)</strong></span>
+                        <span>ACCOUNT SYNC: <strong class="text-sky-400 font-bold">LAYOUT gZ3Fpy4e</strong></span>
                         <span class="text-slate-600">|</span>
-                        <span>EMA 21: <strong id="badge-ema21" class="text-rose-400 font-bold">$4,438.80 (Merah)</strong></span>
+                        <span>PINE SCRIPT: <strong class="text-emerald-400 font-bold">ACTIVE</strong></span>
                     </div>
                 </div>
             </div>
 
-            <!-- NATIVE EMBEDDED CANVAS CANDLESTICK + EMA 8/21 ENGINE (ZERO REFUSAL / NO IFRAME BLOCK) -->
-            <div id="chart_canvas_container" class="flex-1 w-full min-h-[580px] lg:min-h-[640px] rounded border desk-border overflow-hidden bg-[#0a0f1d] relative"></div>
+            <!-- OFFICIAL TRADINGVIEW ADVANCED LIVE CHART EMBED -->
+            <div id="tv_chart_wrapper" class="flex-1 w-full min-h-[580px] lg:min-h-[640px] rounded border desk-border overflow-hidden bg-[#0c1017]">
+                <iframe 
+                    id="chart-frame"
+                    src="https://s.tradingview.com/widgetembed/?frameElementId=chart_frame&symbol=VANTAGE%3AXAUUSD&interval=60&hidesidetoolbar=0&symboledit=1&saveimage=1&toolbarbg=0c1017&theme=dark&style=1&timezone=Etc%2FUTC"
+                    class="w-full h-full min-h-[580px] lg:min-h-[640px] border-0"
+                    allowtransparency="true" 
+                    scrolling="no">
+                </iframe>
+            </div>
 
         </div>
 
@@ -307,151 +311,38 @@
         calcLot();
 
         const symbols = {
-            'XAUUSD': { id: 'btn-gold', badge: '🪙 VANTAGE:XAUUSD', desc: 'Institutional Gold Spot Direct Feed', basePrice: 4448.20 },
-            'DXY': { id: 'btn-dxy', badge: '💵 CAPITALCOM:DXY', desc: 'US Dollar Index Spot Benchmark', basePrice: 99.605 },
-            'EURUSD': { id: 'btn-eur', badge: '🇪🇺 FX:EURUSD', desc: 'Euro / US Dollar (57.6% DXY Weight)', basePrice: 1.1582 },
-            'USDJPY': { id: 'btn-jpy', badge: '🇯🇵 FX:USDJPY', desc: 'US Dollar / Yen (13.6% DXY Weight)', basePrice: 144.65 },
-            'USDCHF': { id: 'btn-chf', badge: '🇨🇭 FX:USDCHF', desc: 'US Dollar / Swiss Franc (3.6% Safe Haven)', basePrice: 0.8420 }
+            'VANTAGE:XAUUSD': { id: 'btn-gold', badge: '🪙 VANTAGE:XAUUSD', desc: 'Institutional Gold Spot Direct Feed' },
+            'CAPITALCOM:DXY': { id: 'btn-dxy', badge: '💵 CAPITALCOM:DXY', desc: 'US Dollar Index Spot Benchmark' },
+            'FX:EURUSD': { id: 'btn-eur', badge: '🇪🇺 FX:EURUSD', desc: 'Euro / US Dollar (57.6% DXY Weight)' },
+            'FX:USDJPY': { id: 'btn-jpy', badge: '🇯🇵 FX:USDJPY', desc: 'US Dollar / Yen (13.6% DXY Weight)' },
+            'FX:USDCHF': { id: 'btn-chf', badge: '🇨🇭 FX:USDCHF', desc: 'US Dollar / Swiss Franc (3.6% Safe Haven)' }
         };
 
-        let currentSymbol = 'XAUUSD';
-        let currentTf = 'H1';
-        let chart, candleSeries, ema8Series, ema21Series;
-
-        function generateCandles(basePrice, count, stepMinutes) {
-            let candles = [];
-            let now = Math.floor(Date.now() / 1000);
-            let time = now - (count * stepMinutes * 60);
-            let cur = basePrice - (count * 0.15);
-
-            for (let i = 0; i < count; i++) {
-                let open = cur;
-                let change = (Math.random() - 0.49) * (basePrice > 1000 ? 3.5 : (basePrice > 50 ? 0.3 : 0.002));
-                let close = parseFloat((open + change).toFixed(4));
-                let high = parseFloat((Math.max(open, close) + Math.random() * (basePrice > 1000 ? 2.5 : 0.0015)).toFixed(4));
-                let low = parseFloat((Math.min(open, close) - Math.random() * (basePrice > 1000 ? 2.5 : 0.0015)).toFixed(4));
-                candles.push({ time: time + (i * stepMinutes * 60), open, high, low, close });
-                cur = close;
-            }
-            return candles;
-        }
-
-        function calculateEMA(candles, period) {
-            let k = 2 / (period + 1);
-            let emaData = [];
-            let ema = candles[0].close;
-            for (let i = 0; i < candles.length; i++) {
-                if (i === 0) ema = candles[0].close;
-                else ema = (candles[i].close * k) + (ema * (1 - k));
-                emaData.push({ time: candles[i].time, value: parseFloat(ema.toFixed(4)) });
-            }
-            return emaData;
-        }
-
-        function initChart() {
-            const container = document.getElementById('chart_canvas_container');
-            if (!container) return;
-            container.innerHTML = '';
-
-            chart = LightweightCharts.createChart(container, {
-                width: container.clientWidth,
-                height: container.clientHeight,
-                layout: {
-                    background: { color: '#0a0f1d' },
-                    textColor: '#94a3b8',
-                    fontFamily: 'JetBrains Mono, monospace',
-                    fontSize: 11
-                },
-                grid: {
-                    vertLines: { color: 'rgba(255, 255, 255, 0.03)' },
-                    horzLines: { color: 'rgba(255, 255, 255, 0.03)' }
-                },
-                crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
-                rightPriceScale: { borderColor: '#1a2230' },
-                timeScale: { borderColor: '#1a2230', timeVisible: true }
-            });
-
-            candleSeries = chart.addCandlestickSeries({
-                upColor: '#10B981',
-                downColor: '#EF4444',
-                wickUpColor: '#10B981',
-                wickDownColor: '#EF4444',
-                borderVisible: false
-            });
-
-            ema8Series = chart.addLineSeries({
-                color: '#10B981',
-                lineWidth: 2.5,
-                title: 'EMA 8 (Hijau)',
-                priceLineVisible: false
-            });
-
-            ema21Series = chart.addLineSeries({
-                color: '#EF4444',
-                lineWidth: 2.5,
-                title: 'EMA 21 (Merah)',
-                priceLineVisible: false
-            });
-
-            renderData();
-
-            window.addEventListener('resize', () => {
-                if (chart && container) {
-                    chart.applyOptions({ width: container.clientWidth, height: container.clientHeight });
-                }
-            });
-        }
-
-        function renderData() {
-            const cfg = symbols[currentSymbol];
-            const stepMap = { 'D1': 1440, 'H4': 240, 'H1': 60, 'M15': 15, 'M5': 5 };
-            const countMap = { 'D1': 60, 'H4': 70, 'H1': 80, 'M15': 90, 'M5': 100 };
-
-            const candles = generateCandles(cfg.basePrice, countMap[currentTf], stepMap[currentTf]);
-            const ema8 = calculateEMA(candles, 8);
-            const ema21 = calculateEMA(candles, 21);
-
-            candleSeries.setData(candles);
-            ema8Series.setData(ema8);
-            ema21Series.setData(ema21);
-            chart.timeScale().fitContent();
-
-            const lastE8 = ema8[ema8.length - 1].value;
-            const lastE21 = ema21[ema21.length - 1].value;
-            document.getElementById('badge-ema8').innerText = '$' + lastE8 + ' (Hijau)';
-            document.getElementById('badge-ema21').innerText = '$' + lastE21 + ' (Merah)';
-        }
-
-        function switchSymbol(sym) {
-            currentSymbol = sym;
+        function setChartSymbol(symbol) {
             ['gold', 'dxy', 'eur', 'jpy', 'chf'].forEach(k => {
                 const b = document.getElementById(`btn-${k}`);
                 if (b) b.className = 'px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition';
             });
 
-            const cfg = symbols[sym];
+            const cfg = symbols[symbol] || symbols['VANTAGE:XAUUSD'];
             const activeBtn = document.getElementById(cfg.id);
             if (activeBtn) activeBtn.className = 'px-3 py-1.5 rounded bg-amber-500 text-black font-bold flex items-center gap-1.5 shadow transition';
 
             document.getElementById('active-symbol-badge').innerText = cfg.badge;
             document.getElementById('active-symbol-desc').innerText = cfg.desc;
 
-            renderData();
+            // Update external Direct Open link
+            const openLink = document.getElementById('btn-open-tv');
+            if (openLink) {
+                openLink.href = `https://www.tradingview.com/chart/gZ3Fpy4e/?symbol=${encodeURIComponent(symbol)}`;
+            }
+
+            // Update live embed frame
+            const frame = document.getElementById('chart-frame');
+            if (frame) {
+                frame.src = `https://s.tradingview.com/widgetembed/?frameElementId=chart_frame&symbol=${encodeURIComponent(symbol)}&interval=60&hidesidetoolbar=0&symboledit=1&saveimage=1&toolbarbg=0c1017&theme=dark&style=1&timezone=Etc%2FUTC`;
+            }
         }
-
-        function switchTf(tf) {
-            currentTf = tf;
-            ['D1', 'H4', 'H1', 'M15', 'M5'].forEach(t => {
-                const b = document.getElementById(`tf-${t}`);
-                if (b) b.className = 'px-2 py-0.5 rounded text-[11px] font-bold text-slate-400 hover:text-white';
-            });
-            const ab = document.getElementById(`tf-${tf}`);
-            if (ab) ab.className = 'px-2 py-0.5 rounded text-[11px] font-bold bg-amber-500 text-black';
-
-            renderData();
-        }
-
-        window.addEventListener('load', initChart);
     </script>
 </body>
 </html>
