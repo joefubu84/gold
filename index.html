@@ -261,7 +261,7 @@
                             </h3>
                             <span class="px-1.5 py-0.2 bg-emerald-500/20 text-emerald-400 font-mono text-[9px] rounded border border-emerald-500/40 animate-pulse font-bold">● VANTAGE DIRECT CANDLES</span>
                         </div>
-                        <p class="text-[11px] text-gray-400 font-mono">Pre-Configured with Permanent EMA 8 (Green) & EMA 21 (Red) Applied to Close</p>
+                        <p class="text-[11px] text-gray-400 font-mono">Real-time Candlesticks with EMA 8 (Green) & EMA 21 (Red) Applied to Close</p>
                     </div>
                 </div>
 
@@ -278,14 +278,42 @@
                     <span class="text-gray-400 text-[10px]">Symbol: <strong>VANTAGE:XAUUSD</strong></span>
                 </div>
 
-                <!-- TradingView Advanced Real-Time Chart Container with Permanent Studies -->
-                <div class="w-full h-96 sm:h-[450px] rounded-lg overflow-hidden border border-slate-800 bg-[#0F1626]">
+                <!-- Official TradingView Advanced Widget with Embedded Studies -->
+                <div class="w-full h-96 sm:h-[480px] rounded-lg overflow-hidden border border-slate-800 bg-[#0F1626]">
+                    <!-- TradingView Widget BEGIN -->
                     <div class="tradingview-widget-container" style="height:100%;width:100%">
-                        <div id="tv_chart_container" style="height:calc(100% - 28px);width:100%"></div>
+                        <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
                         <div class="tradingview-widget-copyright text-[10px] text-gray-500 p-1 font-mono text-right">
-                            <a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="text-amber-400">Live Gold Chart</span></a>
+                            <a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="text-amber-400">Live Gold Market Feed</span></a>
                         </div>
+                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+                        {
+                            "autosize": true,
+                            "symbol": "VANTAGE:XAUUSD",
+                            "interval": "60",
+                            "timezone": "Etc/UTC",
+                            "theme": "dark",
+                            "style": "1",
+                            "locale": "en",
+                            "enable_publishing": false,
+                            "hide_top_toolbar": false,
+                            "hide_legend": false,
+                            "save_image": false,
+                            "calendar": false,
+                            "studies": [
+                                "STD;EMA",
+                                "STD;EMA"
+                            ],
+                            "studies_overrides": {
+                                "moving average exponential.length": 8,
+                                "moving average exponential.plot.color": "#10B981",
+                                "moving average exponential.plot.linewidth": 2
+                            },
+                            "support_host": "https://www.tradingview.com"
+                        }
+                        </script>
                     </div>
+                    <!-- TradingView Widget END -->
                 </div>
             </div>
 
@@ -431,8 +459,7 @@
         MacroQuant Institutional Trading Terminal • Live Market Integration Engine
     </footer>
 
-    <!-- Interactive Scripts & TradingView Widget Initializer -->
-    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <!-- Interactive Scripts -->
     <script>
         lucide.createIcons();
 
@@ -472,49 +499,6 @@
             document.getElementById('res-reward').innerText = '+$' + reward.toFixed(2);
         }
         calculatePosition();
-
-        // Permanent TradingView Widget with exact EMA 8 (Green) and EMA 21 (Red)
-        function renderTradingViewChart() {
-            new TradingView.widget({
-                "autosize": true,
-                "symbol": "VANTAGE:XAUUSD",
-                "interval": "60",
-                "timezone": "Etc/UTC",
-                "theme": "dark",
-                "style": "1",
-                "locale": "en",
-                "toolbar_bg": "#0F1626",
-                "enable_publishing": false,
-                "hide_side_toolbar": false,
-                "allow_symbol_change": true,
-                "save_image": false,
-                "studies": [
-                    {
-                        "id": "Moving Average Exponential@tv-basicstudies",
-                        "inputs": {
-                            "length": 8,
-                            "source": "close"
-                        }
-                    },
-                    {
-                        "id": "Moving Average Exponential@tv-basicstudies",
-                        "inputs": {
-                            "length": 21,
-                            "source": "close"
-                        }
-                    }
-                ],
-                "studies_overrides": {
-                    "moving average exponential.plot.color.0": "#10B981",
-                    "moving average exponential.plot.linewidth.0": 2,
-                    "moving average exponential.plot.color.1": "#EF4444",
-                    "moving average exponential.plot.linewidth.1": 2
-                },
-                "container_id": "tv_chart_container"
-            });
-        }
-
-        window.addEventListener('DOMContentLoaded', renderTradingViewChart);
     </script>
 </body>
 </html>
