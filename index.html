@@ -71,7 +71,7 @@
                     <button onclick="setSymbol('VANTAGE:XAUUSD')" id="btn-gold" class="px-2.5 py-1 rounded bg-amber-500 text-black font-bold">
                         XAUUSD (GOLD)
                     </button>
-                    <button onclick="setSymbol('TVC:DXY')" id="btn-dxy" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold">
+                    <button onclick="setSymbol('CAPITALCOM:DXY')" id="btn-dxy" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold">
                         DXY (DOLLAR)
                     </button>
                     <button onclick="setSymbol('FX:EURUSD')" id="btn-eur" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold">
@@ -83,8 +83,7 @@
                 </div>
 
                 <div class="flex items-center gap-2 text-[11px] text-slate-400 hidden sm:flex">
-                    <span>EMA 8: <strong class="text-emerald-400">#10B981</strong></span>
-                    <span>EMA 21: <strong class="text-rose-400">#EF4444</strong></span>
+                    <span>FEED: <strong id="active-symbol-label" class="text-amber-400">VANTAGE:XAUUSD</strong></span>
                 </div>
             </div>
 
@@ -92,7 +91,7 @@
             <div class="flex-1 w-full min-h-[580px] lg:min-h-[640px] rounded border desk-border overflow-hidden bg-[#0c1017]">
                 <iframe 
                     id="chart-frame"
-                    src="https://s.tradingview.com/widgetembed/?frameElementId=chart_frame&symbol=VANTAGE%3AXAUUSD&interval=60&hidesidetoolbar=0&symboledit=1&saveimage=1&toolbarbg=0c1017&theme=dark&style=1&timezone=Etc%2FUTC&customer=gZ3Fpy4e"
+                    src="https://s.tradingview.com/widgetembed/?frameElementId=chart_frame&symbol=VANTAGE%3AXAUUSD&interval=60&hidesidetoolbar=0&symboledit=1&saveimage=1&toolbarbg=0c1017&theme=dark&style=1&timezone=Etc%2FUTC"
                     class="w-full h-full min-h-[580px] lg:min-h-[640px] border-0"
                     allowtransparency="true" 
                     scrolling="no">
@@ -235,9 +234,12 @@
             const activeBtn = document.getElementById(activeId);
             if (activeBtn) activeBtn.className = 'px-2.5 py-1 rounded bg-amber-500 text-black font-bold';
 
+            const label = document.getElementById('active-symbol-label');
+            if (label) label.innerText = symbol;
+
             const frame = document.getElementById('chart-frame');
             if (frame) {
-                frame.src = `https://s.tradingview.com/widgetembed/?frameElementId=chart_frame&symbol=${encodeURIComponent(symbol)}&interval=60&hidesidetoolbar=0&symboledit=1&saveimage=1&toolbarbg=0c1017&theme=dark&style=1&timezone=Etc%2FUTC&customer=gZ3Fpy4e`;
+                frame.src = `https://s.tradingview.com/widgetembed/?frameElementId=chart_frame&symbol=${encodeURIComponent(symbol)}&interval=60&hidesidetoolbar=0&symboledit=1&saveimage=1&toolbarbg=0c1017&theme=dark&style=1&timezone=Etc%2FUTC`;
             }
         }
     </script>
