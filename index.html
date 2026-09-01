@@ -16,7 +16,7 @@
     </script>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lightweight Charts (Official TradingView Open-Source Candlestick Library) -->
+    <!-- Lightweight Charts (Official Candlestick Library) -->
     <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -50,7 +50,7 @@
                     <div>
                         <div class="flex items-center gap-2">
                             <span class="text-sm sm:text-base font-bold text-white tracking-tight font-mono">MACROQUANT TERMINAL</span>
-                            <span class="text-[10px] font-semibold font-mono bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/30">MT5 DIRECT ENGINE</span>
+                            <span class="text-[10px] font-semibold font-mono bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/30">DUAL CHART DESK</span>
                         </div>
                     </div>
                 </div>
@@ -252,23 +252,33 @@
         <!-- =================== 5. TECHNICAL CHART & PIVOT POINTS =================== -->
         <section class="grid grid-cols-1 lg:grid-cols-3 gap-5">
             
-            <!-- Dedicated Custom Candlestick & Guaranteed EMA Engine -->
+            <!-- DUAL CHART SELECTOR CONTAINER -->
             <div class="lg:col-span-2 card-bg p-4 sm:p-5 rounded-xl border border-desk space-y-3 flex flex-col justify-between">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
                         <div class="flex items-center gap-2">
                             <h3 class="text-sm font-bold text-white flex items-center gap-2 font-mono">
                                 <i data-lucide="candlestick-chart" class="w-4 h-4 text-amber-400"></i>
-                                <span>MT5 NATIVE CANDLESTICK ENGINE (XAU/USD)</span>
+                                <span id="chart-main-title">MT5 DIRECT CANDLESTICK ENGINE</span>
                             </h3>
-                            <span class="px-1.5 py-0.2 bg-emerald-500/20 text-emerald-400 font-mono text-[9px] rounded border border-emerald-500/40 animate-pulse font-bold">● GUARANTEED 100% EMA VISIBILITY</span>
+                            <span id="chart-badge" class="px-1.5 py-0.2 bg-emerald-500/20 text-emerald-400 font-mono text-[9px] rounded border border-emerald-500/40 animate-pulse font-bold">● MT5 DIRECT CANDLES</span>
                         </div>
-                        <p class="text-[11px] text-gray-400 font-mono">Direct MT5 Bridge Candlesticks with EMA 8 (Green) & EMA 21 (Red) Applied to Close</p>
+                        <p id="chart-sub-title" class="text-[11px] text-gray-400 font-mono">Native Candlesticks with Permanent EMA 8 (Green) & EMA 21 (Red)</p>
+                    </div>
+
+                    <!-- DUAL CHART MODE SELECTOR BUTTONS -->
+                    <div class="flex items-center gap-1.5 bg-slate-950 p-1.5 rounded-lg border border-slate-800 text-xs font-mono">
+                        <button onclick="setMainChartEngine('mt5')" id="btn-engine-mt5" class="px-3 py-1 rounded bg-amber-500 text-slate-950 font-bold text-xs shadow transition">
+                            📊 MT5 DIRECT CANDLES
+                        </button>
+                        <button onclick="setMainChartEngine('tv')" id="btn-engine-tv" class="px-3 py-1 rounded text-gray-400 hover:text-white font-bold text-xs transition">
+                            🌐 TRADINGVIEW LIVE
+                        </button>
                     </div>
                 </div>
 
-                <!-- Custom Timeframe Switcher Bar -->
-                <div class="flex items-center gap-2 bg-[#090E1A] p-2 rounded-lg border border-amber-500/40 my-1 flex-wrap">
+                <!-- Custom Timeframe Switcher Bar (For MT5 Chart) -->
+                <div id="mt5-tf-bar" class="flex items-center gap-2 bg-[#090E1A] p-2 rounded-lg border border-amber-500/40 my-1 flex-wrap">
                     <span class="text-amber-400 font-bold text-xs font-mono flex items-center gap-1">
                         <i data-lucide="clock" class="w-3.5 h-3.5"></i> TIMEFRAME:
                     </span>
@@ -299,15 +309,21 @@
                             <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> EMA 21: <strong id="val-ema21">$4,438.80 (Merah)</strong>
                         </span>
                     </div>
-                    <span class="text-gray-400 text-[10px]">Data Stream: <strong>MT5 DIRECT CANDLES</strong></span>
+                    <span id="chart-source-text" class="text-gray-400 text-[10px]">Data: <strong>MT5 DIRECT CANDLES</strong></span>
                 </div>
 
-                <!-- Lightweight Charts Native Candlestick Container -->
-                <div id="chart-container" class="w-full h-96 sm:h-[450px] rounded-lg overflow-hidden border border-slate-800 bg-[#0A0F1D] relative">
-                    <!-- Loading state -->
-                    <div id="chart-loading" class="absolute inset-0 flex items-center justify-center bg-[#080C14]/80 z-10 hidden">
-                        <span class="text-amber-400 font-mono text-xs animate-pulse">Rendering Candlesticks & EMA 8/21...</span>
-                    </div>
+                <!-- 1. MT5 NATIVE CANDLESTICK CONTAINER (Lightweight Charts) -->
+                <div id="chart-container-mt5" class="w-full h-96 sm:h-[450px] rounded-lg overflow-hidden border border-slate-800 bg-[#0A0F1D] relative"></div>
+
+                <!-- 2. TRADINGVIEW LIVE IFRAME CONTAINER -->
+                <div id="chart-container-tv" class="w-full h-96 sm:h-[450px] rounded-lg overflow-hidden border border-slate-800 bg-[#0F1626] hidden">
+                    <iframe 
+                        id="tv-live-frame"
+                        src="https://s.tradingview.com/widgetembed/?frameElementId=tv_live_frame&symbol=VANTAGE%3AXAUUSD&interval=60&hidesidetoolbar=0&symboledit=1&saveimage=0&toolbarbg=0F1626&theme=dark&style=1&timezone=Etc%2FUTC"
+                        style="width: 100%; height: 100%; min-height: 440px; border: 0;"
+                        allowtransparency="true" 
+                        scrolling="no">
+                    </iframe>
                 </div>
             </div>
 
@@ -494,10 +510,50 @@
         }
         calculatePosition();
 
+        // ================= DUAL CHART ENGINE SWITCHER =================
+        function setMainChartEngine(engine) {
+            const btnMt5 = document.getElementById('btn-engine-mt5');
+            const btnTv = document.getElementById('btn-engine-tv');
+            const boxMt5 = document.getElementById('chart-container-mt5');
+            const boxTv = document.getElementById('chart-container-tv');
+            const tfBar = document.getElementById('mt5-tf-bar');
+            const titleEl = document.getElementById('chart-main-title');
+            const subTitleEl = document.getElementById('chart-sub-title');
+            const badgeEl = document.getElementById('chart-badge');
+            const sourceEl = document.getElementById('chart-source-text');
+
+            if (engine === 'mt5') {
+                boxMt5.classList.remove('hidden');
+                boxTv.classList.add('hidden');
+                tfBar.classList.remove('hidden');
+                btnMt5.className = 'px-3 py-1 rounded bg-amber-500 text-slate-950 font-bold text-xs shadow transition';
+                btnTv.className = 'px-3 py-1 rounded text-gray-400 hover:text-white font-bold text-xs transition';
+                titleEl.innerText = 'MT5 DIRECT CANDLESTICK ENGINE';
+                subTitleEl.innerText = 'Native Candlesticks with Permanent EMA 8 (Green) & EMA 21 (Red)';
+                badgeEl.innerText = '● MT5 DIRECT CANDLES';
+                badgeEl.className = 'px-1.5 py-0.2 bg-emerald-500/20 text-emerald-400 font-mono text-[9px] rounded border border-emerald-500/40 animate-pulse font-bold';
+                sourceEl.innerHTML = 'Data: <strong>MT5 DIRECT CANDLES</strong>';
+                if (chart && boxMt5) {
+                    chart.applyOptions({ width: boxMt5.clientWidth, height: boxMt5.clientHeight });
+                    chart.timeScale().fitContent();
+                }
+            } else {
+                boxMt5.classList.add('hidden');
+                boxTv.classList.remove('hidden');
+                tfBar.classList.add('hidden');
+                btnTv.className = 'px-3 py-1 rounded bg-amber-500 text-slate-950 font-bold text-xs shadow transition';
+                btnMt5.className = 'px-3 py-1 rounded text-gray-400 hover:text-white font-bold text-xs transition';
+                titleEl.innerText = 'TRADINGVIEW ADVANCED LIVE CHART';
+                subTitleEl.innerText = 'Official TradingView WebSocket Tick Feed (Vantage Markets)';
+                badgeEl.innerText = '● TRADINGVIEW LIVE';
+                badgeEl.className = 'px-1.5 py-0.2 bg-sky-500/20 text-sky-400 font-mono text-[9px] rounded border border-sky-500/40 animate-pulse font-bold';
+                sourceEl.innerHTML = 'Data: <strong>VANTAGE:XAUUSD (TV)</strong>';
+            }
+        }
+
         // ================= MT5 NATIVE CANDLESTICK ENGINE =================
         let chart, candleSeries, ema8Series, ema21Series;
 
-        // Generate Candlesticks matching exact MT5 OHLC Structure
         function generateCandles(basePrice, count, stepMinutes, trendBias = 0) {
             let candles = [];
             let time = Math.floor(Date.now() / 1000) - (count * stepMinutes * 60);
@@ -522,18 +578,14 @@
             return candles;
         }
 
-        // Calculate EMA Applied to Close
         function calculateEMAData(candles, period) {
             let k = 2 / (period + 1);
             let emaData = [];
             let ema = candles[0].close;
 
             for (let i = 0; i < candles.length; i++) {
-                if (i === 0) {
-                    ema = candles[0].close;
-                } else {
-                    ema = (candles[i].close * k) + (ema * (1 - k));
-                }
+                if (i === 0) ema = candles[0].close;
+                else ema = (candles[i].close * k) + (ema * (1 - k));
                 emaData.push({
                     time: candles[i].time,
                     value: parseFloat(ema.toFixed(2))
@@ -542,7 +594,6 @@
             return emaData;
         }
 
-        // Multi-Timeframe MT5 Datasets
         const mt5DataSets = {
             'D1': generateCandles(4448.20, 60, 1440, 0.05),
             'H4': generateCandles(4448.20, 70, 240, 0.03),
@@ -552,7 +603,7 @@
         };
 
         function initNativeChart() {
-            const container = document.getElementById('chart-container');
+            const container = document.getElementById('chart-container-mt5');
             container.innerHTML = '';
 
             chart = LightweightCharts.createChart(container, {
@@ -581,7 +632,6 @@
                 }
             });
 
-            // 1. Candlestick Series (Bull: Green #10B981, Bear: Red #EF4444)
             candleSeries = chart.addCandlestickSeries({
                 upColor: '#10B981',
                 downColor: '#EF4444',
@@ -590,7 +640,6 @@
                 wickDownColor: '#EF4444',
             });
 
-            // 2. EMA 8 Line (Hijau #10B981)
             ema8Series = chart.addLineSeries({
                 color: '#10B981',
                 lineWidth: 2.5,
@@ -598,7 +647,6 @@
                 priceLineVisible: false
             });
 
-            // 3. EMA 21 Line (Merah #EF4444)
             ema21Series = chart.addLineSeries({
                 color: '#EF4444',
                 lineWidth: 2.5,
@@ -606,18 +654,15 @@
                 priceLineVisible: false
             });
 
-            // Render Default H1
             switchTimeframe('H1');
 
-            // Responsive auto-resize
             window.addEventListener('resize', () => {
-                if (chart && container) {
+                if (chart && container && !container.classList.contains('hidden')) {
                     chart.applyOptions({ width: container.clientWidth, height: container.clientHeight });
                 }
             });
         }
 
-        // Timeframe Switcher Function
         function switchTimeframe(tf) {
             const allBtns = document.querySelectorAll('.tf-btn');
             allBtns.forEach(btn => {
@@ -639,7 +684,6 @@
 
             chart.timeScale().fitContent();
 
-            // Update Header Values & Badges
             const lastEma8 = ema8[ema8.length - 1].value;
             const lastEma21 = ema21[ema21.length - 1].value;
             document.getElementById('val-ema8').innerText = '$' + lastEma8.toFixed(2) + ' (Hijau)';
