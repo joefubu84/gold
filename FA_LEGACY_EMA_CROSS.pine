@@ -1,0 +1,169 @@
+//@version=5
+indicator("FA LEGACY: SMART AUTO (KING ONLY) + EMA CROSS 8/21", overlay=true, max_lines_count=500)
+
+// ======================================================
+// SETTINGS
+// ======================================================
+grp_gen  = "General Settings"
+scan_depth = input.int(50, "Scan Depth (bars back)", group=grp_gen)
+// Options for text position
+txt_pos    = input.string("Right", "Text Position", options=["Left", "Center", "Right"], group=grp_gen)
+
+// --- MONTHLY ---
+grp_mn   = "Monthly Settings"
+fa_mn    = input.bool(true,  "Show Monthly", group=grp_mn)
+mn_col   = input.color(color.blue, "Color", group=grp_mn)
+mn_width = input.int(3, "Width", minval=1, group=grp_mn)
+mn_style = input.string("Solid", "Style", options=["Solid", "Dashed", "Dotted"], group=grp_mn)
+txt_m_hs = input.string("FA M HS", "High Label", group=grp_mn)
+txt_m_ls = input.string("FA M LS", "Low Label", group=grp_mn)
+
+// --- WEEKLY ---
+grp_w1   = "Weekly Settings"
+fa_w1    = input.bool(true,  "Show Weekly", group=grp_w1)
+w1_col   = input.color(color.yellow, "Color", group=grp_w1)
+w1_width = input.int(2, "Width", minval=1, group=grp_w1)
+w1_style = input.string("Solid", "Style", options=["Solid", "Dashed", "Dotted"], group=grp_w1)
+txt_w_hs = input.string("FA W HS", "High Label", group=grp_w1)
+txt_w_ls = input.string("FA W LS", "Low Label", group=grp_w1)
+
+// --- DAILY ---
+grp_d1   = "Daily Settings"
+fa_d1    = input.bool(true,  "Show Daily", group=grp_d1)
+d1_col   = input.color(color.green, "Color", group=grp_d1)
+d1_width = input.int(2, "Width", minval=1, group=grp_d1)
+d1_style = input.string("Solid", "Style", options=["Solid", "Dashed", "Dotted"], group=grp_d1)
+txt_d_hs = input.string("FA D HS", "High Label", group=grp_d1)
+txt_d_ls = input.string("FA D LS", "Low Label", group=grp_d1)
+
+// --- H4 ---
+grp_h4   = "H4 Settings"
+fa_h4    = input.bool(true,  "Show H4", group=grp_h4)
+h4_col   = input.color(color.purple, "Color", group=grp_h4)
+h4_width = input.int(2, "Width", minval=1, group=grp_h4)
+h4_style = input.string("Solid", "Style", options=["Solid", "Dashed", "Dotted"], group=grp_h4)
+txt_h4_hs = input.string("FA H4 HS", "High Label", group=grp_h4)
+txt_h4_ls = input.string("FA H4 LS", "Low Label", group=grp_h4)
+
+// ======================================================
+// EMA CROSS (8 & 21) SETTINGS
+// ======================================================
+grp_ma     = "EMA Cross (8 / 21) Settings"
+show_ma    = input.bool(true, "Show EMA Cross Lines", group=grp_ma)
+len_fast   = input.int(8, "Fast EMA Length", minval=1, group=grp_ma)
+len_slow   = input.int(21, "Slow EMA Length", minval=1, group=grp_ma)
+col_fast   = input.color(color.new(#10B981, 0), "Fast EMA (8) Color", group=grp_ma) // Hijau
+col_slow   = input.color(color.new(#EF4444, 0), "Slow EMA (21) Color", group=grp_ma) // Merah
+width_ma   = input.int(2, "EMA Line Width", minval=1, maxval=4, group=grp_ma)
+show_sig   = input.bool(true, "Show Cross Signals (Shapes)", group=grp_ma)
+
+f_get_style(_s) =>
+    _s == "Dashed" ? line.style_dashed : _s == "Dotted" ? line.style_dotted : line.style_solid
+
+// ======================================================
+// SMART SERVER TIME LOGIC
+// ======================================================
+int today = dayofweek(timenow)
+bool is_weekend = (today == dayofweek.saturday) or (today == dayofweek.sunday)
+int auto_idx = is_weekend ? 0 : 1
+
+// ======================================================
+// FIND KING CANDLE FUNCTION
+// ======================================================
+f_find_king(depth, stop_at) =>
+    int king_idx = depth
+    for i = depth - 1 to stop_at
+        float c_close = close[i]
+        float k_high  = high[king_idx]
+        float k_low   = low[king_idx]
+        if c_close > k_high or c_close < k_low
+            king_idx := i
+    [high[king_idx], low[king_idx], time[king_idx]]
+
+// ======================================================
+// REQUEST KING DATA
+// ======================================================
+[mn_h, mn_l, mn_t] = request.security(syminfo.tickerid, "M", f_find_king(scan_depth, auto_idx), lookahead=barmerge.lookahead_on)
+[w1_h, w1_l, w1_t] = request.security(syminfo.tickerid, "W", f_find_king(scan_depth, auto_idx), lookahead=barmerge.lookahead_on)
+[d1_h, d1_l, d1_t] = request.security(syminfo.tickerid, "D", f_find_king(scan_depth, auto_idx), lookahead=barmerge.lookahead_on)
+[h4_h, h4_l, h4_t] = request.security(syminfo.tickerid, "240", f_find_king(scan_depth, auto_idx), lookahead=barmerge.lookahead_on)
+
+// ======================================================
+// LINE & LABEL DRAWING FUNCTION
+// ======================================================
+f_draw_king_line(show, t, h, l, col, width, style_l, var_lh, var_ll, var_lblh, var_lbll, txt_h, txt_l, pos) =>
+    line  _lh   = var_lh
+    line  _ll   = var_ll
+    label _lblh = var_lblh
+    label _lbll = var_lbll
+    
+    if show
+        line.delete(_lh)
+        line.delete(_ll)
+        label.delete(_lblh)
+        label.delete(_lbll)
+        
+        int end_time = time + 86400000 * 30
+        
+        // Calculate label X position
+        int lbl_x = pos == "Left" ? t : pos == "Center" ? int(math.avg(t, end_time)) : end_time
+        string lbl_align = pos == "Left" ? text.align_left : pos == "Center" ? text.align_center : text.align_right
+        
+        // Draw Lines
+        _lh := line.new(t, h, end_time, h, xloc=xloc.bar_time, color=col, width=width, style=style_l)
+        _ll := line.new(t, l, end_time, l, xloc=xloc.bar_time, color=col, width=width, style=style_l)
+        
+        // Draw Labels
+        _lblh := label.new(lbl_x, h, txt_h, xloc=xloc.bar_time, color=color.new(color.black, 100), textcolor=col, style=label.style_none, textalign=lbl_align)
+        _lbll := label.new(lbl_x, l, txt_l, xloc=xloc.bar_time, color=color.new(color.black, 100), textcolor=col, style=label.style_none, textalign=lbl_align)
+        
+    [_lh, _ll, _lblh, _lbll]
+
+// ======================================================
+// DRAW LINES (only on last bar)
+// ======================================================
+var line l_mn_h = na, var line l_mn_l = na, var label lb_mn_h = na, var label lb_mn_l = na
+var line l_w1_h = na, var line l_w1_l = na, var label lb_w1_h = na, var label lb_w1_l = na
+var line l_d1_h = na, var line l_d1_l = na, var label lb_d1_h = na, var label lb_d1_l = na
+var line l_h4_h = na, var line l_h4_l = na, var label lb_h4_h = na, var label lb_h4_l = na
+
+if barstate.islast
+    [n_mnh, n_mnl, n_mnhl, n_mnll] = f_draw_king_line(fa_mn, mn_t, mn_h, mn_l, mn_col, mn_width, f_get_style(mn_style), l_mn_h, l_mn_l, lb_mn_h, lb_mn_l, txt_m_hs, txt_m_ls, txt_pos)
+    l_mn_h := n_mnh, l_mn_l := n_mnl, lb_mn_h := n_mnhl, lb_mn_l := n_mnll
+    
+    [n_w1h, n_w1l, n_w1hl, n_w1ll] = f_draw_king_line(fa_w1, w1_t, w1_h, w1_l, w1_col, w1_width, f_get_style(w1_style), l_w1_h, l_w1_l, lb_w1_h, lb_w1_l, txt_w_hs, txt_w_ls, txt_pos)
+    l_w1_h := n_w1h, l_w1_l := n_w1l, lb_w1_h := n_w1hl, lb_w1_l := n_w1ll
+    
+    [n_d1h, n_d1l, n_d1hl, n_d1ll] = f_draw_king_line(fa_d1, d1_t, d1_h, d1_l, d1_col, d1_width, f_get_style(d1_style), l_d1_h, l_d1_l, lb_d1_h, lb_d1_l, txt_d_hs, txt_d_ls, txt_pos)
+    l_d1_h := n_d1h, l_d1_l := n_d1l, lb_d1_h := n_d1hl, lb_d1_l := n_d1ll
+    
+    [n_h4h, n_h4l, n_h4hl, n_h4ll] = f_draw_king_line(fa_h4, h4_t, h4_h, h4_l, h4_col, h4_width, f_get_style(h4_style), l_h4_h, l_h4_l, lb_h4_h, lb_h4_l, txt_h4_hs, txt_h4_ls, txt_pos)
+    l_h4_h := n_h4h, l_h4_l := n_h4l, lb_h4_h := n_h4hl, lb_h4_l := n_h4ll
+
+// ======================================================
+// EMA CALCULATION & PLOTTING
+// ======================================================
+ema_fast = ta.ema(close, len_fast)
+ema_slow = ta.ema(close, len_slow)
+
+plot(show_ma ? ema_fast : na, "EMA 8 (Fast)", color=col_fast, linewidth=width_ma)
+plot(show_ma ? ema_slow : na, "EMA 21 (Slow)", color=col_slow, linewidth=width_ma)
+
+// Optional: Fill zone antara EMA 8 dan 21
+fill_col = ema_fast > ema_slow ? color.new(#10B981, 88) : color.new(#EF4444, 88)
+p_fast = plot(show_ma ? ema_fast : na, "Fast Fill", color=color.new(color.white, 100), display=display.none)
+p_slow = plot(show_ma ? ema_slow : na, "Slow Fill", color=color.new(color.white, 100), display=display.none)
+fill(p_fast, p_slow, color=fill_col, title="EMA Cloud Fill")
+
+// ======================================================
+// CROSS SIGNALS (BULLISH / BEARISH CROSSOVER)
+// ======================================================
+bullish_cross = ta.crossover(ema_fast, ema_slow)
+bearish_cross = ta.crossunder(ema_fast, ema_slow)
+
+plotshape(show_sig and bullish_cross ? ema_fast : na, title="Bullish Cross (Buy)", style=shape.triangleup, location=location.belowbar, color=color.green, size=size.tiny, text="BUY", textcolor=color.green)
+plotshape(show_sig and bearish_cross ? ema_slow : na, title="Bearish Cross (Sell)", style=shape.triangledown, location=location.abovebar, color=color.red, size=size.tiny, text="SELL", textcolor=color.red)
+
+// Alert conditions
+alertcondition(bullish_cross, title="EMA 8 Crossover 21 (Bullish)", message="EMA 8 crossed above EMA 21 on {{ticker}} ({{interval}})")
+alertcondition(bearish_cross, title="EMA 8 Crossunder 21 (Bearish)", message="EMA 8 crossed below EMA 21 on {{ticker}} ({{interval}})")
