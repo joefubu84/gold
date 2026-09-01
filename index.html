@@ -2,556 +2,258 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Global Macro Terminal | XAUUSD • DXY • EURUSD</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Gold (XAU/USD) Macro Intelligence & Trade Outlook</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        term: {
-                            bg: '#090D14',
-                            surface: '#0F1523',
-                            panel: '#141C2E',
-                            border: '#1E293B',
-                            borderLight: '#334155',
-                            textMuted: '#64748B',
-                            textDim: '#94A3B8',
-                            textMain: '#F1F5F9',
-                            gold: '#EAB308',
-                            goldDim: '#CA8A04',
-                            euro: '#818CF8',
-                            usd: '#38BDF8',
-                            up: '#22C55E',
-                            down: '#EF4444'
-                        }
-                    },
-                    fontFamily: {
-                        mono: ['JetBrains Mono', 'Fira Code', 'Menlo', 'monospace'],
-                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
         
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
+        * { box-sizing: border-box; }
         body {
-            background-color: #090D14;
-            color: #F1F5F9;
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0B0F17;
+            color: #F3F4F6;
         }
-
-        .border-term {
-            border: 1px solid #1E293B;
-        }
-
-        .panel-bg {
-            background-color: #0F1523;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 4px;
-            height: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #090D14;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #1E293B;
-            border-radius: 2px;
-        }
-
-        .chart-wrapper {
-            position: relative;
-            width: 100%;
-            height: 250px;
-        }
-        @media (min-width: 640px) {
-            .chart-wrapper {
-                height: 300px;
-            }
-        }
-        @media (min-width: 1024px) {
-            .chart-wrapper {
-                height: 320px;
-            }
-        }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .card-bg { background-color: #131A26; }
+        .inner-bg { background-color: #0E141F; }
     </style>
 </head>
-<body class="min-h-screen custom-scrollbar antialiased pb-12 flex flex-col">
+<body class="min-h-screen antialiased flex flex-col pb-16">
 
-    <!-- =================== TERMINAL HEADER =================== -->
-    <header class="border-b border-term.border bg-[#090D14]/95 sticky top-0 z-50 backdrop-blur px-3.5 sm:px-6 py-2.5">
-        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
-            
-            <div class="flex items-center space-x-2.5">
-                <div class="p-1.5 bg-yellow-500/10 border border-yellow-500/30 rounded text-yellow-400">
-                    <i data-lucide="bar-chart-2" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+    <!-- Top Header -->
+    <header class="border-b border-gray-800/80 bg-[#0B0F17]/90 sticky top-0 z-50 backdrop-blur px-4 sm:px-8 py-3.5">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold">
+                    <i data-lucide="trending-up" class="w-5 h-5"></i>
                 </div>
                 <div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-sm sm:text-base font-bold font-mono tracking-tight text-white">MACROQUANT // GLOBAL FX & COMMODITIES</span>
-                    </div>
-                    <p class="text-[11px] text-term-textMuted font-mono">XAU/USD • DXY • EUR/USD Transmission Desk</p>
+                    <h1 class="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-2">
+                        Gold & Macro Desk
+                        <span class="text-[11px] font-semibold font-mono bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded border border-amber-500/30">XAU/USD FOCUS</span>
+                    </h1>
+                    <p class="text-xs text-gray-400">Clear Macro Analysis: Euro (EUR) ➔ Dollar (DXY) ➔ Gold (XAU)</p>
                 </div>
             </div>
 
-            <div class="flex items-center gap-2 font-mono text-[11px]">
-                <span class="px-2 py-1 bg-emerald-950/40 text-emerald-400 border border-emerald-800/40 rounded flex items-center gap-1.5">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> DESK ACTIVE
-                </span>
-                <span id="utc-clock" class="px-2 py-1 bg-term-surface border border-term-border rounded text-term-textDim hidden xs:inline">
-                    --:--:-- UTC
-                </span>
+            <div class="text-right hidden sm:block">
+                <div class="text-xs text-gray-400 font-mono" id="live-time">September 2026</div>
+                <div class="text-xs font-semibold text-emerald-400 flex items-center justify-end gap-1">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Market Analysis Live
+                </div>
             </div>
-
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-3 sm:px-6 pt-4 sm:pt-6 space-y-4 sm:space-y-5 w-full flex-1">
+    <main class="max-w-6xl mx-auto px-4 sm:px-8 pt-6 space-y-6 w-full flex-1">
 
-        <!-- =================== TRANSMISSION CHAIN FRAMEWORK =================== -->
-        <section class="panel-bg rounded-lg border border-term-border p-4">
-            <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3 mb-3 border-b border-term-border/70 pb-3">
-                <div>
-                    <h3 class="font-bold text-xs sm:text-sm font-mono text-white flex items-center gap-2">
-                        <i data-lucide="git-commit" class="w-4 h-4 text-yellow-400"></i>
-                        MACRO TRANSMISSION PIPELINE: EUR/USD → DXY → XAU/USD
-                    </h3>
-                    <p class="text-[11px] text-term-textDim mt-0.5">Quantifying structural causality from Euro currency weighting to Dollar Index pricing and physical Bullion valuation</p>
-                </div>
-                <div class="flex items-center gap-1.5 font-mono text-[11px] flex-wrap">
-                    <span class="px-2 py-0.5 rounded bg-indigo-950/40 border border-indigo-800/40 text-indigo-300">EUR: 57.6% DXY Basket</span>
-                    <span class="px-2 py-0.5 rounded bg-yellow-950/40 border border-yellow-800/40 text-yellow-400">Gold/DXY Beta: -0.84</span>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-sans">
-                <!-- Step 1 -->
-                <div class="p-3 bg-[#090D14] rounded border border-term-border">
-                    <div class="flex items-center justify-between font-mono text-[11px] text-indigo-400 font-bold mb-1">
-                        <span>01 / EUR/USD Primary Driver</span>
-                        <span>Weight: 57.6%</span>
+        <!-- =================== 1. BIG EASY TAKEAWAY (HERO VERDICT) =================== -->
+        <section class="card-bg rounded-2xl border-2 border-emerald-500/40 p-5 sm:p-7 relative overflow-hidden">
+            <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+                
+                <div class="space-y-2.5 max-w-2xl">
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <span class="px-2.5 py-1 rounded-md bg-emerald-500 text-slate-950 font-bold text-xs uppercase tracking-wider font-mono">
+                            Executive Stance
+                        </span>
+                        <span class="text-2xl sm:text-3xl font-extrabold text-emerald-400 font-mono tracking-tight">
+                            BULLISH ON GOLD
+                        </span>
+                        <span class="text-xs font-semibold px-2.5 py-0.5 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-800">
+                            Confidence: 88%
+                        </span>
                     </div>
-                    <p class="text-term-textDim text-[11px] leading-relaxed">
-                        Euro accounts for more than half of the DXY weighting. ECB rate expectations, Eurozone yield differentials, and trade account balances set the structural baseline for Dollar index valuation.
+
+                    <p class="text-sm sm:text-base text-gray-200 leading-relaxed">
+                        <strong>Why Gold is set to rise:</strong> The Euro is staying strong, which prevents the US Dollar Index (DXY) from rallying. Combined with non-stop central bank gold buying and $90+ crude oil inflation risks, the market is set up for gold upside.
                     </p>
+
+                    <!-- Simple Target Cards -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pt-2 font-mono text-xs">
+                        <div class="p-2.5 bg-slate-950/60 rounded-xl border border-gray-800">
+                            <span class="text-gray-400 text-[11px] block">Price Target</span>
+                            <span class="text-emerald-400 font-bold text-base sm:text-lg">$4,650</span>
+                        </div>
+                        <div class="p-2.5 bg-slate-950/60 rounded-xl border border-gray-800">
+                            <span class="text-gray-400 text-[11px] block">Stop / Safety Level</span>
+                            <span class="text-rose-400 font-bold text-base sm:text-lg">$4,310</span>
+                        </div>
+                        <div class="p-2.5 bg-slate-950/60 rounded-xl border border-gray-800 col-span-2 sm:col-span-1">
+                            <span class="text-gray-400 text-[11px] block">Time Horizon</span>
+                            <span class="text-amber-400 font-bold text-base sm:text-lg">2 – 6 Weeks</span>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Step 2 -->
-                <div class="p-3 bg-[#090D14] rounded border border-term-border">
-                    <div class="flex items-center justify-between font-mono text-[11px] text-sky-400 font-bold mb-1">
-                        <span>02 / DXY Index Transmission</span>
-                        <span>Denominator</span>
+                <!-- Easy Summary Gauge -->
+                <div class="w-full lg:w-72 inner-bg p-4 rounded-xl border border-gray-800 space-y-3">
+                    <div class="text-xs font-semibold text-gray-300 flex justify-between">
+                        <span>BULLISH MOMENTUM</span>
+                        <span class="text-emerald-400 font-mono">88 / 100</span>
                     </div>
-                    <p class="text-term-textDim text-[11px] leading-relaxed">
-                        When EUR/USD strengthens, DXY experiences automatic mathematical downside. Dollar index weakness reduces the global cost of purchasing USD-denominated commodities.
-                    </p>
+                    <div class="w-full bg-gray-800 h-2.5 rounded-full overflow-hidden">
+                        <div class="bg-gradient-to-r from-teal-400 to-emerald-500 h-full rounded-full" style="width: 88%"></div>
+                    </div>
+                    <div class="text-[12px] text-gray-400 space-y-1 pt-1">
+                        <div class="flex justify-between"><span>XAU Trend:</span> <strong class="text-emerald-400">Strong Up</strong></div>
+                        <div class="flex justify-between"><span>DXY Trend:</span> <strong class="text-rose-400">Weak Down</strong></div>
+                        <div class="flex justify-between"><span>EUR Trend:</span> <strong class="text-indigo-400">Stable Up</strong></div>
+                    </div>
                 </div>
 
-                <!-- Step 3 -->
-                <div class="p-3 bg-[#090D14] rounded border border-term-border">
-                    <div class="flex items-center justify-between font-mono text-[11px] text-yellow-400 font-bold mb-1">
-                        <span>03 / XAU/USD Bullion Re-Rating</span>
-                        <span>Store of Value</span>
-                    </div>
-                    <p class="text-term-textDim text-[11px] leading-relaxed">
-                        Institutional desks and foreign central banks increase bullion accumulation as USD currency debasement accelerates, compounding safe-haven and inflation-hedge momentum.
-                    </p>
-                </div>
             </div>
         </section>
 
-        <!-- =================== MARKET OVERVIEW TICKERS =================== -->
-        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-            
-            <!-- XAU/USD -->
-            <div class="panel-bg rounded-lg border border-term-border p-4 flex flex-col justify-between">
-                <div>
-                    <div class="flex justify-between items-start mb-2">
-                        <div>
-                            <span class="text-[10px] font-mono font-bold text-yellow-500 uppercase">Spot Commodity</span>
-                            <h2 class="text-lg sm:text-xl font-bold font-mono text-white">XAU / USD</h2>
-                        </div>
-                        <span class="px-2 py-0.5 text-xs font-mono font-bold bg-emerald-950/40 text-emerald-400 border border-emerald-800/40 rounded">
-                            +1.42%
-                        </span>
-                    </div>
-                    <div class="my-2">
-                        <div class="text-2xl sm:text-3xl font-extrabold font-mono text-white tracking-tight">$4,448.20</div>
-                        <div class="text-[11px] font-mono text-term-textMuted mt-0.5">Bid: 4,447.80 | Ask: 4,448.60</div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-3 gap-2 pt-2.5 border-t border-term-border text-[11px] font-mono">
-                    <div>
-                        <span class="text-term-textMuted block text-[10px]">Scope</span>
-                        <span class="text-white font-medium">Global Spot</span>
-                    </div>
-                    <div>
-                        <span class="text-term-textMuted block text-[10px]">P/E</span>
-                        <span class="text-term-textDim">N/A</span>
-                    </div>
-                    <div>
-                        <span class="text-term-textMuted block text-[10px]">14D Trend</span>
-                        <span class="text-emerald-400 font-bold">Bullish</span>
-                    </div>
-                </div>
+        <!-- =================== 2. HOW THE 3 ASSETS CONNECT (EASY FLOW) =================== -->
+        <section class="space-y-3">
+            <div class="flex items-center justify-between">
+                <h2 class="text-sm sm:text-base font-bold text-white flex items-center gap-2">
+                    <i data-lucide="git-branch" class="w-4 h-4 text-amber-400"></i>
+                    How The 3 Assets Connect (The Golden Rule)
+                </h2>
+                <span class="text-xs text-gray-400">Step-by-step logic</span>
             </div>
 
-            <!-- DXY -->
-            <div class="panel-bg rounded-lg border border-term-border p-4 flex flex-col justify-between">
-                <div>
-                    <div class="flex justify-between items-start mb-2">
-                        <div>
-                            <span class="text-[10px] font-mono font-bold text-sky-400 uppercase">Currency Index</span>
-                            <h2 class="text-lg sm:text-xl font-bold font-mono text-white">DXY</h2>
-                        </div>
-                        <span class="px-2 py-0.5 text-xs font-mono font-bold bg-rose-950/40 text-rose-400 border border-rose-800/40 rounded">
-                            -0.38%
-                        </span>
-                    </div>
-                    <div class="my-2">
-                        <div class="text-2xl sm:text-3xl font-extrabold font-mono text-white tracking-tight">98.85</div>
-                        <div class="text-[11px] font-mono text-term-textMuted mt-0.5">Day Range: 98.62 - 99.20</div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-3 gap-2 pt-2.5 border-t border-term-border text-[11px] font-mono">
-                    <div>
-                        <span class="text-term-textMuted block text-[10px]">Basket</span>
-                        <span class="text-white font-medium">6 FX Majors</span>
-                    </div>
-                    <div>
-                        <span class="text-term-textMuted block text-[10px]">P/E</span>
-                        <span class="text-term-textDim">N/A</span>
-                    </div>
-                    <div>
-                        <span class="text-term-textMuted block text-[10px]">14D Trend</span>
-                        <span class="text-rose-400 font-bold">Bearish</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- EUR/USD -->
-            <div class="panel-bg rounded-lg border border-term-border p-4 flex flex-col justify-between sm:col-span-2 lg:col-span-1">
-                <div>
-                    <div class="flex justify-between items-start mb-2">
-                        <div>
-                            <span class="text-[10px] font-mono font-bold text-indigo-400 uppercase">Major Forex</span>
-                            <h2 class="text-lg sm:text-xl font-bold font-mono text-white">EUR / USD</h2>
-                        </div>
-                        <span class="px-2 py-0.5 text-xs font-mono font-bold bg-emerald-950/40 text-emerald-400 border border-emerald-800/40 rounded">
-                            +0.31%
-                        </span>
-                    </div>
-                    <div class="my-2">
-                        <div class="text-2xl sm:text-3xl font-extrabold font-mono text-white tracking-tight">1.1582</div>
-                        <div class="text-[11px] font-mono text-term-textMuted mt-0.5">Bid: 1.1581 | Ask: 1.1583</div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-3 gap-2 pt-2.5 border-t border-term-border text-[11px] font-mono">
-                    <div>
-                        <span class="text-term-textMuted block text-[10px]">Liquidity</span>
-                        <span class="text-white font-medium">Tier-1 FX</span>
-                    </div>
-                    <div>
-                        <span class="text-term-textMuted block text-[10px]">P/E</span>
-                        <span class="text-term-textDim">N/A</span>
-                    </div>
-                    <div>
-                        <span class="text-term-textMuted block text-[10px]">14D Trend</span>
-                        <span class="text-emerald-400 font-bold">Moderate Bull</span>
-                    </div>
-                </div>
-            </div>
-
-        </section>
-
-        <!-- =================== CHART & SENSITIVITY MATRIX =================== -->
-        <section class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5">
-            
-            <!-- Chart Container -->
-            <div class="lg:col-span-2 panel-bg rounded-lg border border-term-border p-4 flex flex-col justify-between">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3 border-b border-term-border/70 pb-3">
-                    <div>
-                        <h3 class="font-bold text-xs sm:text-sm font-mono text-white">INTER-MARKET PERFORMANCE DYNAMICS</h3>
-                        <p class="text-[11px] text-term-textDim">Normalized % Velocity Comparison (Baseline = 100)</p>
-                    </div>
-
-                    <div class="flex items-center gap-1 bg-[#090D14] p-1 rounded border border-term-border overflow-x-auto custom-scrollbar">
-                        <button onclick="setChartDataset('all')" id="btn-all" class="px-2 py-0.5 text-[11px] font-mono rounded bg-yellow-500/20 text-yellow-400 border border-yellow-500/30">ALL (3)</button>
-                        <button onclick="setChartDataset('gold')" id="btn-gold" class="px-2 py-0.5 text-[11px] font-mono rounded text-term-textMuted hover:text-white">XAU</button>
-                        <button onclick="setChartDataset('dxy')" id="btn-dxy" class="px-2 py-0.5 text-[11px] font-mono rounded text-term-textMuted hover:text-white">DXY</button>
-                        <button onclick="setChartDataset('eur')" id="btn-eur" class="px-2 py-0.5 text-[11px] font-mono rounded text-term-textMuted hover:text-white">EUR</button>
-                    </div>
-                </div>
-
-                <div class="chart-wrapper">
-                    <canvas id="macroChart"></canvas>
-                </div>
-
-                <div class="flex flex-wrap items-center justify-between text-[11px] font-mono text-term-textDim pt-3 border-t border-term-border mt-2 gap-2">
-                    <div class="flex items-center gap-3">
-                        <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-yellow-400"></span> Gold</span>
-                        <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-sky-400"></span> DXY</span>
-                        <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded bg-indigo-400"></span> EUR/USD</span>
-                    </div>
-                    <span>Correlation: <strong class="text-yellow-400">-0.84 (Inverse)</strong></span>
-                </div>
-            </div>
-
-            <!-- Quantitative Risk & Sensitivity Matrix -->
-            <div class="panel-bg rounded-lg border border-term-border p-4 flex flex-col justify-between">
-                <div>
-                    <h3 class="font-bold text-xs sm:text-sm font-mono text-white mb-1 border-b border-term-border/70 pb-2">
-                        MACRO CORRELATION GAUGES
-                    </h3>
-
-                    <div class="space-y-3.5 mt-3">
-                        <div>
-                            <div class="flex justify-between text-[11px] font-mono mb-1">
-                                <span class="text-term-textDim">EUR Basket Dominance</span>
-                                <span class="text-indigo-400 font-bold">57.6%</span>
-                            </div>
-                            <div class="w-full bg-[#090D14] h-1.5 rounded overflow-hidden border border-term-border">
-                                <div class="bg-indigo-500 h-full rounded" style="width: 57.6%"></div>
-                            </div>
-                        </div>
-
-                        <div>
-                            <div class="flex justify-between text-[11px] font-mono mb-1">
-                                <span class="text-term-textDim">Gold / DXY Inverse Divergence</span>
-                                <span class="text-emerald-400 font-bold">-84.2%</span>
-                            </div>
-                            <div class="w-full bg-[#090D14] h-1.5 rounded overflow-hidden border border-term-border">
-                                <div class="bg-emerald-500 h-full rounded" style="width: 84.2%"></div>
-                            </div>
-                        </div>
-
-                        <div>
-                            <div class="flex justify-between text-[11px] font-mono mb-1">
-                                <span class="text-term-textDim">Central Bank Reserve Ingestion</span>
-                                <span class="text-yellow-400 font-bold">92.0%</span>
-                            </div>
-                            <div class="w-full bg-[#090D14] h-1.5 rounded overflow-hidden border border-term-border">
-                                <div class="bg-yellow-500 h-full rounded" style="width: 92%"></div>
-                            </div>
-                        </div>
-
-                        <div>
-                            <div class="flex justify-between text-[11px] font-mono mb-1">
-                                <span class="text-term-textDim">Geopolitical Risk Premium</span>
-                                <span class="text-rose-400 font-bold">78.5%</span>
-                            </div>
-                            <div class="w-full bg-[#090D14] h-1.5 rounded overflow-hidden border border-term-border">
-                                <div class="bg-rose-500 h-full rounded" style="width: 78.5%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="p-3 bg-[#090D14] rounded border border-term-border text-xs mt-3">
-                    <span class="font-mono text-[10px] font-bold text-yellow-500 block mb-1">ANALYST QUANT SYNTHESIS:</span>
-                    <p class="text-[11px] text-term-textDim leading-relaxed">
-                        EUR/USD stabilizing above 1.155 exerts sustained downward pressure on DXY, neutralizing real rate resistance and keeping precious metals in expansion.
-                    </p>
-                </div>
-            </div>
-
-        </section>
-
-        <!-- =================== MARKET INTELLIGENCE (3 ARTICLES) =================== -->
-        <section>
-            <div class="flex items-center justify-between mb-2">
-                <h3 class="text-xs font-bold font-mono uppercase tracking-wider text-term-textDim flex items-center gap-1.5">
-                    <i data-lucide="file-text" class="w-3.5 h-3.5 text-yellow-400"></i>
-                    MARKET INTELLIGENCE BRIEFS (3 ARTICLES)
-                </h3>
-            </div>
-
+            <!-- 3 Easy Connected Step Cards -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
                 
-                <!-- Brief 1 -->
-                <div class="panel-bg rounded-lg border border-term-border p-4 flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center justify-between text-[10px] font-mono text-term-textMuted mb-2">
-                            <span class="text-yellow-500 font-bold">COMMODITIES // ENERGY</span>
-                            <span>2h ago</span>
-                        </div>
-                        <h4 class="font-bold text-white text-xs sm:text-sm mb-2">
-                            Middle East Frictions Escalate as Crude Breaches $90/bbl
-                        </h4>
-                        <ul class="space-y-1 text-[11px] text-term-textDim">
-                            <li class="flex items-start gap-1.5">
-                                <span class="text-yellow-400 font-bold">•</span>
-                                <span>Renewed military frictions accelerate safe-haven inflows into physical Gold and bullion ETFs.</span>
-                            </li>
-                            <li class="flex items-start gap-1.5">
-                                <span class="text-yellow-400 font-bold">•</span>
-                                <span>Crude supply fears reignite cost-push inflation, enhancing precious metals appeal.</span>
-                            </li>
-                            <li class="flex items-start gap-1.5">
-                                <span class="text-yellow-400 font-bold">•</span>
-                                <span>Institutional bullion trading volume reached multi-week highs.</span>
-                            </li>
-                        </ul>
+                <!-- Step 1: EUR -->
+                <div class="card-bg p-4 rounded-xl border border-indigo-500/30 space-y-2 relative">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs font-mono font-bold text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">STEP 1: EUR/USD</span>
+                        <span class="text-xs font-mono text-emerald-400 font-bold">+0.31% Up</span>
                     </div>
-                    <div class="mt-3 pt-2 border-t border-term-border text-[10px] font-mono text-term-textMuted flex justify-between">
-                        <span>Source: Yahoo / Reuters</span>
-                        <span class="text-yellow-400">Impact: Bullish Gold</span>
-                    </div>
+                    <div class="text-xl font-bold font-mono text-white">1.1582</div>
+                    <p class="text-xs text-gray-300 leading-relaxed">
+                        The Euro makes up <strong>57.6% of the Dollar Index</strong>. When Europe is stable and EUR rises, it automatically drags the Dollar down.
+                    </p>
                 </div>
 
-                <!-- Brief 2 -->
-                <div class="panel-bg rounded-lg border border-term-border p-4 flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center justify-between text-[10px] font-mono text-term-textMuted mb-2">
-                            <span class="text-sky-400 font-bold">MONETARY POLICY</span>
-                            <span>4h ago</span>
-                        </div>
-                        <h4 class="font-bold text-white text-xs sm:text-sm mb-2">
-                            Hawkish Fed Rhetoric Fails to Propel Dollar Above 99.20 Resistance
-                        </h4>
-                        <ul class="space-y-1 text-[11px] text-term-textDim">
-                            <li class="flex items-start gap-1.5">
-                                <span class="text-sky-400 font-bold">•</span>
-                                <span>Federal Reserve commentary signals terminal rates stay elevated longer to combat services inflation.</span>
-                            </li>
-                            <li class="flex items-start gap-1.5">
-                                <span class="text-sky-400 font-bold">•</span>
-                                <span>Despite hawkish tone, DXY is struggling as markets price in US debt sustainability risks.</span>
-                            </li>
-                            <li class="flex items-start gap-1.5">
-                                <span class="text-sky-400 font-bold">•</span>
-                                <span>Institutional flows demonstrate continued rotation toward non-dollar assets.</span>
-                            </li>
-                        </ul>
+                <!-- Step 2: DXY -->
+                <div class="card-bg p-4 rounded-xl border border-sky-500/30 space-y-2 relative">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs font-mono font-bold text-sky-400 bg-sky-500/10 px-2 py-0.5 rounded border border-sky-500/20">STEP 2: DXY (DOLLAR)</span>
+                        <span class="text-xs font-mono text-rose-400 font-bold">-0.38% Down</span>
                     </div>
-                    <div class="mt-3 pt-2 border-t border-term-border text-[10px] font-mono text-term-textMuted flex justify-between">
-                        <span>Source: Bloomberg / Yahoo</span>
-                        <span class="text-sky-400">Impact: Neutral DXY</span>
-                    </div>
+                    <div class="text-xl font-bold font-mono text-white">98.85</div>
+                    <p class="text-xs text-gray-300 leading-relaxed">
+                        Because EUR is rising, the Dollar drops below 99.00. A weaker Dollar makes Gold cheaper and more attractive for world buyers.
+                    </p>
                 </div>
 
-                <!-- Brief 3 -->
-                <div class="panel-bg rounded-lg border border-term-border p-4 flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center justify-between text-[10px] font-mono text-term-textMuted mb-2">
-                            <span class="text-indigo-400 font-bold">EUROZONE FX</span>
-                            <span>6h ago</span>
-                        </div>
-                        <h4 class="font-bold text-white text-xs sm:text-sm mb-2">
-                            EUR/USD Stabilizes at 1.158 as ECB Affirms Policy Stability
-                        </h4>
-                        <ul class="space-y-1 text-[11px] text-term-textDim">
-                            <li class="flex items-start gap-1.5">
-                                <span class="text-indigo-400 font-bold">•</span>
-                                <span>ECB officials dismissed aggressive easing rumors, projecting resilient service exports.</span>
-                            </li>
-                            <li class="flex items-start gap-1.5">
-                                <span class="text-indigo-400 font-bold">•</span>
-                                <span>EUR/USD rebounded from weekly lows of 1.152, consolidating above critical 1.1575.</span>
-                            </li>
-                            <li class="flex items-start gap-1.5">
-                                <span class="text-indigo-400 font-bold">•</span>
-                                <span>Stability in Euro directly limits any aggressive Dollar Index upward breakout.</span>
-                            </li>
-                        </ul>
+                <!-- Step 3: GOLD -->
+                <div class="card-bg p-4 rounded-xl border border-amber-500/40 space-y-2 relative">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs font-mono font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">STEP 3: GOLD RALLIES</span>
+                        <span class="text-xs font-mono text-emerald-400 font-bold">+1.42% Surge</span>
                     </div>
-                    <div class="mt-3 pt-2 border-t border-term-border text-[10px] font-mono text-term-textMuted flex justify-between">
-                        <span>Source: Financial Times</span>
-                        <span class="text-indigo-400">Impact: Bullish EUR</span>
-                    </div>
+                    <div class="text-xl font-bold font-mono text-amber-300">$4,448.20</div>
+                    <p class="text-xs text-gray-300 leading-relaxed">
+                        Dollar weakness + central bank buying + safe-haven demand causes Gold to rally fast towards $4,650.
+                    </p>
                 </div>
 
             </div>
         </section>
 
-        <!-- =================== SIGNAL VS NOISE & RISK ASSESSMENT =================== -->
-        <section class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
+        <!-- =================== 3. CLEAR PERFORMANCE CHART =================== -->
+        <section class="card-bg p-5 rounded-xl border border-gray-800 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                    <h3 class="text-sm sm:text-base font-bold text-white flex items-center gap-2">
+                        <i data-lucide="line-chart" class="w-4 h-4 text-amber-400"></i>
+                        Performance Comparison Chart
+                    </h3>
+                    <p class="text-xs text-gray-400">See how Gold (Yellow) goes up while Dollar (Blue) goes down</p>
+                </div>
+
+                <!-- Easy Toggles -->
+                <div class="flex items-center gap-1.5 bg-slate-950 p-1 rounded-lg border border-gray-800 self-start text-xs font-mono">
+                    <button onclick="setChartDataset('all')" id="btn-all" class="px-2.5 py-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">ALL</button>
+                    <button onclick="setChartDataset('gold')" id="btn-gold" class="px-2.5 py-1 rounded text-gray-400 hover:text-white">Gold</button>
+                    <button onclick="setChartDataset('dxy')" id="btn-dxy" class="px-2.5 py-1 rounded text-gray-400 hover:text-white">Dollar</button>
+                    <button onclick="setChartDataset('eur')" id="btn-eur" class="px-2.5 py-1 rounded text-gray-400 hover:text-white">Euro</button>
+                </div>
+            </div>
+
+            <!-- Chart Container -->
+            <div class="h-64 sm:h-72 w-full">
+                <canvas id="macroChart"></canvas>
+            </div>
+
+            <!-- Legend explanation -->
+            <div class="flex items-center justify-between text-xs text-gray-400 pt-2 border-t border-gray-800">
+                <div class="flex items-center gap-4">
+                    <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-amber-400"></span> Gold (+5.6%)</span>
+                    <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-sky-400"></span> Dollar (-1.9%)</span>
+                    <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-indigo-400"></span> Euro (+2.1%)</span>
+                </div>
+                <span class="font-mono text-emerald-400 hidden sm:inline">Inverse Correlation: -84%</span>
+            </div>
+        </section>
+
+        <!-- =================== 4. EASY SIGNAL VS NOISE (WHAT MATTERS VS WHAT TO IGNORE) =================== -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             
-            <!-- Signal vs Noise -->
-            <div class="panel-bg rounded-lg border border-term-border p-4">
-                <h3 class="font-bold text-xs sm:text-sm font-mono text-white mb-3 flex items-center justify-between border-b border-term-border/70 pb-2">
-                    <span>SIGNAL VS. NOISE ANALYSIS</span>
-                    <span class="text-[10px] text-yellow-500">SYSTEMATIC FILTER</span>
-                </h3>
+            <!-- What Actually Matters (Signals) -->
+            <div class="card-bg p-5 rounded-xl border border-emerald-500/30 space-y-3">
+                <div class="flex items-center justify-between border-b border-gray-800 pb-2">
+                    <h3 class="text-sm font-bold text-emerald-400 flex items-center gap-1.5">
+                        <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+                        What Actually Matters (Real Signals)
+                    </h3>
+                    <span class="text-[10px] font-mono bg-emerald-950/60 text-emerald-300 px-2 py-0.5 rounded border border-emerald-800">FOCUS ON THIS</span>
+                </div>
 
                 <div class="space-y-2.5 text-xs">
-                    <div class="p-2.5 rounded bg-emerald-950/20 border border-emerald-800/40">
-                        <div class="flex items-center justify-between font-mono text-[11px] font-bold text-emerald-400 mb-1">
-                            <span>TRUE SIGNAL: Central Bank Accumulation</span>
-                            <span>HIGH WEIGHT</span>
-                        </div>
-                        <p class="text-term-textDim text-[11px] leading-relaxed">
-                            PBoC, RBI, and CBR continue structural net bullion purchases irrespective of US Treasury real yield levels, providing a solid institutional floor.
-                        </p>
+                    <div class="p-3 bg-emerald-950/20 rounded-lg border border-emerald-500/20">
+                        <div class="font-bold text-white mb-0.5">1. Central Banks are Buying Gold Constantly</div>
+                        <p class="text-gray-300 leading-relaxed">Countries like China, India, and Middle Eastern nations are aggressively converting USD reserves into Gold. This puts a permanent floor under gold prices.</p>
                     </div>
 
-                    <div class="p-2.5 rounded bg-emerald-950/20 border border-emerald-800/40">
-                        <div class="flex items-center justify-between font-mono text-[11px] font-bold text-emerald-400 mb-1">
-                            <span>TRUE SIGNAL: DXY Failure at 99.50</span>
-                            <span>HIGH WEIGHT</span>
-                        </div>
-                        <p class="text-term-textDim text-[11px] leading-relaxed">
-                            Dollar index inability to form new highs despite hawkish Fed jawboning confirms long-position exhaustion and sovereign debt sustainability discounting.
-                        </p>
+                    <div class="p-3 bg-emerald-950/20 rounded-lg border border-emerald-500/20">
+                        <div class="font-bold text-white mb-0.5">2. Dollar Can't Break Above 99.50</div>
+                        <p class="text-gray-300 leading-relaxed">Even when US Fed officials talk tough, the Dollar fails to rally. That weakness frees Gold to climb higher.</p>
                     </div>
 
-                    <div class="p-2.5 rounded bg-rose-950/20 border border-rose-800/40">
-                        <div class="flex items-center justify-between font-mono text-[11px] font-bold text-rose-400 mb-1">
-                            <span>MARKET NOISE: FOMC Speaker Semantics</span>
-                            <span>LOW WEIGHT</span>
-                        </div>
-                        <p class="text-term-textDim text-[11px] leading-relaxed">
-                            Intraday volatility around regional Fed voting member remarks generates short-term algorithmic chop but leaves multi-quarter macro trajectories intact.
-                        </p>
+                    <div class="p-3 bg-emerald-950/20 rounded-lg border border-emerald-500/20">
+                        <div class="font-bold text-white mb-0.5">3. Crude Oil Above $90 Reignites Inflation</div>
+                        <p class="text-gray-300 leading-relaxed">Higher energy prices mean inflation stays sticky, making Gold the best historic hedge.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Macro Drivers & Risk Factors -->
-            <div class="panel-bg rounded-lg border border-term-border p-4 flex flex-col justify-between">
+            <!-- What You Should Ignore (Noise) & Risks -->
+            <div class="card-bg p-5 rounded-xl border border-gray-800 space-y-3 flex flex-col justify-between">
                 <div>
-                    <h3 class="font-bold text-xs sm:text-sm font-mono text-white mb-3 border-b border-term-border/70 pb-2">
-                        MACRO DRIVERS & KEY RISKS
-                    </h3>
-
-                    <div class="space-y-1.5 text-xs mb-3">
-                        <div class="p-2 bg-[#090D14] border border-term-border rounded text-[11px]">
-                            <strong class="text-white font-mono">1. Rate Decoupling:</strong> Gold trades on geopolitical realignment and debt expansion rather than 10Y TIPS yields.
-                        </div>
-                        <div class="p-2 bg-[#090D14] border border-term-border rounded text-[11px]">
-                            <strong class="text-white font-mono">2. DXY 98.40 Pivot:</strong> Sustained breakdown below 98.40 opens momentum cascade into commodities.
-                        </div>
-                        <div class="p-2 bg-[#090D14] border border-term-border rounded text-[11px]">
-                            <strong class="text-white font-mono">3. EUR Support:</strong> EUR/USD holding above 1.155 preserves the dollar's capped upside.
-                        </div>
+                    <div class="flex items-center justify-between border-b border-gray-800 pb-2">
+                        <h3 class="text-sm font-bold text-rose-400 flex items-center gap-1.5">
+                            <i data-lucide="alert-circle" class="w-4 h-4"></i>
+                            Noise to Ignore & Real Risks
+                        </h3>
+                        <span class="text-[10px] font-mono bg-rose-950/60 text-rose-300 px-2 py-0.5 rounded border border-rose-800">BE CAREFUL</span>
                     </div>
 
-                    <div class="space-y-1.5 text-xs">
-                        <div class="p-2 rounded bg-rose-950/20 border border-rose-800/40 text-[11px]">
-                            <strong class="text-rose-300 font-mono">Risk Vector 1:</strong> Broader equity margin calls could force temporary liquidity selling in bullion.
+                    <div class="space-y-2.5 text-xs mt-3">
+                        <div class="p-3 bg-rose-950/20 rounded-lg border border-rose-500/20">
+                            <div class="font-bold text-rose-300 mb-0.5">Ignore: Daily Fed Speeches</div>
+                            <p class="text-gray-400 leading-relaxed">Daily comments from Fed members cause 1-day wobbles but do not change the multi-month gold trend.</p>
                         </div>
-                        <div class="p-2 rounded bg-rose-950/20 border border-rose-800/40 text-[11px]">
-                            <strong class="text-rose-300 font-mono">Risk Vector 2:</strong> Sudden Middle East peace accords could deflate the $120-$180/oz geopolitical risk premium.
+
+                        <div class="p-3 bg-slate-950 rounded-lg border border-gray-800">
+                            <div class="font-bold text-amber-300 mb-0.5">Real Risk 1: Stock Market Liquidity Panic</div>
+                            <p class="text-gray-400 leading-relaxed">If global stock markets suddenly crash, investors might sell gold briefly to cover margin calls.</p>
+                        </div>
+
+                        <div class="p-3 bg-slate-950 rounded-lg border border-gray-800">
+                            <div class="font-bold text-amber-300 mb-0.5">Real Risk 2: Sudden Middle East Peace Deal</div>
+                            <p class="text-gray-400 leading-relaxed">A quick geopolitical de-escalation could quickly cool down gold's $100+ war premium.</p>
                         </div>
                     </div>
                 </div>
@@ -559,90 +261,73 @@
 
         </section>
 
-        <!-- =================== EXECUTIVE STRATEGY RECOMMENDATION =================== -->
-        <section>
-            <div class="panel-bg rounded-lg border border-emerald-800/60 p-4 sm:p-6 bg-gradient-to-r from-[#0F1523] via-[#0F1523] to-emerald-950/20">
-                <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5">
-                    
-                    <div class="space-y-2 max-w-3xl">
-                        <div class="flex items-center gap-2 flex-wrap">
-                            <span class="px-2.5 py-0.5 text-[11px] font-mono font-bold uppercase rounded bg-emerald-500 text-[#090D14]">
-                                FINAL DESK STANCE
-                            </span>
-                            <span class="text-xl sm:text-2xl font-bold font-mono text-emerald-400">
-                                BULLISH ON GOLD (XAU/USD)
-                            </span>
-                        </div>
+        <!-- =================== 5. NEWS DIGEST (3 SIMPLE CARDS) =================== -->
+        <section class="space-y-3">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <i data-lucide="newspaper" class="w-4 h-4 text-amber-400"></i>
+                Latest Market News Summaries (3 Key Stories)
+            </h3>
 
-                        <p class="text-xs sm:text-sm text-term-textDim leading-relaxed">
-                            <strong class="text-white">Synthesis:</strong> Structural sovereign bullion acquisition, a softening Dollar Index below 99.00 driven by EUR/USD stability, and elevated energy stagflation risks overwhelmingly favor long exposure in Gold.
-                        </p>
-
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 font-mono text-xs">
-                            <div class="p-2 bg-[#090D14] rounded border border-term-border">
-                                <span class="text-term-textMuted block text-[10px]">Target Level</span>
-                                <span class="text-emerald-400 font-bold">$4,650 / oz</span>
-                            </div>
-                            <div class="p-2 bg-[#090D14] rounded border border-term-border">
-                                <span class="text-term-textMuted block text-[10px]">Invalidation Stop</span>
-                                <span class="text-rose-400 font-bold">$4,310 / oz</span>
-                            </div>
-                            <div class="p-2 bg-[#090D14] rounded border border-term-border">
-                                <span class="text-term-textMuted block text-[10px]">Risk / Reward</span>
-                                <span class="text-yellow-400 font-bold">1 : 2.85</span>
-                            </div>
-                            <div class="p-2 bg-[#090D14] rounded border border-term-border">
-                                <span class="text-term-textMuted block text-[10px]">Confidence</span>
-                                <span class="text-emerald-400 font-bold">HIGH (88%)</span>
-                            </div>
-                        </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5 text-xs">
+                
+                <div class="card-bg p-4 rounded-xl border border-gray-800 space-y-2">
+                    <div class="flex justify-between text-[11px] text-gray-400">
+                        <span class="text-amber-400 font-semibold font-mono">Geopolitics</span>
+                        <span>2h ago</span>
                     </div>
-
-                    <div class="w-full lg:w-64 bg-[#090D14] p-3.5 rounded border border-term-border flex flex-col gap-2 shrink-0 font-mono text-xs">
-                        <div class="flex justify-between text-[11px]">
-                            <span class="text-term-textDim">Execution Horizon:</span>
-                            <span class="text-white font-bold">2 to 6 Weeks</span>
-                        </div>
-                        <div class="flex justify-between text-[11px]">
-                            <span class="text-term-textDim">Portfolio Limit:</span>
-                            <span class="text-yellow-400 font-bold">12% - 15%</span>
-                        </div>
-                        <div class="w-full bg-term-surface h-1.5 rounded overflow-hidden mt-1">
-                            <div class="bg-emerald-500 h-full rounded" style="width: 88%"></div>
-                        </div>
-                    </div>
-
+                    <h4 class="font-bold text-white text-sm">Crude Oil Tops $90/bbl on Middle East Tensions</h4>
+                    <p class="text-gray-300 leading-relaxed">Rising conflict is driving investors into physical gold as a safe-haven and inflation shield.</p>
                 </div>
+
+                <div class="card-bg p-4 rounded-xl border border-gray-800 space-y-2">
+                    <div class="flex justify-between text-[11px] text-gray-400">
+                        <span class="text-sky-400 font-semibold font-mono">Monetary Policy</span>
+                        <span>4h ago</span>
+                    </div>
+                    <h4 class="font-bold text-white text-sm">US Dollar Struggles Under 99.00 Resistance</h4>
+                    <p class="text-gray-300 leading-relaxed">Despite high interest rates, traders are reluctant to buy dollars due to heavy US government debt.</p>
+                </div>
+
+                <div class="card-bg p-4 rounded-xl border border-gray-800 space-y-2">
+                    <div class="flex justify-between text-[11px] text-gray-400">
+                        <span class="text-indigo-400 font-semibold font-mono">European FX</span>
+                        <span>6h ago</span>
+                    </div>
+                    <h4 class="font-bold text-white text-sm">EUR/USD Holds Firm at 1.158 Baseline</h4>
+                    <p class="text-gray-300 leading-relaxed">European Central Bank steady policy guidance keeps the Euro strong, locking the Dollar in a downtrend.</p>
+                </div>
+
             </div>
         </section>
 
     </main>
 
-    <!-- Footer -->
-    <footer class="max-w-7xl mx-auto px-3 sm:px-6 mt-6 text-center text-term-textMuted text-[10px] font-mono">
-        MacroQuant Investment Terminal • Financial Quantitative Engine • Production Build
+    <footer class="max-w-6xl mx-auto px-4 sm:px-8 mt-8 text-center text-xs text-gray-500 font-mono">
+        Macro Analysis Engine • Clear & Actionable Intelligence
     </footer>
 
-    <!-- Interactive Scripts & Chart.js -->
+    <!-- Chart Script -->
     <script>
         lucide.createIcons();
 
+        // Clock
         function updateClock() {
-            const el = document.getElementById('utc-clock');
+            const el = document.getElementById('live-time');
             if (el) {
-                const now = new Date();
-                el.innerText = now.toUTCString().replace('GMT', 'UTC');
+                const d = new Date();
+                el.innerText = d.toUTCString().replace('GMT', 'UTC');
             }
         }
         setInterval(updateClock, 1000);
         updateClock();
 
+        // Chart.js
         const ctx = document.getElementById('macroChart').getContext('2d');
         const labels = ['Aug 18', 'Aug 20', 'Aug 22', 'Aug 24', 'Aug 26', 'Aug 28', 'Aug 30', 'Sep 01'];
         
-        const goldData = [100.0, 100.8, 101.5, 102.3, 101.9, 103.4, 104.2, 105.6];
-        const dxyData  = [100.0,  99.8,  99.4,  99.1,  99.6,  98.9,  98.4,  98.1];
-        const eurData  = [100.0, 100.3, 100.7, 101.0, 100.5, 101.2, 101.6, 102.1];
+        const goldData = [100.0, 100.8, 101.5, 102.3, 101.9, 103.4, 104.2, 105.6]; // +5.6%
+        const dxyData  = [100.0,  99.8,  99.4,  99.1,  99.6,  98.9,  98.4,  98.1]; // -1.9%
+        const eurData  = [100.0, 100.3, 100.7, 101.0, 100.5, 101.2, 101.6, 102.1]; // +2.1%
 
         const macroChart = new Chart(ctx, {
             type: 'line',
@@ -650,56 +335,46 @@
                 labels: labels,
                 datasets: [
                     {
-                        label: 'Gold (XAU/USD)',
+                        label: 'Gold (XAU)',
                         data: goldData,
-                        borderColor: '#EAB308',
-                        backgroundColor: 'rgba(234, 179, 8, 0.08)',
-                        borderWidth: 2,
+                        borderColor: '#F59E0B',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        borderWidth: 2.5,
                         fill: true,
                         tension: 0.3,
-                        pointRadius: 2,
-                        pointHoverRadius: 4
+                        pointRadius: 3
                     },
                     {
-                        label: 'Dollar Index (DXY)',
+                        label: 'US Dollar (DXY)',
                         data: dxyData,
                         borderColor: '#38BDF8',
-                        backgroundColor: 'rgba(56, 189, 248, 0.05)',
-                        borderWidth: 1.5,
-                        fill: true,
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
                         tension: 0.3,
-                        pointRadius: 2,
-                        pointHoverRadius: 4
+                        pointRadius: 3
                     },
                     {
-                        label: 'EUR/USD',
+                        label: 'Euro (EUR/USD)',
                         data: eurData,
                         borderColor: '#818CF8',
-                        backgroundColor: 'rgba(129, 140, 248, 0.05)',
-                        borderWidth: 1.5,
-                        fill: true,
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
                         tension: 0.3,
-                        pointRadius: 2,
-                        pointHoverRadius: 4
+                        pointRadius: 3
                     }
                 ]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                interaction: {
-                    mode: 'index',
-                    intersect: false
-                },
+                interaction: { mode: 'index', intersect: false },
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: '#0F1523',
-                        borderColor: '#1E293B',
+                        backgroundColor: '#0E141F',
+                        borderColor: '#1F2937',
                         borderWidth: 1,
-                        titleFont: { family: 'JetBrains Mono', size: 11 },
-                        bodyFont: { family: 'Inter', size: 10 },
-                        padding: 8,
+                        padding: 10,
                         callbacks: {
                             label: function(context) {
                                 const diff = (context.parsed.y - 100).toFixed(2);
@@ -710,22 +385,14 @@
                 },
                 scales: {
                     x: {
-                        grid: { color: 'rgba(255, 255, 255, 0.03)' },
-                        ticks: {
-                            color: '#64748B',
-                            font: { family: 'JetBrains Mono', size: window.innerWidth < 640 ? 9 : 10 },
-                            maxRotation: 0
-                        }
+                        grid: { color: 'rgba(255, 255, 255, 0.04)' },
+                        ticks: { color: '#9CA3AF' }
                     },
                     y: {
-                        grid: { color: 'rgba(255, 255, 255, 0.03)' },
+                        grid: { color: 'rgba(255, 255, 255, 0.04)' },
                         ticks: {
-                            color: '#64748B',
-                            font: { family: 'JetBrains Mono', size: window.innerWidth < 640 ? 9 : 10 },
-                            callback: function(value) {
-                                const diff = (value - 100).toFixed(1);
-                                return `${diff >= 0 ? '+' : ''}${diff}%`;
-                            }
+                            color: '#9CA3AF',
+                            callback: function(v) { return `${(v - 100).toFixed(1)}%`; }
                         }
                     }
                 }
@@ -733,16 +400,14 @@
         });
 
         function setChartDataset(type) {
-            const buttons = ['btn-all', 'btn-gold', 'btn-dxy', 'btn-eur'];
-            buttons.forEach(id => {
-                const btn = document.getElementById(id);
-                if (btn) btn.className = 'px-2 py-0.5 text-[11px] font-mono rounded text-term-textMuted hover:text-white';
+            const btnIds = ['btn-all', 'btn-gold', 'btn-dxy', 'btn-eur'];
+            btnIds.forEach(id => {
+                const b = document.getElementById(id);
+                if (b) b.className = 'px-2.5 py-1 rounded text-gray-400 hover:text-white';
             });
 
-            const activeBtn = document.getElementById(`btn-${type}`);
-            if (activeBtn) {
-                activeBtn.className = 'px-2 py-0.5 text-[11px] font-mono rounded bg-yellow-500/20 text-yellow-400 border border-yellow-500/30';
-            }
+            const active = document.getElementById(`btn-${type}`);
+            if (active) active.className = 'px-2.5 py-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40';
 
             if (type === 'all') {
                 macroChart.data.datasets[0].hidden = false;
