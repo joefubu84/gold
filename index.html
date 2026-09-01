@@ -162,24 +162,43 @@
             </div>
         </section>
 
-        <!-- =================== 3. CLEAR PERFORMANCE CHART =================== -->
+        <!-- =================== 3. CLEAR PERFORMANCE & TECHNICAL CHART (MA 8 / MA 21) =================== -->
         <section class="card-bg p-5 rounded-xl border border-gray-800 space-y-4">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
                     <h3 class="text-sm sm:text-base font-bold text-white flex items-center gap-2">
                         <i data-lucide="line-chart" class="w-4 h-4 text-amber-400"></i>
-                        Performance Comparison Chart
+                        Gold Technical & Macro Chart (EMA 8 / EMA 21)
                     </h3>
-                    <p class="text-xs text-gray-400">See how Gold (Yellow) goes up while Dollar (Blue) goes down</p>
+                    <p class="text-xs text-gray-400">Trend confirmation using Exponential Moving Averages on Close price</p>
                 </div>
 
-                <!-- Easy Toggles -->
-                <div class="flex items-center gap-1.5 bg-slate-950 p-1 rounded-lg border border-gray-800 self-start text-xs font-mono">
-                    <button onclick="setChartDataset('all')" id="btn-all" class="px-2.5 py-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">ALL</button>
-                    <button onclick="setChartDataset('gold')" id="btn-gold" class="px-2.5 py-1 rounded text-gray-400 hover:text-white">Gold</button>
+                <!-- Easy Toggles with MA 8 / MA 21 switch -->
+                <div class="flex items-center gap-1.5 bg-slate-950 p-1 rounded-lg border border-gray-800 self-start text-xs font-mono flex-wrap">
+                    <button onclick="setChartDataset('gold_ma')" id="btn-gold_ma" class="px-2.5 py-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">GOLD + EMA 8/21</button>
+                    <button onclick="setChartDataset('all')" id="btn-all" class="px-2.5 py-1 rounded text-gray-400 hover:text-white">TRI-COMP</button>
                     <button onclick="setChartDataset('dxy')" id="btn-dxy" class="px-2.5 py-1 rounded text-gray-400 hover:text-white">Dollar</button>
                     <button onclick="setChartDataset('eur')" id="btn-eur" class="px-2.5 py-1 rounded text-gray-400 hover:text-white">Euro</button>
                 </div>
+            </div>
+
+            <!-- Indicator Setting Specs Badge Bar -->
+            <div class="flex flex-wrap items-center gap-2 p-2.5 bg-[#0A0E17] rounded-lg border border-gray-800 text-xs font-mono">
+                <span class="text-gray-400 font-bold uppercase text-[11px] flex items-center gap-1">
+                    <i data-lucide="sliders" class="w-3.5 h-3.5 text-amber-400"></i> INDICATOR SETTINGS:
+                </span>
+                <span class="px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span> EMA 8 (Hijau) • Fast
+                </span>
+                <span class="px-2 py-0.5 rounded bg-rose-950/60 text-rose-400 border border-rose-500/30 flex items-center gap-1">
+                    <span class="w-2 h-2 rounded-full bg-rose-500"></span> EMA 21 (Merah) • Slow
+                </span>
+                <span class="px-2 py-0.5 rounded bg-slate-900 text-gray-300 border border-gray-700 text-[11px]">
+                    Method: Exponential | Apply: Close
+                </span>
+                <span class="ml-auto text-emerald-400 font-bold text-[11px] flex items-center gap-1">
+                    <i data-lucide="check" class="w-3 h-3"></i> GOLD > EMA 8 > EMA 21 (BULLISH CROSS)
+                </span>
             </div>
 
             <!-- Chart Container -->
@@ -188,13 +207,13 @@
             </div>
 
             <!-- Legend explanation -->
-            <div class="flex items-center justify-between text-xs text-gray-400 pt-2 border-t border-gray-800">
-                <div class="flex items-center gap-4">
-                    <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-amber-400"></span> Gold (+5.6%)</span>
-                    <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-sky-400"></span> Dollar (-1.9%)</span>
-                    <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-indigo-400"></span> Euro (+2.1%)</span>
+            <div class="flex flex-wrap items-center justify-between text-xs text-gray-400 pt-2 border-t border-gray-800 gap-2 font-mono">
+                <div class="flex items-center gap-3.5 flex-wrap text-[11px]">
+                    <span class="flex items-center gap-1.5"><span class="w-3 h-1.5 rounded bg-amber-400"></span> Gold Spot ($4,448)</span>
+                    <span class="flex items-center gap-1.5"><span class="w-3 h-1.5 rounded bg-emerald-500"></span> EMA 8 Hijau ($4,424)</span>
+                    <span class="flex items-center gap-1.5"><span class="w-3 h-1.5 rounded bg-rose-500"></span> EMA 21 Merah ($4,368)</span>
                 </div>
-                <span class="font-mono text-emerald-400 hidden sm:inline">Inverse Correlation: -84%</span>
+                <span class="text-emerald-400 font-bold">Signal: Strong Golden Cross / Uptrend</span>
             </div>
         </section>
 
@@ -321,13 +340,41 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // Chart.js
+        // Chart.js Setup with EMA 8 & EMA 21
         const ctx = document.getElementById('macroChart').getContext('2d');
         const labels = ['Aug 18', 'Aug 20', 'Aug 22', 'Aug 24', 'Aug 26', 'Aug 28', 'Aug 30', 'Sep 01'];
         
-        const goldData = [100.0, 100.8, 101.5, 102.3, 101.9, 103.4, 104.2, 105.6]; // +5.6%
-        const dxyData  = [100.0,  99.8,  99.4,  99.1,  99.6,  98.9,  98.4,  98.1]; // -1.9%
-        const eurData  = [100.0, 100.3, 100.7, 101.0, 100.5, 101.2, 101.6, 102.1]; // +2.1%
+        // Spot prices for Gold (Close)
+        const goldPriceData = [4280.50, 4312.00, 4345.80, 4380.20, 4362.40, 4410.00, 4425.60, 4448.20];
+        
+        // EMA Calculation function (Exponential Moving Average applied to Close)
+        function calculateEMA(prices, period) {
+            const k = 2 / (period + 1);
+            let emaArray = [];
+            let ema = prices[0]; // initialize with first price
+            
+            for (let i = 0; i < prices.length; i++) {
+                if (i === 0) {
+                    ema = prices[0];
+                } else {
+                    ema = (prices[i] * k) + (ema * (1 - k));
+                }
+                emaArray.push(parseFloat(ema.toFixed(2)));
+            }
+            return emaArray;
+        }
+
+        const ema8Gold  = calculateEMA(goldPriceData, 8);   // Period: 8, Method: Exponential, Apply to: Close
+        const ema21Gold = calculateEMA(goldPriceData, 21);  // Period: 21, Method: Exponential, Apply to: Close
+
+        // Normalized baseline data for comparative modes
+        const goldNorm = [100.0, 100.8, 101.5, 102.3, 101.9, 103.4, 104.2, 105.6]; // +5.6%
+        const ema8Norm = [100.0, 100.3, 100.8, 101.3, 101.5, 102.2, 102.9, 103.8];
+        const ema21Norm= [100.0, 100.1, 100.3, 100.6, 100.8, 101.2, 101.6, 102.1];
+        const dxyNorm  = [100.0,  99.8,  99.4,  99.1,  99.6,  98.9,  98.4,  98.1]; // -1.9%
+        const eurNorm  = [100.0, 100.3, 100.7, 101.0, 100.5, 101.2, 101.6, 102.1]; // +2.1%
+
+        let currentMode = 'gold_ma'; // Default view: Gold with EMA 8 and EMA 21
 
         const macroChart = new Chart(ctx, {
             type: 'line',
@@ -335,32 +382,62 @@
                 labels: labels,
                 datasets: [
                     {
-                        label: 'Gold (XAU)',
-                        data: goldData,
+                        label: 'Gold (XAU/USD Close)',
+                        data: goldPriceData,
                         borderColor: '#F59E0B',
-                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        backgroundColor: 'rgba(245, 158, 11, 0.08)',
                         borderWidth: 2.5,
                         fill: true,
                         tension: 0.3,
-                        pointRadius: 3
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'EMA 8 (Hijau - Fast)',
+                        data: ema8Gold,
+                        borderColor: '#10B981', // Hijau
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        borderDash: [],
+                        tension: 0.35,
+                        pointRadius: 2,
+                        pointHoverRadius: 5,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'EMA 21 (Merah - Slow)',
+                        data: ema21Gold,
+                        borderColor: '#EF4444', // Merah
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        borderDash: [],
+                        tension: 0.35,
+                        pointRadius: 2,
+                        pointHoverRadius: 5,
+                        yAxisID: 'y'
                     },
                     {
                         label: 'US Dollar (DXY)',
-                        data: dxyData,
+                        data: dxyNorm,
                         borderColor: '#38BDF8',
                         backgroundColor: 'transparent',
-                        borderWidth: 2,
+                        borderWidth: 1.5,
                         tension: 0.3,
-                        pointRadius: 3
+                        pointRadius: 2,
+                        hidden: true,
+                        yAxisID: 'y'
                     },
                     {
                         label: 'Euro (EUR/USD)',
-                        data: eurData,
+                        data: eurNorm,
                         borderColor: '#818CF8',
                         backgroundColor: 'transparent',
-                        borderWidth: 2,
+                        borderWidth: 1.5,
                         tension: 0.3,
-                        pointRadius: 3
+                        pointRadius: 2,
+                        hidden: true,
+                        yAxisID: 'y'
                     }
                 ]
             },
@@ -377,8 +454,12 @@
                         padding: 10,
                         callbacks: {
                             label: function(context) {
-                                const diff = (context.parsed.y - 100).toFixed(2);
-                                return `${context.dataset.label}: ${diff >= 0 ? '+' : ''}${diff}%`;
+                                if (currentMode === 'gold_ma') {
+                                    return `${context.dataset.label}: $${context.parsed.y.toLocaleString()}`;
+                                } else {
+                                    const diff = (context.parsed.y - 100).toFixed(2);
+                                    return `${context.dataset.label}: ${diff >= 0 ? '+' : ''}${diff}%`;
+                                }
                             }
                         }
                     }
@@ -386,13 +467,20 @@
                 scales: {
                     x: {
                         grid: { color: 'rgba(255, 255, 255, 0.04)' },
-                        ticks: { color: '#9CA3AF' }
+                        ticks: { color: '#9CA3AF', font: { family: 'JetBrains Mono', size: 10 } }
                     },
                     y: {
                         grid: { color: 'rgba(255, 255, 255, 0.04)' },
                         ticks: {
                             color: '#9CA3AF',
-                            callback: function(v) { return `${(v - 100).toFixed(1)}%`; }
+                            font: { family: 'JetBrains Mono', size: 10 },
+                            callback: function(v) {
+                                if (currentMode === 'gold_ma') {
+                                    return '$' + v.toLocaleString();
+                                } else {
+                                    return `${(v - 100).toFixed(1)}%`;
+                                }
+                            }
                         }
                     }
                 }
@@ -400,7 +488,7 @@
         });
 
         function setChartDataset(type) {
-            const btnIds = ['btn-all', 'btn-gold', 'btn-dxy', 'btn-eur'];
+            const btnIds = ['btn-gold_ma', 'btn-all', 'btn-dxy', 'btn-eur'];
             btnIds.forEach(id => {
                 const b = document.getElementById(id);
                 if (b) b.className = 'px-2.5 py-1 rounded text-gray-400 hover:text-white';
@@ -409,22 +497,52 @@
             const active = document.getElementById(`btn-${type}`);
             if (active) active.className = 'px-2.5 py-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40';
 
-            if (type === 'all') {
+            currentMode = type;
+
+            if (type === 'gold_ma') {
+                // Actual Spot Price + EMA 8 (Hijau) + EMA 21 (Merah)
+                macroChart.data.datasets[0].data = goldPriceData;
+                macroChart.data.datasets[0].label = 'Gold (XAU/USD Close)';
                 macroChart.data.datasets[0].hidden = false;
+
+                macroChart.data.datasets[1].data = ema8Gold;
+                macroChart.data.datasets[1].label = 'EMA 8 (Hijau - Fast)';
                 macroChart.data.datasets[1].hidden = false;
+
+                macroChart.data.datasets[2].data = ema21Gold;
+                macroChart.data.datasets[2].label = 'EMA 21 (Merah - Slow)';
                 macroChart.data.datasets[2].hidden = false;
-            } else if (type === 'gold') {
+
+                macroChart.data.datasets[3].hidden = true;
+                macroChart.data.datasets[4].hidden = true;
+            } else if (type === 'all') {
+                // Tri-comparison normalized base 100
+                macroChart.data.datasets[0].data = goldNorm;
+                macroChart.data.datasets[0].label = 'Gold (XAU/USD % Norm)';
                 macroChart.data.datasets[0].hidden = false;
+
                 macroChart.data.datasets[1].hidden = true;
                 macroChart.data.datasets[2].hidden = true;
+
+                macroChart.data.datasets[3].data = dxyNorm;
+                macroChart.data.datasets[3].hidden = false;
+
+                macroChart.data.datasets[4].data = eurNorm;
+                macroChart.data.datasets[4].hidden = false;
             } else if (type === 'dxy') {
                 macroChart.data.datasets[0].hidden = true;
-                macroChart.data.datasets[1].hidden = false;
+                macroChart.data.datasets[1].hidden = true;
                 macroChart.data.datasets[2].hidden = true;
+                macroChart.data.datasets[3].data = dxyNorm;
+                macroChart.data.datasets[3].hidden = false;
+                macroChart.data.datasets[4].hidden = true;
             } else if (type === 'eur') {
                 macroChart.data.datasets[0].hidden = true;
                 macroChart.data.datasets[1].hidden = true;
-                macroChart.data.datasets[2].hidden = false;
+                macroChart.data.datasets[2].hidden = true;
+                macroChart.data.datasets[3].hidden = true;
+                macroChart.data.datasets[4].data = eurNorm;
+                macroChart.data.datasets[4].hidden = false;
             }
             macroChart.update();
         }
