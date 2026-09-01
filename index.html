@@ -261,7 +261,7 @@
                             </h3>
                             <span class="px-1.5 py-0.2 bg-emerald-500/20 text-emerald-400 font-mono text-[9px] rounded border border-emerald-500/40 animate-pulse font-bold">● VANTAGE DIRECT CANDLES</span>
                         </div>
-                        <p class="text-[11px] text-gray-400 font-mono">Real-time Candlesticks with EMA 8 (Green) & EMA 21 (Red) Applied to Close</p>
+                        <p class="text-[11px] text-gray-400 font-mono">Pre-Embedded with EMA 8 (Green) & EMA 21 (Red) Applied to Close</p>
                     </div>
                 </div>
 
@@ -278,42 +278,15 @@
                     <span class="text-gray-400 text-[10px]">Symbol: <strong>VANTAGE:XAUUSD</strong></span>
                 </div>
 
-                <!-- Official TradingView Advanced Widget with Embedded Studies -->
+                <!-- Direct Pre-Compiled Iframe with EMA 8 and EMA 21 Encoded in URL -->
                 <div class="w-full h-96 sm:h-[480px] rounded-lg overflow-hidden border border-slate-800 bg-[#0F1626]">
-                    <!-- TradingView Widget BEGIN -->
-                    <div class="tradingview-widget-container" style="height:100%;width:100%">
-                        <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
-                        <div class="tradingview-widget-copyright text-[10px] text-gray-500 p-1 font-mono text-right">
-                            <a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="text-amber-400">Live Gold Market Feed</span></a>
-                        </div>
-                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
-                        {
-                            "autosize": true,
-                            "symbol": "VANTAGE:XAUUSD",
-                            "interval": "60",
-                            "timezone": "Etc/UTC",
-                            "theme": "dark",
-                            "style": "1",
-                            "locale": "en",
-                            "enable_publishing": false,
-                            "hide_top_toolbar": false,
-                            "hide_legend": false,
-                            "save_image": false,
-                            "calendar": false,
-                            "studies": [
-                                "STD;EMA",
-                                "STD;EMA"
-                            ],
-                            "studies_overrides": {
-                                "moving average exponential.length": 8,
-                                "moving average exponential.plot.color": "#10B981",
-                                "moving average exponential.plot.linewidth": 2
-                            },
-                            "support_host": "https://www.tradingview.com"
-                        }
-                        </script>
-                    </div>
-                    <!-- TradingView Widget END -->
+                    <iframe 
+                        id="tradingview_gold_candlestick"
+                        src="https://s.tradingview.com/widgetembed/?frameElementId=tradingview_gold_candlestick&symbol=VANTAGE%3AXAUUSD&interval=60&hidesidetoolbar=0&symboledit=1&saveimage=0&toolbarbg=0F1626&theme=dark&style=1&timezone=Etc%2FUTC&studies=%5B%7B%22id%22%3A%22Moving+Average+Exponential%40tv-basicstudies%22%2C%22inputs%22%3A%7B%22length%22%3A8%7D%7D%2C%7B%22id%22%3A%22Moving+Average+Exponential%40tv-basicstudies%22%2C%22inputs%22%3A%7B%22length%22%3A21%7D%7D%5D"
+                        style="width: 100%; height: 100%; min-height: 440px; border: 0;"
+                        allowtransparency="true" 
+                        scrolling="no">
+                    </iframe>
                 </div>
             </div>
 
