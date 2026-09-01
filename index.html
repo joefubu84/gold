@@ -134,9 +134,71 @@
 
         </div>
 
-        <!-- RIGHT 3 COLS: RAW METRICS & CALCULATOR -->
+        <!-- RIGHT 3 COLS: M15 TRANSMISSION TIPS, RAW METRICS & CALCULATOR -->
         <div class="lg:col-span-3 flex flex-col gap-3 font-mono text-xs">
             
+            <!-- LIVE M15 TACTICAL TIPS & TRANSMISSION MONITOR -->
+            <div class="desk-card p-3 rounded border border-amber-500/40 space-y-2 bg-[#0d121c]">
+                <div class="text-amber-400 font-bold text-[11px] border-b desk-border pb-1.5 flex items-center justify-between">
+                    <span class="flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                        M15 TACTICAL TIPS ENGINE
+                    </span>
+                    <span class="text-[10px] bg-amber-500/20 px-1.5 py-0.5 rounded text-amber-300">LIVE M15</span>
+                </div>
+
+                <!-- 4 Real-time M15 Currency States -->
+                <div class="space-y-1.5 text-[11px]">
+                    <div class="p-1.5 bg-slate-900/90 rounded border desk-border flex items-center justify-between">
+                        <div class="flex items-center gap-1.5">
+                            <span>💵</span>
+                            <span class="text-slate-300">DXY M15:</span>
+                        </div>
+                        <span id="m15-dxy-status" class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 font-bold border border-emerald-800/60">
+                            ▲ UP (FLY)
+                        </span>
+                    </div>
+
+                    <div class="p-1.5 bg-slate-900/90 rounded border desk-border flex items-center justify-between">
+                        <div class="flex items-center gap-1.5">
+                            <span>🇪🇺</span>
+                            <span class="text-slate-300">EURUSD M15:</span>
+                        </div>
+                        <span id="m15-eur-status" class="px-2 py-0.5 rounded bg-rose-950 text-rose-400 font-bold border border-rose-800/60">
+                            ▼ DOWN (DROP)
+                        </span>
+                    </div>
+
+                    <div class="p-1.5 bg-slate-900/90 rounded border desk-border flex items-center justify-between">
+                        <div class="flex items-center gap-1.5">
+                            <span>🇯🇵</span>
+                            <span class="text-slate-300">USDJPY M15:</span>
+                        </div>
+                        <span id="m15-jpy-status" class="px-2 py-0.5 rounded bg-rose-950 text-rose-400 font-bold border border-rose-800/60">
+                            ▼ DOWN (YEN UP)
+                        </span>
+                    </div>
+
+                    <div class="p-1.5 bg-slate-900/90 rounded border desk-border flex items-center justify-between">
+                        <div class="flex items-center gap-1.5">
+                            <span>🇨🇭</span>
+                            <span class="text-slate-300">USDCHF M15:</span>
+                        </div>
+                        <span id="m15-chf-status" class="px-2 py-0.5 rounded bg-rose-950 text-rose-400 font-bold border border-rose-800/60">
+                            ▼ DOWN (CHF UP)
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Actionable Golden Trading Tip -->
+                <div id="m15-gold-tip-box" class="p-2 rounded bg-amber-500/10 border border-amber-500/30 text-[11px] text-amber-200 leading-snug">
+                    <strong class="text-amber-400 block mb-0.5">🎯 M15 GOLD ACTION TIP:</strong>
+                    <span id="m15-gold-tip-text">
+                        DXY is UP & EURUSD is DOWN on M15 → Gold is making a temporary intraday pullback. Look to <strong>BUY DIP</strong> at S1 ($4,420.74) / EMA 8 support!
+                    </span>
+                </div>
+            </div>
+
             <!-- MT5 Multi-Timeframe Status -->
             <div class="desk-card p-3 rounded border desk-border space-y-2">
                 <div class="text-slate-400 font-bold text-[11px] border-b desk-border pb-1.5 flex justify-between">
@@ -178,26 +240,6 @@
                 <div class="flex justify-between text-emerald-200"><span>S1</span><strong>4,420.74</strong></div>
                 <div class="flex justify-between text-emerald-300"><span>S2</span><strong>4,393.27</strong></div>
                 <div class="flex justify-between text-emerald-400"><span>S3</span><strong>4,374.44</strong></div>
-            </div>
-
-            <!-- Currency Weights & Safe Haven Flow -->
-            <div class="desk-card p-3 rounded border desk-border space-y-1.5 text-[11px]">
-                <div class="text-slate-400 font-bold border-b desk-border pb-1 flex justify-between">
-                    <span>DXY BASKET WEIGHTS</span>
-                    <span class="text-sky-400">SAFE HAVEN</span>
-                </div>
-                <div class="flex justify-between">
-                    <span class="text-slate-400">EURUSD (57.6%)</span>
-                    <span class="text-emerald-400 font-bold">1.1582</span>
-                </div>
-                <div class="flex justify-between">
-                    <span class="text-slate-400">USDJPY (13.6%)</span>
-                    <span class="text-rose-400 font-bold">144.65</span>
-                </div>
-                <div class="flex justify-between">
-                    <span class="text-slate-400">USDCHF (3.6%)</span>
-                    <span class="text-rose-400 font-bold">0.8420</span>
-                </div>
             </div>
 
             <!-- Position Calculator -->
