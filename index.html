@@ -16,8 +16,6 @@
     </script>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Official TradingView TV.js Library -->
-    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
         body {
@@ -73,31 +71,31 @@
                 <div class="flex items-center justify-between gap-2 flex-wrap">
                     
                     <div class="flex items-center gap-1.5 flex-wrap">
-                        <button onclick="changeSymbol('VANTAGE:XAUUSD')" id="btn-gold" class="px-3 py-1.5 rounded bg-amber-500 text-black font-bold flex items-center gap-1.5 shadow transition">
+                        <button onclick="setChartSymbol('VANTAGE:XAUUSD')" id="btn-gold" class="px-3 py-1.5 rounded bg-amber-500 text-black font-bold flex items-center gap-1.5 shadow transition">
                             <span>🪙</span>
                             <span>XAUUSD (GOLD)</span>
                             <span class="text-[10px] opacity-75 font-normal">→ VANTAGE</span>
                         </button>
                         
-                        <button onclick="changeSymbol('CAPITALCOM:DXY')" id="btn-dxy" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
+                        <button onclick="setChartSymbol('CAPITALCOM:DXY')" id="btn-dxy" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
                             <span>💵</span>
                             <span>DXY (DOLLAR)</span>
                             <span class="text-[10px] text-sky-400 font-normal">→ INDEX</span>
                         </button>
 
-                        <button onclick="changeSymbol('FX:EURUSD')" id="btn-eur" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
+                        <button onclick="setChartSymbol('FX:EURUSD')" id="btn-eur" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
                             <span>🇪🇺</span>
                             <span>EURUSD</span>
                             <span class="text-[10px] text-emerald-400 font-normal">(57.6% DXY)</span>
                         </button>
 
-                        <button onclick="changeSymbol('FX:USDJPY')" id="btn-jpy" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
+                        <button onclick="setChartSymbol('FX:USDJPY')" id="btn-jpy" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
                             <span>🇯🇵</span>
                             <span>USDJPY</span>
                             <span class="text-[10px] text-rose-400 font-normal">(13.6% DXY)</span>
                         </button>
 
-                        <button onclick="changeSymbol('FX:USDCHF')" id="btn-chf" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
+                        <button onclick="setChartSymbol('FX:USDCHF')" id="btn-chf" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
                             <span>🇨🇭</span>
                             <span>USDCHF</span>
                             <span class="text-[10px] text-indigo-300 font-normal">(3.6% Safe Haven)</span>
@@ -114,22 +112,28 @@
                             🪙 VANTAGE:XAUUSD
                         </span>
                         <span id="active-symbol-desc" class="text-slate-400 hidden md:inline">
-                            Institutional Gold Spot Direct Feed
+                            Synced with your Custom Pine Layout (gZ3Fpy4e)
                         </span>
                     </div>
 
                     <div class="flex items-center gap-3 text-slate-400 text-[11px]">
-                        <span>STUDIES: <strong class="text-amber-400 font-bold">MASimple@tv-basicstudies (8, 21)</strong></span>
+                        <span>SAVED LAYOUT: <strong class="text-amber-400 font-bold">gZ3Fpy4e</strong></span>
                         <span class="text-slate-600">|</span>
-                        <span>EMA 8: <strong class="text-emerald-400 font-bold">#10B981 (Hijau)</strong></span>
-                        <span>EMA 21: <strong class="text-rose-400 font-bold">#EF4444 (Merah)</strong></span>
+                        <a href="https://www.tradingview.com/chart/gZ3Fpy4e/" target="_blank" class="text-sky-400 hover:underline">Open in TV ↗</a>
                     </div>
                 </div>
             </div>
 
-            <!-- TV CONTAINER -->
+            <!-- EMBEDDED SAVED MEMBER CHART LAYOUT -->
             <div class="flex-1 w-full min-h-[580px] lg:min-h-[640px] rounded border desk-border overflow-hidden bg-[#0c1017]">
-                <div id="tradingview_chart_element" class="w-full h-full min-h-[580px] lg:min-h-[640px]"></div>
+                <iframe 
+                    id="chart_frame"
+                    src="https://www.tradingview.com/chart/gZ3Fpy4e/?symbol=VANTAGE%3AXAUUSD&theme=dark"
+                    class="w-full h-full min-h-[580px] lg:min-h-[640px] border-0"
+                    allowtransparency="true" 
+                    scrolling="no"
+                    allow="clipboard-write">
+                </iframe>
             </div>
 
         </div>
@@ -303,7 +307,7 @@
             'VANTAGE:XAUUSD': {
                 id: 'btn-gold',
                 badge: '🪙 VANTAGE:XAUUSD',
-                desc: 'Institutional Gold Spot Direct Feed'
+                desc: 'Synced with your Custom Pine Layout (gZ3Fpy4e)'
             },
             'CAPITALCOM:DXY': {
                 id: 'btn-dxy',
@@ -327,44 +331,7 @@
             }
         };
 
-        // 100% BULLETPROOF OFFICIAL TRADINGVIEW INTERNAL CONSTRUCTOR
-        function initTVWidget(symbol) {
-            const container = document.getElementById('tradingview_chart_element');
-            if (!container) return;
-            container.innerHTML = '';
-
-            new TradingView.widget({
-                "autosize": true,
-                "symbol": symbol,
-                "interval": "60",
-                "timezone": "Etc/UTC",
-                "theme": "dark",
-                "style": "1",
-                "locale": "en",
-                "toolbar_bg": "#0c1017",
-                "enable_publishing": false,
-                "hide_top_toolbar": false,
-                "hide_legend": false,
-                "save_image": false,
-                "container_id": "tradingview_chart_element",
-                "studies": [
-                    {
-                        "id": "MASimple@tv-basicstudies",
-                        "inputs": {
-                            "length": 8
-                        }
-                    },
-                    {
-                        "id": "MASimple@tv-basicstudies",
-                        "inputs": {
-                            "length": 21
-                        }
-                    }
-                ]
-            });
-        }
-
-        function changeSymbol(symbol) {
+        function setChartSymbol(symbol) {
             ['gold', 'dxy', 'eur', 'jpy', 'chf'].forEach(k => {
                 const b = document.getElementById(`btn-${k}`);
                 if (b) b.className = 'px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition';
@@ -378,12 +345,11 @@
             document.getElementById('active-symbol-badge').innerText = config.badge;
             document.getElementById('active-symbol-desc').innerText = config.desc;
 
-            initTVWidget(symbol);
+            const frame = document.getElementById('chart_frame');
+            if (frame) {
+                frame.src = `https://www.tradingview.com/chart/gZ3Fpy4e/?symbol=${encodeURIComponent(symbol)}&theme=dark`;
+            }
         }
-
-        window.addEventListener('load', () => {
-            initTVWidget('VANTAGE:XAUUSD');
-        });
     </script>
 </body>
 </html>
