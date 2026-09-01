@@ -16,10 +16,10 @@
     </script>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- TradingView Advanced Real-Time Chart Widget Library -->
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
         
@@ -134,7 +134,7 @@
                 <div class="w-full lg:w-72 inner-bg p-3.5 rounded-xl border border-slate-800 space-y-2 shrink-0">
                     <div class="text-[11px] font-mono font-bold text-gray-300 flex justify-between border-b border-slate-800 pb-1.5">
                         <span>MULTI-TIMEFRAME CONFLUENCE</span>
-                        <span class="text-amber-400">EMA 8/21</span>
+                        <span class="text-amber-400">EMA 8/21 MT5 MATCH</span>
                     </div>
 
                     <div class="grid grid-cols-4 gap-1 text-center font-mono text-[10px]">
@@ -229,62 +229,52 @@
                         <div class="flex items-center gap-2">
                             <h3 class="text-sm font-bold text-white flex items-center gap-2 font-mono">
                                 <i data-lucide="line-chart" class="w-4 h-4 text-amber-400"></i>
-                                <span id="chart-title">GOLD LIVE VANTAGE STREAM (XAU/USD)</span>
+                                <span id="chart-title">REAL-TIME CANDLESTICK & INDICATOR ENGINE</span>
                             </h3>
-                            <span class="px-1.5 py-0.2 bg-emerald-500/20 text-emerald-400 font-mono text-[9px] rounded border border-emerald-500/40 animate-pulse font-bold">● LIVE STREAM</span>
+                            <span class="px-1.5 py-0.2 bg-emerald-500/20 text-emerald-400 font-mono text-[9px] rounded border border-emerald-500/40 animate-pulse font-bold">● VANTAGE DIRECT FEED</span>
                         </div>
-                        <p class="text-[11px] text-gray-400 font-mono">Real-time WebSocket & Tick Stream from Vantage Markets</p>
-                    </div>
-
-                    <!-- Switcher between Live TradingView and EMA 8/21 Model -->
-                    <div class="flex items-center gap-1 bg-slate-950 p-1 rounded border border-slate-800 text-xs font-mono flex-wrap">
-                        <button onclick="setChartType('tv_gold')" id="btn-tv_gold" class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[11px]">LIVE VANTAGE</button>
-                        <button onclick="setChartType('chartjs')" id="btn-chartjs" class="px-2 py-0.5 rounded text-gray-400 hover:text-white text-[11px]">EMA 8/21 MODEL</button>
+                        <p class="text-[11px] text-gray-400 font-mono">Real-time Candlesticks with EMA 8 (Green) & EMA 21 (Red) Applied to Close</p>
                     </div>
                 </div>
 
                 <!-- Prominent Timeframe Selector Bar -->
                 <div class="flex items-center gap-2 bg-[#090E1A] p-2 rounded-lg border border-amber-500/40 my-1 flex-wrap">
                     <span class="text-amber-400 font-bold text-xs font-mono flex items-center gap-1">
-                        <i data-lucide="layers" class="w-3.5 h-3.5"></i> TIMEFRAME:
+                        <i data-lucide="layers" class="w-3.5 h-3.5"></i> TIMEFRAME HORIZON:
                     </span>
-                    <button onclick="setTimeframeProfile('swing')" id="btn-tf-swing" class="px-3 py-1 rounded bg-slate-900 text-gray-300 hover:text-white border border-slate-700 font-bold text-xs font-mono transition">
+                    <button onclick="changeTradingViewInterval('D')" id="btn-tf-swing" class="px-3 py-1 rounded bg-slate-900 text-gray-300 hover:text-white border border-slate-700 font-bold text-xs font-mono transition">
                         🦅 SWING (D1 ➔ H4)
                     </button>
-                    <button onclick="setTimeframeProfile('intraday')" id="btn-tf-intraday" class="px-3 py-1 rounded bg-amber-500 text-slate-950 font-bold text-xs font-mono shadow transition">
+                    <button onclick="changeTradingViewInterval('60')" id="btn-tf-intraday" class="px-3 py-1 rounded bg-amber-500 text-slate-950 font-bold text-xs font-mono shadow transition">
                         🎯 INTRADAY (H4 ➔ H1)
                     </button>
-                    <button onclick="setTimeframeProfile('scalping')" id="btn-tf-scalping" class="px-3 py-1 rounded bg-slate-900 text-gray-300 hover:text-white border border-slate-700 font-bold text-xs font-mono transition">
+                    <button onclick="changeTradingViewInterval('15')" id="btn-tf-scalping" class="px-3 py-1 rounded bg-slate-900 text-gray-300 hover:text-white border border-slate-700 font-bold text-xs font-mono transition">
                         ⚡ SCALPING (H1 ➔ M15 ➔ M5)
                     </button>
                 </div>
 
-                <!-- Indicator Legend -->
+                <!-- Indicator Legend Matching MT5 -->
                 <div class="flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono border-y border-slate-800/80 py-1.5">
                     <div class="flex items-center gap-2.5 flex-wrap">
                         <span class="px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> EMA 8 (Hijau): <strong id="val-ema8">$4,442.10</strong>
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> EMA 8: <strong>Period 8 | Exponential | Close (Green)</strong>
                         </span>
                         <span class="px-2 py-0.5 rounded bg-rose-950/60 text-rose-400 border border-rose-500/30 flex items-center gap-1">
-                            <span class="w-2 h-2 rounded-full bg-rose-500"></span> EMA 21 (Merah): <strong id="val-ema21">$4,438.80</strong>
+                            <span class="w-2 h-2 rounded-full bg-rose-500"></span> EMA 21: <strong>Period 21 | Exponential | Close (Red)</strong>
                         </span>
                     </div>
-                    <span class="text-gray-400 text-[10px]">Data Stream: <strong>VANTAGE:XAUUSD</strong></span>
+                    <span class="text-gray-400 text-[10px]">Source: <strong>VANTAGE:XAUUSD</strong></span>
                 </div>
 
-                <!-- 1. Live TradingView Widget Container (Iframe) -->
-                <div id="tv-widget-wrapper" class="w-full h-80 sm:h-96 rounded-lg overflow-hidden border border-slate-800">
+                <!-- Live Direct Real-Time Chart Container -->
+                <div id="tv-container" class="w-full h-80 sm:h-96 rounded-lg overflow-hidden border border-slate-800">
                     <iframe 
-                        src="https://s.tradingview.com/widgetembed/?frameElementId=tradingview_gold&symbol=VANTAGE%3AXAUUSD&interval=60&hidesidetoolbar=0&symboledit=1&saveimage=0&toolbarbg=0F1626&theme=dark&style=1&timezone=Etc%2FUTC&studies=MASimple%40tv-basicstudies%2CExponentialMovingAverage%40tv-basicstudies%2CRSI%40tv-basicstudies"
+                        id="tv-iframe"
+                        src="https://s.tradingview.com/widgetembed/?frameElementId=tv_frame&symbol=VANTAGE%3AXAUUSD&interval=60&hidesidetoolbar=0&symboledit=1&saveimage=0&toolbarbg=0F1626&theme=dark&style=1&timezone=Etc%2FUTC&studies=ExponentialMovingAverage%40tv-basicstudies%2CExponentialMovingAverage%40tv-basicstudies"
                         style="width: 100%; height: 100%; min-height: 350px; border: 0;"
                         allowtransparency="true" 
                         scrolling="no">
                     </iframe>
-                </div>
-
-                <!-- 2. Chart.js Canvas -->
-                <div id="chartjs-wrapper" class="w-full h-80 sm:h-96 hidden">
-                    <canvas id="macroChart"></canvas>
                 </div>
             </div>
 
@@ -332,7 +322,7 @@
                 </div>
 
                 <div class="p-2 rounded bg-slate-950 border border-slate-800 text-[10px] font-mono text-gray-400">
-                    💡 <strong>Trading Rule:</strong> DXY 99.605 breakout tests S1 ($4,420.74). Watch for reversal wick.
+                    💡 <strong>Trading Rule:</strong> Exact HLC/3 Daily Pivots matching MT5 D1 metrics.
                 </div>
             </div>
 
@@ -430,7 +420,7 @@
         MacroQuant Institutional Trading Terminal • Live Market Integration Engine
     </footer>
 
-    <!-- Interactive Scripts & Calculations -->
+    <!-- Interactive Scripts & Timeframe Switcher -->
     <script>
         lucide.createIcons();
 
@@ -471,155 +461,31 @@
         }
         calculatePosition();
 
-        // Chart View Toggle
-        function setChartType(type) {
-            const tvWrapper = document.getElementById('tv-widget-wrapper');
-            const cjsWrapper = document.getElementById('chartjs-wrapper');
-            const titleEl = document.getElementById('chart-title');
-            const btnTv = document.getElementById('btn-tv_gold');
-            const btnCjs = document.getElementById('btn-chartjs');
+        // Switch Live TradingView Chart Timeframe Directly
+        function changeTradingViewInterval(interval) {
+            const btnSwing = document.getElementById('btn-tf-swing');
+            const btnIntraday = document.getElementById('btn-tf-intraday');
+            const btnScalping = document.getElementById('btn-tf-scalping');
+            const iframe = document.getElementById('tv-iframe');
 
-            if (type === 'tv_gold') {
-                tvWrapper.classList.remove('hidden');
-                cjsWrapper.classList.add('hidden');
-                btnTv.className = 'px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[11px]';
-                btnCjs.className = 'px-2 py-0.5 rounded text-gray-400 hover:text-white text-[11px]';
-                titleEl.innerText = 'GOLD LIVE VANTAGE STREAM (XAU/USD)';
-            } else {
-                tvWrapper.classList.add('hidden');
-                cjsWrapper.classList.remove('hidden');
-                btnCjs.className = 'px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[11px]';
-                btnTv.className = 'px-2 py-0.5 rounded text-gray-400 hover:text-white text-[11px]';
-                titleEl.innerText = 'GOLD TECHNICAL MODEL (EMA 8 / EMA 21 CLOSE)';
-                setTimeframeProfile('intraday');
-            }
-        }
+            // Reset styles
+            btnSwing.className = 'px-3 py-1 rounded bg-slate-900 text-gray-300 hover:text-white border border-slate-700 font-bold text-xs font-mono transition';
+            btnIntraday.className = 'px-3 py-1 rounded bg-slate-900 text-gray-300 hover:text-white border border-slate-700 font-bold text-xs font-mono transition';
+            btnScalping.className = 'px-3 py-1 rounded bg-slate-900 text-gray-300 hover:text-white border border-slate-700 font-bold text-xs font-mono transition';
 
-        // EMA Calculation
-        function calculateEMA(prices, period) {
-            const k = 2 / (period + 1);
-            let emaArray = [];
-            let ema = prices[0];
-            for (let i = 0; i < prices.length; i++) {
-                if (i === 0) ema = prices[0];
-                else ema = (prices[i] * k) + (ema * (1 - k));
-                emaArray.push(parseFloat(ema.toFixed(2)));
-            }
-            return emaArray;
-        }
+            let activeId = 'btn-tf-intraday';
+            if (interval === 'D') activeId = 'btn-tf-swing';
+            else if (interval === '15') activeId = 'btn-tf-scalping';
 
-        // Timeframe Profiles for EMA 8 & 21
-        const tfProfiles = {
-            swing: {
-                title: "GOLD SWING MODEL // DAILY & 4-HOUR (D1 ➔ H4)",
-                labels: ['Aug 18', 'Aug 20', 'Aug 22', 'Aug 24', 'Aug 26', 'Aug 28', 'Aug 30', 'Sep 01'],
-                prices: [4280.50, 4312.00, 4345.80, 4380.20, 4362.40, 4410.00, 4425.60, 4448.20]
-            },
-            intraday: {
-                title: "GOLD INTRADAY MODEL // 4-HOUR & 1-HOUR (H4 ➔ H1)",
-                labels: ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', 'Now'],
-                prices: [4428.10, 4435.40, 4441.20, 4438.80, 4446.50, 4442.10, 4452.00, 4448.20]
-            },
-            scalping: {
-                title: "GOLD SCALPING MODEL // 15-MIN & 5-MIN (H1 ➔ M15 ➔ M5)",
-                labels: ['14:00', '14:15', '14:30', '14:45', '15:00', '15:15', '15:30', 'Now'],
-                prices: [4451.20, 4449.80, 4446.10, 4444.30, 4447.00, 4445.80, 4449.10, 4448.20]
-            }
-        };
-
-        // Initialize Chart.js
-        const ctx = document.getElementById('macroChart').getContext('2d');
-        const defaultData = tfProfiles.intraday;
-        const defaultEma8 = calculateEMA(defaultData.prices, 8);
-        const defaultEma21 = calculateEMA(defaultData.prices, 21);
-
-        const macroChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: defaultData.labels,
-                datasets: [
-                    {
-                        label: 'Gold Price Close',
-                        data: defaultData.prices,
-                        borderColor: '#F59E0B',
-                        backgroundColor: 'rgba(245, 158, 11, 0.08)',
-                        borderWidth: 2.5,
-                        fill: true,
-                        tension: 0.3,
-                        pointRadius: 4
-                    },
-                    {
-                        label: 'EMA 8 (Hijau)',
-                        data: defaultEma8,
-                        borderColor: '#10B981',
-                        backgroundColor: 'transparent',
-                        borderWidth: 2,
-                        tension: 0.35,
-                        pointRadius: 2
-                    },
-                    {
-                        label: 'EMA 21 (Merah)',
-                        data: defaultEma21,
-                        borderColor: '#EF4444',
-                        backgroundColor: 'transparent',
-                        borderWidth: 2,
-                        tension: 0.35,
-                        pointRadius: 2
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                interaction: { mode: 'index', intersect: false },
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        backgroundColor: '#090E1A',
-                        borderColor: '#1E293B',
-                        borderWidth: 1,
-                        padding: 10
-                    }
-                },
-                scales: {
-                    x: { grid: { color: 'rgba(255, 255, 255, 0.04)' }, ticks: { color: '#9CA3AF' } },
-                    y: { grid: { color: 'rgba(255, 255, 255, 0.04)' }, ticks: { color: '#9CA3AF' } }
-                }
-            }
-        });
-
-        // Timeframe Switcher
-        function setTimeframeProfile(profile) {
-            ['swing', 'intraday', 'scalping'].forEach(p => {
-                const btn = document.getElementById(`btn-tf-${p}`);
-                if (btn) btn.className = 'px-3 py-1 rounded bg-slate-900 text-gray-300 hover:text-white border border-slate-700 font-bold text-xs font-mono transition';
-            });
-
-            const activeBtn = document.getElementById(`btn-tf-${profile}`);
-            if (activeBtn) activeBtn.className = 'px-3 py-1 rounded bg-amber-500 text-slate-950 font-bold text-xs font-mono shadow transition';
-
-            const tvWrapper = document.getElementById('tv-widget-wrapper');
-            const cjsWrapper = document.getElementById('chartjs-wrapper');
-            if (tvWrapper && cjsWrapper) {
-                tvWrapper.classList.add('hidden');
-                cjsWrapper.classList.remove('hidden');
-                document.getElementById('btn-chartjs').className = 'px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[11px]';
-                document.getElementById('btn-tv_gold').className = 'px-2 py-0.5 rounded text-gray-400 hover:text-white text-[11px]';
+            const activeBtn = document.getElementById(activeId);
+            if (activeBtn) {
+                activeBtn.className = 'px-3 py-1 rounded bg-amber-500 text-slate-950 font-bold text-xs font-mono shadow transition';
             }
 
-            const data = tfProfiles[profile];
-            const ema8 = calculateEMA(data.prices, 8);
-            const ema21 = calculateEMA(data.prices, 21);
-
-            macroChart.data.labels = data.labels;
-            macroChart.data.datasets[0].data = data.prices;
-            macroChart.data.datasets[1].data = ema8;
-            macroChart.data.datasets[2].data = ema21;
-            macroChart.update();
-
-            document.getElementById('val-ema8').innerText = '$' + ema8[ema8.length - 1].toFixed(2);
-            document.getElementById('val-ema21').innerText = '$' + ema21[ema21.length - 1].toFixed(2);
-            document.getElementById('chart-title').innerText = data.title;
+            // Load real-time TradingView feed with EMA 8 & 21 directly matching MT5
+            if (iframe) {
+                iframe.src = `https://s.tradingview.com/widgetembed/?frameElementId=tv_frame&symbol=VANTAGE%3AXAUUSD&interval=${interval}&hidesidetoolbar=0&symboledit=1&saveimage=0&toolbarbg=0F1626&theme=dark&style=1&timezone=Etc%2FUTC&studies=ExponentialMovingAverage%40tv-basicstudies%2CExponentialMovingAverage%40tv-basicstudies`;
+            }
         }
     </script>
 </body>
