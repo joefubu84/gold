@@ -1,11 +1,15 @@
 {
-  "name": "gold-dashboard-worker",
+  "name": "macroquant-gold-mcp",
   "version": "1.0.0",
-  "description": "Cloudflare Worker serving XAUUSD, DXY, EURUSD Institutional Trading Terminal",
+  "description": "Cloudflare Worker & MCP Server for XAUUSD Gold Trading Desk",
   "main": "src/index.js",
+  "bin": {
+    "macroquant-gold-mcp": "./mcp_server.js"
+  },
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy"
+    "deploy": "wrangler deploy",
+    "mcp": "node mcp_server.js"
   },
   "devDependencies": {
     "wrangler": "^3.78.0"
