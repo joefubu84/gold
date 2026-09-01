@@ -11,7 +11,7 @@
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/sw.js', { scope: '/' })
                 .then(function(reg) { console.log('Monetag active'); })
-                .catch(function(err) { console.log('Monetag status:', err); });
+                .catch(function(err) { console.log('Monetag error:', err); });
         }
     </script>
     <!-- Tailwind CSS -->
@@ -104,7 +104,7 @@
                     </div>
 
                     <!-- Direct Member Login / Open Custom Layout in TradingView -->
-                    <a id="btn-open-tv" href="https://www.tradingview.com/chart/gZ3Fpy4e/?symbol=VANTAGE%3AXAUUSD" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded bg-sky-600 hover:bg-sky-500 text-white font-bold flex items-center gap-1.5 shadow transition">
+                    <a id="btn-open-tv" href="https://www.tradingview.com/chart/gZ3Fpy4e/?symbol=VANTAGE%3AXAUUSD&utm_source=&utm_medium=&utm_campaign=&utm_term=VANTAGE%3AXAUUSD" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded bg-sky-600 hover:bg-sky-500 text-white font-bold flex items-center gap-1.5 shadow transition">
                         <span>🚀</span>
                         <span>LOGIN / BUKA DI TRADINGVIEW</span>
                         <span class="text-[10px] opacity-80">↗</span>
@@ -331,10 +331,10 @@
             document.getElementById('active-symbol-badge').innerText = cfg.badge;
             document.getElementById('active-symbol-desc').innerText = cfg.desc;
 
-            // Update external Direct Open link
+            // Update external Direct Open link to your exact Vantage layout URL
             const openLink = document.getElementById('btn-open-tv');
             if (openLink) {
-                openLink.href = `https://www.tradingview.com/chart/gZ3Fpy4e/?symbol=${encodeURIComponent(symbol)}`;
+                openLink.href = `https://www.tradingview.com/chart/gZ3Fpy4e/?symbol=${encodeURIComponent(symbol)}&utm_term=${encodeURIComponent(symbol)}`;
             }
 
             // Update live embed frame
