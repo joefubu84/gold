@@ -6,6 +6,8 @@
     <title>XAUUSD • MacroQuant Institutional Desk</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- TradingView Lightweight Charts Library (Official CDN) -->
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
         body {
@@ -17,9 +19,7 @@
         .desk-border { border-color: #161e2e; }
         .desk-card { background-color: #0d121c; }
         
-        /* ------------------------------------------------------------- */
-        /* BLOOMBERG TERMINAL SLEEK INPUT & METRIC STYLING               */
-        /* ------------------------------------------------------------- */
+        /* Bloomberg Terminal Inputs & LCD Display */
         .bloomberg-input-wrapper {
             position: relative;
             background: #06090e;
@@ -51,9 +51,7 @@
             box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.8);
         }
 
-        /* ------------------------------------------------------------- */
-        /* HIGH-CONVERTING CSS KEYFRAME PULSE GLOW ANIMATIONS            */
-        /* ------------------------------------------------------------- */
+        /* High-Converting Glowing Affiliate CTA Buttons */
         @keyframes executeGlowBuy {
             0% {
                 transform: scale(1);
@@ -138,31 +136,31 @@
                     
                     <!-- Symbol Switchers -->
                     <div class="flex items-center gap-1.5 flex-wrap">
-                        <button onclick="setChartSymbol('VANTAGE:XAUUSD')" id="btn-gold" class="px-3 py-1.5 rounded bg-amber-500 text-black font-bold flex items-center gap-1.5 shadow transition">
+                        <button onclick="setChartSymbol('XAUUSD')" id="btn-gold" class="px-3 py-1.5 rounded bg-amber-500 text-black font-bold flex items-center gap-1.5 shadow transition">
                             <span>🪙</span>
                             <span>XAUUSD (GOLD)</span>
                             <span class="text-[10px] opacity-75 font-normal">→ VANTAGE</span>
                         </button>
                         
-                        <button onclick="setChartSymbol('CAPITALCOM:DXY')" id="btn-dxy" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
+                        <button onclick="setChartSymbol('DXY')" id="btn-dxy" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
                             <span>💵</span>
                             <span>DXY (DOLLAR)</span>
                             <span class="text-[10px] text-sky-400 font-normal">→ INDEX</span>
                         </button>
 
-                        <button onclick="setChartSymbol('FX:EURUSD')" id="btn-eur" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
+                        <button onclick="setChartSymbol('EURUSD')" id="btn-eur" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
                             <span>🇪🇺</span>
                             <span>EURUSD</span>
                             <span class="text-[10px] text-emerald-400 font-normal">(57.6% DXY)</span>
                         </button>
 
-                        <button onclick="setChartSymbol('FX:USDJPY')" id="btn-jpy" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
+                        <button onclick="setChartSymbol('USDJPY')" id="btn-jpy" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
                             <span>🇯🇵</span>
                             <span>USDJPY</span>
                             <span class="text-[10px] text-rose-400 font-normal">(13.6% DXY)</span>
                         </button>
 
-                        <button onclick="setChartSymbol('FX:USDCHF')" id="btn-chf" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
+                        <button onclick="setChartSymbol('USDCHF')" id="btn-chf" class="px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition">
                             <span>🇨🇭</span>
                             <span>USDCHF</span>
                             <span class="text-[10px] text-indigo-300 font-normal">(3.6% Safe Haven)</span>
@@ -186,12 +184,14 @@
                             🪙 VANTAGE:XAUUSD
                         </span>
                         <span id="active-symbol-desc" class="text-slate-400 hidden md:inline">
-                            Institutional Gold Spot Direct Feed
+                            Live Native M15 Candlestick Engine with EMA 8/21 & King Levels
                         </span>
                     </div>
 
                     <div class="flex items-center gap-3 text-slate-400 text-[11px]">
-                        <span>TELEMETRY: <strong id="telemetry-time" class="text-amber-400 font-bold">LIVE SYNC</strong></span>
+                        <span>KING HIGH: <strong id="val-king-high" class="text-amber-400 font-bold">--</strong></span>
+                        <span class="text-slate-600">|</span>
+                        <span>KING LOW: <strong id="val-king-low" class="text-amber-400 font-bold">--</strong></span>
                     </div>
                 </div>
             </div>
@@ -201,15 +201,17 @@
                 <!-- Dynamically injected high-converting pulsing CTA -->
             </div>
 
-            <!-- OFFICIAL TRADINGVIEW ADVANCED LIVE CHART EMBED -->
-            <div id="tv_chart_wrapper" class="flex-1 w-full min-h-[560px] lg:min-h-[620px] rounded border desk-border overflow-hidden bg-[#0a0e17]">
-                <iframe 
-                    id="chart-frame"
-                    src="https://s.tradingview.com/widgetembed/?frameElementId=chart_frame&symbol=VANTAGE%3AXAUUSD&interval=60&hidesidetoolbar=0&symboledit=1&saveimage=1&toolbarbg=0a0e17&theme=dark&style=1&timezone=Etc%2FUTC"
-                    class="w-full h-full min-h-[560px] lg:min-h-[620px] border-0"
-                    allowtransparency="true" 
-                    scrolling="no">
-                </iframe>
+            <!-- NATIVE LIGHTWEIGHT CHARTS CANVA ENGINE (#111 BACKGROUND) -->
+            <div class="flex-1 w-full min-h-[560px] lg:min-h-[620px] rounded border desk-border overflow-hidden bg-[#111111] relative">
+                <div id="lightweight_chart_container" class="w-full h-full min-h-[560px] lg:min-h-[620px]"></div>
+                
+                <!-- Chart Overlay Legend -->
+                <div class="absolute top-3 left-3 bg-[#080b11]/90 backdrop-blur border desk-border p-2 rounded text-[11px] font-mono flex items-center gap-3 pointer-events-none z-10">
+                    <span class="text-white font-bold">XAUUSD M15</span>
+                    <span class="flex items-center gap-1"><span class="w-2.5 h-1 bg-[#10B981] rounded-sm"></span><strong class="text-emerald-400">EMA 8</strong></span>
+                    <span class="flex items-center gap-1"><span class="w-2.5 h-1 bg-[#EF4444] rounded-sm"></span><strong class="text-rose-400">EMA 21</strong></span>
+                    <span class="flex items-center gap-1"><span class="w-2.5 h-0.5 border-b border-dashed border-amber-400"></span><strong class="text-amber-400">KING LEVELS (50 BARS)</strong></span>
+                </div>
             </div>
 
         </div>
@@ -274,7 +276,7 @@
                 <div id="m15-gold-tip-box" class="p-2 rounded bg-amber-500/10 border border-amber-500/30 text-[11px] text-amber-200 leading-snug">
                     <strong class="text-amber-400 block mb-0.5">🎯 M15 GOLD ACTION TIP:</strong>
                     <span id="m15-gold-tip-text">
-                        DXY is UP & EURUSD is DOWN on M15 → Gold is making a temporary intraday pullback. Look to <strong>BUY DIP</strong> at S1 ($4,420.74) / EMA 8 support!
+                        DXY is UP & EURUSD is DOWN on M15 → Gold is making a temporary intraday pullback. Look to <strong>BUY DIP</strong> at S1 / EMA 8 support!
                     </span>
                 </div>
             </div>
@@ -322,9 +324,7 @@
                 <div class="flex justify-between text-emerald-400"><span>S3</span><strong>4,374.44</strong></div>
             </div>
 
-            <!-- ========================================================= -->
-            <!-- SLEEK BLOOMBERG TERMINAL LOT & RISK CALCULATOR             -->
-            <!-- ========================================================= -->
+            <!-- Sleek Bloomberg Terminal Lot Calculator -->
             <div class="desk-card p-3 rounded border desk-border space-y-2.5">
                 <div class="text-amber-400 font-bold text-[11px] border-b desk-border pb-1.5 flex justify-between items-center">
                     <span class="flex items-center gap-1.5">
@@ -335,7 +335,6 @@
                 </div>
                 
                 <div class="space-y-2">
-                    <!-- Balance Input -->
                     <div class="bloomberg-input-wrapper p-1.5 rounded">
                         <div class="flex justify-between items-center mb-0.5">
                             <span class="bloomberg-tag">EQUITY / BALANCE</span>
@@ -347,9 +346,7 @@
                         </div>
                     </div>
 
-                    <!-- Risk & SL Row -->
                     <div class="grid grid-cols-2 gap-2">
-                        <!-- Risk % -->
                         <div class="bloomberg-input-wrapper p-1.5 rounded">
                             <div class="flex justify-between items-center mb-0.5">
                                 <span class="bloomberg-tag">RISK</span>
@@ -358,7 +355,6 @@
                             <input id="calc-risk" type="number" value="1.0" step="0.5" oninput="calculateLotSize()" class="bloomberg-input w-full text-xs" placeholder="1.0">
                         </div>
 
-                        <!-- SL Move $ -->
                         <div class="bloomberg-input-wrapper p-1.5 rounded">
                             <div class="flex justify-between items-center mb-0.5">
                                 <span class="bloomberg-tag">STOP LOSS</span>
@@ -372,7 +368,6 @@
                     </div>
                 </div>
 
-                <!-- Sleek Bloomberg Output LCD Screen -->
                 <div class="bloomberg-lcd p-2.5 rounded border flex flex-col gap-1">
                     <div class="flex justify-between items-center text-[10px]">
                         <span class="bloomberg-tag text-slate-400">EXPOSURE RISK:</span>
@@ -390,18 +385,18 @@
     </main>
 
     <footer class="border-t desk-border px-4 py-2 text-center text-[10px] text-slate-600 font-mono flex justify-between items-center max-w-[1600px] mx-auto w-full">
-        <span>MacroQuant Fintech Desk • Direct Feed</span>
-        <span class="text-slate-500">Bloomberg Styled • Institutional Confluence</span>
+        <span>MacroQuant Fintech Desk • Native Lightweight Canvas</span>
+        <span class="text-slate-500">FA Legacy King Engine • Institutional Confluence</span>
     </footer>
 
     <!-- ================================================================= -->
-    <!-- MASTER FRONTEND ENGINE: TELEMETRY POLLING, AFFILIATE CTA & LOT CALC -->
+    <!-- MASTER FRONTEND ENGINE: LIGHTWEIGHT CHARTS, KING LEVELS & TELEMETRY -->
     <!-- ================================================================= -->
     <script>
-        const AFFILIATE_VANTAGE_URL = "https://www.vantagemarkets.com/"; // Replace with your Vantage affiliate URL
+        const AFFILIATE_VANTAGE_URL = "https://www.vantagemarkets.com/"; // Put your Vantage affiliate link here
         const TELEMETRY_API_ENDPOINT = "/api/live";
 
-        // Global Clocks
+        // Global Market Clocks
         function updateClock() {
             const now = new Date();
             const h = now.getUTCHours();
@@ -417,8 +412,7 @@
         updateClock();
 
         // -----------------------------------------------------------------
-        // SLEEK BLOOMBERG LOT CALCULATOR
-        // Formula: (Balance * (Risk% / 100)) / (SL_Move_in_Dollars * 100)
+        // 1. SLEEK BLOOMBERG LOT CALCULATOR
         // -----------------------------------------------------------------
         function calculateLotSize() {
             const balInput = document.getElementById('calc-bal');
@@ -450,22 +444,156 @@
         }
         calculateLotSize();
 
-        // Helper: Confluence Style
-        function styleConfluenceBadge(elId, status) {
-            const el = document.getElementById(elId);
-            if (!el) return;
-            el.innerText = status || "NEUT";
-            if (status === "BULL") {
-                el.className = "text-emerald-400 font-bold";
-            } else if (status === "BEAR") {
-                el.className = "text-rose-400 font-bold";
+        // -----------------------------------------------------------------
+        // 2. NATIVE TRADINGVIEW LIGHTWEIGHT CHARTS ENGINE SETUP
+        // -----------------------------------------------------------------
+        let chart = null;
+        let candleSeries = null;
+        let ema8Series = null;
+        let ema21Series = null;
+        let kingHighLine = null;
+        let kingLowLine = null;
+        let chartInitialized = false;
+
+        function initNativeChart() {
+            const container = document.getElementById('lightweight_chart_container');
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            chart = LightweightCharts.createChart(container, {
+                width: container.clientWidth,
+                height: container.clientHeight,
+                layout: {
+                    background: { color: '#111111' }, // Pure #111 Dark Theme
+                    textColor: '#94a3b8',
+                    fontFamily: 'JetBrains Mono, monospace',
+                    fontSize: 11
+                },
+                grid: {
+                    vertLines: { color: 'rgba(255, 255, 255, 0.03)' },
+                    horzLines: { color: 'rgba(255, 255, 255, 0.03)' }
+                },
+                crosshair: {
+                    mode: LightweightCharts.CrosshairMode.Normal,
+                    vertLine: { color: 'rgba(245, 158, 11, 0.4)', width: 1, style: LightweightCharts.LineStyle.Dashed },
+                    horzLine: { color: 'rgba(245, 158, 11, 0.4)', width: 1, style: LightweightCharts.LineStyle.Dashed }
+                },
+                rightPriceScale: {
+                    borderColor: '#1e293b',
+                    scaleMargins: { top: 0.1, bottom: 0.1 }
+                },
+                timeScale: {
+                    borderColor: '#1e293b',
+                    timeVisible: true,
+                    secondsVisible: false
+                }
+            });
+
+            // 1. Candlestick Series
+            candleSeries = chart.addCandlestickSeries({
+                upColor: '#10B981',
+                downColor: '#EF4444',
+                wickUpColor: '#10B981',
+                wickDownColor: '#EF4444',
+                borderVisible: false
+            });
+
+            // 2. EMA 8 Series (Green Line)
+            ema8Series = chart.addLineSeries({
+                color: '#10B981',
+                lineWidth: 2,
+                title: 'EMA 8',
+                priceLineVisible: false
+            });
+
+            // 3. EMA 21 Series (Red Line)
+            ema21Series = chart.addLineSeries({
+                color: '#EF4444',
+                lineWidth: 2,
+                title: 'EMA 21',
+                priceLineVisible: false
+            });
+
+            // Responsive Resize Listener
+            window.addEventListener('resize', () => {
+                if (chart && container) {
+                    chart.applyOptions({ width: container.clientWidth, height: container.clientHeight });
+                }
+            });
+        }
+
+        function updateChartWithPayload(chartData, latestTick) {
+            if (!chart) initNativeChart();
+            if (!chartData || !chartData.candles || chartData.candles.length === 0) return;
+
+            // Initial full load
+            if (!chartInitialized) {
+                candleSeries.setData(chartData.candles);
+                if (chartData.ema8)  ema8Series.setData(chartData.ema8);
+                if (chartData.ema21) ema21Series.setData(chartData.ema21);
+
+                // Draw Golden Dashed "King" Structural High/Low Lines
+                if (chartData.king_levels) {
+                    drawKingLevels(chartData.king_levels.high, chartData.king_levels.low);
+                }
+
+                chart.timeScale().fitContent();
+                chartInitialized = true;
             } else {
-                el.className = "text-amber-400 font-bold";
+                // Real-Time Update without re-rendering whole chart
+                if (chartData.candles.length > 0) {
+                    const lastCandle = chartData.candles[chartData.candles.length - 1];
+                    candleSeries.update(lastCandle);
+                }
+                if (chartData.ema8 && chartData.ema8.length > 0) {
+                    ema8Series.update(chartData.ema8[chartData.ema8.length - 1]);
+                }
+                if (chartData.ema21 && chartData.ema21.length > 0) {
+                    ema21Series.update(chartData.ema21[chartData.ema21.length - 1]);
+                }
+                if (chartData.king_levels) {
+                    drawKingLevels(chartData.king_levels.high, chartData.king_levels.low);
+                }
+            }
+        }
+
+        function drawKingLevels(highPrice, lowPrice) {
+            if (!candleSeries) return;
+
+            // Remove existing lines before updating
+            if (kingHighLine) candleSeries.removePriceLine(kingHighLine);
+            if (kingLowLine)  candleSeries.removePriceLine(kingLowLine);
+
+            if (highPrice) {
+                kingHighLine = candleSeries.createPriceLine({
+                    price: highPrice,
+                    color: '#F59E0B',
+                    lineWidth: 2,
+                    lineStyle: LightweightCharts.LineStyle.Dashed,
+                    axisLabelVisible: true,
+                    title: '👑 KING HIGH'
+                });
+                const elH = document.getElementById('val-king-high');
+                if (elH) elH.innerText = '$' + highPrice.toFixed(2);
+            }
+
+            if (lowPrice) {
+                kingLowLine = candleSeries.createPriceLine({
+                    price: lowPrice,
+                    color: '#F59E0B',
+                    lineWidth: 2,
+                    lineStyle: LightweightCharts.LineStyle.Dashed,
+                    axisLabelVisible: true,
+                    title: '👑 KING LOW'
+                });
+                const elL = document.getElementById('val-king-low');
+                if (elL) elL.innerText = '$' + lowPrice.toFixed(2);
             }
         }
 
         // -----------------------------------------------------------------
-        // DYNAMIC AFFILIATE CTA EVALUATOR (WITH CSS KEYFRAME PULSE)
+        // 3. DYNAMIC AFFILIATE CTA EVALUATOR
         // -----------------------------------------------------------------
         function evaluateAffiliateCTA(confluence) {
             const container = document.getElementById('affiliate-cta-container');
@@ -476,7 +604,7 @@
             const h4  = confluence.H4  || "NEUT";
             const d1  = confluence.D1  || "NEUT";
 
-            // Scenario A: Trend is Bull (H4/D1 Bullish), M15 is Pulling Back (BEAR) -> Pulsing BUY DIP Button
+            // Scenario A: Trend is Bull (H4/D1 Bullish), M15 is Pulling Back (BEAR) -> BUY DIP
             if ((h4 === "BULL" || d1 === "BULL") && m15 === "BEAR") {
                 container.innerHTML = `
                     <div class="p-3 rounded bg-[#061510] border border-emerald-500/60 flex items-center justify-between flex-wrap gap-2 text-xs font-mono shadow-lg">
@@ -494,7 +622,7 @@
                 `;
                 container.classList.remove('hidden');
             }
-            // Scenario B: Macro & Micro in Full Bear Alignment -> Pulsing SHORT DESK Button
+            // Scenario B: Macro & Micro in Full Bear Alignment -> SHORT DESK
             else if (m15 === "BEAR" && h1 === "BEAR" && h4 === "BEAR") {
                 container.innerHTML = `
                     <div class="p-3 rounded bg-[#18090b] border border-rose-500/60 flex items-center justify-between flex-wrap gap-2 text-xs font-mono shadow-lg">
@@ -518,8 +646,17 @@
             }
         }
 
+        function styleConfluenceBadge(elId, status) {
+            const el = document.getElementById(elId);
+            if (!el) return;
+            el.innerText = status || "NEUT";
+            if (status === "BULL") el.className = "text-emerald-400 font-bold";
+            else if (status === "BEAR") el.className = "text-rose-400 font-bold";
+            else el.className = "text-amber-400 font-bold";
+        }
+
         // -----------------------------------------------------------------
-        // 2-SECOND LIVE TELEMETRY POLLING LOOP
+        // 4. 2-SECOND TELEMETRY FETCH LOOP
         // -----------------------------------------------------------------
         async function pollTelemetryFeed() {
             try {
@@ -529,7 +666,7 @@
                 const data = await response.json();
                 if (!data) return;
 
-                // Update Header Ticks
+                // 1. Update Live Header Ticker
                 if (data.gold && typeof data.gold.bid === 'number') {
                     document.getElementById('live-gold-bid').innerText = '$' + data.gold.bid.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                 }
@@ -541,7 +678,7 @@
                     if (data.currencies.usdchf) document.getElementById('live-chf-val').innerText = data.currencies.usdchf.toFixed(4);
                 }
 
-                // Update Confluence Matrix
+                // 2. Update Confluence Matrix
                 if (data.confluence) {
                     styleConfluenceBadge('conf-m15', data.confluence.M15);
                     styleConfluenceBadge('conf-h1',  data.confluence.H1);
@@ -549,7 +686,7 @@
                     styleConfluenceBadge('conf-d1',  data.confluence.D1);
                 }
 
-                // Update M15 Badges
+                // 3. Update M15 Badges
                 if (data.m15_indicators) {
                     if (data.m15_indicators.dxy) document.getElementById('m15-dxy-status').innerText = data.m15_indicators.dxy;
                     if (data.m15_indicators.eurusd) document.getElementById('m15-eur-status').innerText = data.m15_indicators.eurusd;
@@ -557,11 +694,13 @@
                     if (data.m15_indicators.usdchf) document.getElementById('m15-chf-status').innerText = data.m15_indicators.usdchf;
                 }
 
-                // Evaluate Pulsing CTA & Update Timestamp
+                // 4. Update Dynamic Affiliate CTA
                 evaluateAffiliateCTA(data.confluence);
 
-                const timeEl = document.getElementById('telemetry-time');
-                if (timeEl) timeEl.innerText = data.timestamp || "LIVE MT5";
+                // 5. Update Native Lightweight Chart with M15 series & King Levels
+                if (data.chart_data) {
+                    updateChartWithPayload(data.chart_data, data.gold);
+                }
 
                 document.getElementById('pipeline-status').innerText = "LIVE MT5";
                 document.getElementById('pipeline-status').className = "text-emerald-400 font-bold";
@@ -575,16 +714,21 @@
             }
         }
 
-        setInterval(pollTelemetryFeed, 2000);
-        pollTelemetryFeed();
+        window.addEventListener('load', () => {
+            initNativeChart();
+            pollTelemetryFeed();
+            setInterval(pollTelemetryFeed, 2000);
+        });
 
-        // Symbol Switcher
+        // -----------------------------------------------------------------
+        // 5. SYMBOL SWITCHER
+        // -----------------------------------------------------------------
         const symbolDetails = {
-            'VANTAGE:XAUUSD': { id: 'btn-gold', badge: '🪙 VANTAGE:XAUUSD', desc: 'Institutional Gold Spot Direct Feed' },
-            'CAPITALCOM:DXY': { id: 'btn-dxy', badge: '💵 CAPITALCOM:DXY', desc: 'US Dollar Index Spot Benchmark' },
-            'FX:EURUSD': { id: 'btn-eur', badge: '🇪🇺 FX:EURUSD', desc: 'Euro / US Dollar (57.6% DXY Weight)' },
-            'FX:USDJPY': { id: 'btn-jpy', badge: '🇯🇵 FX:USDJPY', desc: 'US Dollar / Yen (13.6% DXY Weight)' },
-            'FX:USDCHF': { id: 'btn-chf', badge: '🇨🇭 FX:USDCHF', desc: 'US Dollar / Swiss Franc (3.6% Safe Haven)' }
+            'XAUUSD': { id: 'btn-gold', badge: '🪙 VANTAGE:XAUUSD', desc: 'Live Native M15 Candlestick Engine with EMA 8/21 & King Levels' },
+            'DXY':    { id: 'btn-dxy',  badge: '💵 CAPITALCOM:DXY', desc: 'US Dollar Index Spot Benchmark' },
+            'EURUSD': { id: 'btn-eur',  badge: '🇪🇺 FX:EURUSD',     desc: 'Euro / US Dollar (57.6% DXY Weight)' },
+            'USDJPY': { id: 'btn-jpy',  badge: '🇯🇵 FX:USDJPY',     desc: 'US Dollar / Yen (13.6% DXY Weight)' },
+            'USDCHF': { id: 'btn-chf',  badge: '🇨🇭 FX:USDCHF',     desc: 'US Dollar / Swiss Franc (3.6% Safe Haven)' }
         };
 
         function setChartSymbol(symbol) {
@@ -593,7 +737,7 @@
                 if (b) b.className = 'px-3 py-1.5 rounded bg-slate-800 text-slate-300 hover:text-white font-semibold flex items-center gap-1.5 transition';
             });
 
-            const cfg = symbolDetails[symbol] || symbolDetails['VANTAGE:XAUUSD'];
+            const cfg = symbolDetails[symbol] || symbolDetails['XAUUSD'];
             const activeBtn = document.getElementById(cfg.id);
             if (activeBtn) activeBtn.className = 'px-3 py-1.5 rounded bg-amber-500 text-black font-bold flex items-center gap-1.5 shadow transition';
 
@@ -603,11 +747,6 @@
             const openLink = document.getElementById('btn-open-tv');
             if (openLink) {
                 openLink.href = `https://www.tradingview.com/chart/gZ3Fpy4e/?symbol=${encodeURIComponent(symbol)}`;
-            }
-
-            const frame = document.getElementById('chart-frame');
-            if (frame) {
-                frame.src = `https://s.tradingview.com/widgetembed/?frameElementId=chart_frame&symbol=${encodeURIComponent(symbol)}&interval=60&hidesidetoolbar=0&symboledit=1&saveimage=1&toolbarbg=0a0e17&theme=dark&style=1&timezone=Etc%2FUTC`;
             }
         }
     </script>
