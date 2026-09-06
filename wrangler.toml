@@ -10,8 +10,7 @@ BRIDGE_TOKEN = "macroquant_secret_token_2026_xyz"
 # Run: npx wrangler kv:namespace create "MACRO_KV" and paste the generated id below
 [[kv_namespaces]]
 binding = "MACRO_KV"
-id = "macro_kv_live_storage_id"
-preview_id = "macro_kv_preview_storage_id"
+id = "9026b6f54379499f8c077ee46e1cd1b1"
 
 # Bundle raw HTML files directly into Worker
 [[rules]]
