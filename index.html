@@ -311,17 +311,17 @@
             <div class="desk-card p-3 rounded border desk-border space-y-1.5">
                 <div class="text-slate-400 font-bold text-[11px] border-b desk-border pb-1 flex justify-between">
                     <span>DAILY PIVOT (HLC/3)</span>
-                    <span class="text-slate-500">D1 BASE</span>
+                    <span class="text-emerald-400 font-bold" id="pivot-live-tag">D1 LIVE BASE</span>
                 </div>
-                <div class="flex justify-between text-rose-400"><span>R3</span><strong>4,513.34</strong></div>
-                <div class="flex justify-between text-rose-300"><span>R2</span><strong>4,485.87</strong></div>
-                <div class="flex justify-between text-rose-200"><span>R1</span><strong>4,467.04</strong></div>
+                <div class="flex justify-between text-rose-400"><span>R3</span><strong id="pivot-r3">--</strong></div>
+                <div class="flex justify-between text-rose-300"><span>R2</span><strong id="pivot-r2">--</strong></div>
+                <div class="flex justify-between text-rose-200"><span>R1</span><strong id="pivot-r1">--</strong></div>
                 <div class="flex justify-between p-1 bg-amber-500/10 border border-amber-500/30 text-amber-300 font-bold rounded">
-                    <span>PIVOT</span><strong>4,439.57</strong>
+                    <span>PIVOT</span><strong id="pivot-val">--</strong>
                 </div>
-                <div class="flex justify-between text-emerald-200"><span>S1</span><strong>4,420.74</strong></div>
-                <div class="flex justify-between text-emerald-300"><span>S2</span><strong>4,393.27</strong></div>
-                <div class="flex justify-between text-emerald-400"><span>S3</span><strong>4,374.44</strong></div>
+                <div class="flex justify-between text-emerald-200"><span>S1</span><strong id="pivot-s1">--</strong></div>
+                <div class="flex justify-between text-emerald-300"><span>S2</span><strong id="pivot-s2">--</strong></div>
+                <div class="flex justify-between text-emerald-400"><span>S3</span><strong id="pivot-s3">--</strong></div>
             </div>
 
             <!-- Sleek Bloomberg Terminal Lot Calculator -->
@@ -694,15 +694,49 @@
                     if (data.m15_indicators.usdchf) document.getElementById('m15-chf-status').innerText = data.m15_indicators.usdchf;
                 }
 
-                // 4. Update Dynamic Affiliate CTA
+                // 4. Update Dynamic M15 Tactical Tip based on MA 8/21 Rules & Currency Status
+                const tipEl = document.getElementById('m15-gold-tip-text');
+                const tipBox = document.getElementById('m15-gold-tip-box');
+                if (tipEl && data.pi_engine) {
+                    const h1Status = data.pi_engine.h1_status || "";
+                    const m1Status = data.pi_engine.m1_status || "";
+                    const bias = data.pi_engine.bias || "";
+                    const sl = data.pi_engine.sl ? `$${data.pi_engine.sl}` : "--";
+                    const tp = data.pi_engine.tp ? `$${data.pi_engine.tp}` : "--";
+                    
+                    if (h1Status.includes("STRONG SELL")) {
+                        tipBox.className = "p-2 rounded bg-rose-500/10 border border-rose-500/30 text-[11px] text-rose-200 leading-snug";
+                        tipEl.innerHTML = `<strong>H1 SELLER STRONG (MA 21 Merah Atas, MA 8 Hijau Bawah):</strong> Setup: <strong>${m1Status}</strong>. Confluence Bias: <span class="text-rose-400 font-bold">${bias}</span>. Target SL: ${sl} | TP (1:2): ${tp}. Buka MT5 & execute sell.`;
+                    } else if (h1Status.includes("STRONG BUY")) {
+                        tipBox.className = "p-2 rounded bg-emerald-500/10 border border-emerald-500/30 text-[11px] text-emerald-200 leading-snug";
+                        tipEl.innerHTML = `<strong>H1 BUYER STRONG (MA 8 Hijau Atas, MA 21 Merah Bawah):</strong> Setup: <strong>${m1Status}</strong>. Confluence Bias: <span class="text-emerald-400 font-bold">${bias}</span>. Target SL: ${sl} | TP (1:2): ${tp}. Buka MT5 & execute buy.`;
+                    } else {
+                        tipBox.className = "p-2 rounded bg-amber-500/10 border border-amber-500/30 text-[11px] text-amber-200 leading-snug";
+                        tipEl.innerHTML = `<strong>H1 SIDEWAY (Garisan MA di tengah candle / tak jelas):</strong> M1 Status: ${m1Status}. Tiada momentum bersih. Standby sehingga garisan MA membuka corong trend yang jelas.`;
+                    }
+                }
+
+                // 5. Update Dynamic Daily Pivot (HLC/3)
+                if (data.daily_pivot) {
+                    const dp = data.daily_pivot;
+                    if (document.getElementById('pivot-val')) document.getElementById('pivot-val').innerText = Number(dp.pivot).toFixed(2);
+                    if (document.getElementById('pivot-r1')) document.getElementById('pivot-r1').innerText = Number(dp.r1).toFixed(2);
+                    if (document.getElementById('pivot-r2')) document.getElementById('pivot-r2').innerText = Number(dp.r2).toFixed(2);
+                    if (document.getElementById('pivot-r3')) document.getElementById('pivot-r3').innerText = Number(dp.r3).toFixed(2);
+                    if (document.getElementById('pivot-s1')) document.getElementById('pivot-s1').innerText = Number(dp.s1).toFixed(2);
+                    if (document.getElementById('pivot-s2')) document.getElementById('pivot-s2').innerText = Number(dp.s2).toFixed(2);
+                    if (document.getElementById('pivot-s3')) document.getElementById('pivot-s3').innerText = Number(dp.s3).toFixed(2);
+                }
+
+                // 6. Update Dynamic Affiliate CTA
                 evaluateAffiliateCTA(data.confluence);
 
-                // 5. Update Native Lightweight Chart with M15 series & King Levels
+                // 7. Update Native Lightweight Chart with M15 series & King Levels
                 if (data.chart_data) {
                     updateChartWithPayload(data.chart_data, data.gold);
                 }
 
-                document.getElementById('pipeline-status').innerText = "LIVE MT5";
+                document.getElementById('pipeline-status').innerText = "LIVE PI // QUANT";
                 document.getElementById('pipeline-status').className = "text-emerald-400 font-bold";
 
             } catch (err) {
