@@ -167,12 +167,27 @@
                         </button>
                     </div>
 
-                    <!-- Direct Member Open Custom Layout in TradingView -->
-                    <a id="btn-open-tv" href="https://www.tradingview.com/chart/gZ3Fpy4e/?symbol=VANTAGE%3AXAUUSD" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded bg-sky-600 hover:bg-sky-500 text-white font-bold flex items-center gap-1.5 shadow transition">
-                        <span>🚀</span>
-                        <span>BUKA LAYOUT gZ3Fpy4e (PINE SCRIPT)</span>
-                        <span class="text-[10px] opacity-80">↗</span>
-                    </a>
+                    <!-- Engine Mode Toggle & Direct Member Open Custom Layout in TradingView -->
+                    <div class="flex items-center gap-2">
+                        <!-- Dual Chart Switcher -->
+                        <div class="flex items-center bg-[#06090e] p-0.5 rounded border desk-border">
+                            <button onclick="setChartEngine('native')" id="btn-engine-native" class="px-2.5 py-1 rounded bg-amber-500 text-black font-bold flex items-center gap-1 transition text-[11px]">
+                                <span>⚡</span>
+                                <span>MT5 LIVE FEED</span>
+                            </button>
+                            <button onclick="setChartEngine('tv')" id="btn-engine-tv" class="px-2.5 py-1 rounded text-slate-400 hover:text-white font-medium flex items-center gap-1 transition text-[11px]">
+                                <span>📈</span>
+                                <span>FA LEGACY TV</span>
+                            </button>
+                        </div>
+
+                        <!-- Direct Open Published Pine Script -->
+                        <a id="btn-open-tv" href="https://www.tradingview.com/script/AELHcy5s-FA-LEGACY-SMART-AUTO-KING-ONLY-EMA-CROSS-8-21/" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded bg-sky-600 hover:bg-sky-500 text-white font-bold flex items-center gap-1.5 shadow transition">
+                            <span>🚀</span>
+                            <span>PINE SCRIPT (AELHcy5s)</span>
+                            <span class="text-[10px] opacity-80">↗</span>
+                        </a>
+                    </div>
 
                 </div>
 
@@ -201,8 +216,8 @@
                 <!-- Dynamically injected high-converting pulsing CTA -->
             </div>
 
-            <!-- NATIVE LIGHTWEIGHT CHARTS CANVA ENGINE (#111 BACKGROUND) -->
-            <div class="flex-1 w-full min-h-[560px] lg:min-h-[620px] rounded border desk-border overflow-hidden bg-[#111111] relative">
+            <!-- 1. NATIVE LIGHTWEIGHT CHARTS ENGINE (#111 BACKGROUND) -->
+            <div id="native_chart_wrapper" class="flex-1 w-full min-h-[560px] lg:min-h-[620px] rounded border desk-border overflow-hidden bg-[#111111] relative">
                 <div id="lightweight_chart_container" class="w-full h-full min-h-[560px] lg:min-h-[620px]"></div>
                 
                 <!-- Chart Overlay Legend -->
@@ -211,6 +226,34 @@
                     <span class="flex items-center gap-1"><span class="w-2.5 h-1 bg-[#10B981] rounded-sm"></span><strong class="text-emerald-400">EMA 8</strong></span>
                     <span class="flex items-center gap-1"><span class="w-2.5 h-1 bg-[#EF4444] rounded-sm"></span><strong class="text-rose-400">EMA 21</strong></span>
                     <span class="flex items-center gap-1"><span class="w-2.5 h-0.5 border-b border-dashed border-amber-400"></span><strong class="text-amber-400">KING LEVELS (50 BARS)</strong></span>
+                </div>
+            </div>
+
+            <!-- 2. TRADINGVIEW ADVANCED CHART EMBED (FA LEGACY + EMA 8/21 AUTO-LOADED) -->
+            <div id="tv_chart_wrapper" class="hidden flex-1 w-full min-h-[560px] lg:min-h-[620px] rounded border desk-border overflow-hidden bg-[#111111] relative">
+                <div class="tradingview-widget-container" style="height: 620px; width: 100%;">
+                    <div class="tradingview-widget-container__widget" style="height: calc(100% - 32px); width: 100%;"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advancedchart.js" async>
+                    {
+                        "autosize": true,
+                        "symbol": "VANTAGE:XAUUSD",
+                        "interval": "15",
+                        "timezone": "Etc/UTC",
+                        "theme": "dark",
+                        "style": "1",
+                        "locale": "en",
+                        "backgroundColor": "rgba(17, 17, 17, 1)",
+                        "gridColor": "rgba(34, 34, 34, 1)",
+                        "hide_top_toolbar": false,
+                        "hide_side_toolbar": false,
+                        "allow_symbol_change": true,
+                        "save_image": true,
+                        "studies": [
+                            "PUB;AELHcy5s"
+                        ],
+                        "support_host": "https://www.tradingview.com"
+                    }
+                    </script>
                 </div>
             </div>
 
@@ -780,7 +823,39 @@
 
             const openLink = document.getElementById('btn-open-tv');
             if (openLink) {
-                openLink.href = `https://www.tradingview.com/chart/gZ3Fpy4e/?symbol=${encodeURIComponent(symbol)}`;
+                openLink.href = `https://www.tradingview.com/script/AELHcy5s-FA-LEGACY-SMART-AUTO-KING-ONLY-EMA-CROSS-8-21/`;
+            }
+        }
+
+        // -----------------------------------------------------------------
+        // 6. DUAL-ENGINE SWITCHER (NATIVE MT5 vs TRADINGVIEW EMBED)
+        // -----------------------------------------------------------------
+        function setChartEngine(engine) {
+            const nativeWrap = document.getElementById('native_chart_wrapper');
+            const tvWrap = document.getElementById('tv_chart_wrapper');
+            const btnNative = document.getElementById('btn-engine-native');
+            const btnTV = document.getElementById('btn-engine-tv');
+
+            if (engine === 'tv') {
+                nativeWrap.classList.add('hidden');
+                tvWrap.classList.remove('hidden');
+
+                btnNative.className = 'px-2.5 py-1 rounded text-slate-400 hover:text-white font-medium flex items-center gap-1 transition text-[11px]';
+                btnTV.className = 'px-2.5 py-1 rounded bg-sky-500 text-white font-bold flex items-center gap-1 transition text-[11px] shadow';
+            } else {
+                tvWrap.classList.add('hidden');
+                nativeWrap.classList.remove('hidden');
+
+                btnNative.className = 'px-2.5 py-1 rounded bg-amber-500 text-black font-bold flex items-center gap-1 transition text-[11px]';
+                btnTV.className = 'px-2.5 py-1 rounded text-slate-400 hover:text-white font-medium flex items-center gap-1 transition text-[11px]';
+
+                // Resize native chart if needed
+                if (typeof chart !== 'undefined' && chart && nativeWrap) {
+                    chart.applyOptions({
+                        width: nativeWrap.clientWidth,
+                        height: nativeWrap.clientHeight
+                    });
+                }
             }
         }
     </script>

@@ -15,6 +15,7 @@ Description:
 import time
 import math
 import json
+import os
 import requests
 import MetaTrader5 as mt5
 
@@ -27,6 +28,28 @@ import MetaTrader5 as mt5
 CLOUDFLARE_WORKER_URL = "https://gold.cjhomebase.fun/api/update"
 BRIDGE_AUTH_TOKEN = "macroquant_secret_token_2026_xyz"  # Must match Worker env secret
 DXY_CONSTANT = 50.14348112
+CONFIG_PATH = "gold_config.json"
+
+def load_gold_config():
+    """Loads trading parameters from gold_config.json with safe fallbacks."""
+    default_cfg = {
+        "technical_parameters": {
+            "fast_ema_period": 8,
+            "slow_ema_period": 21,
+            "king_levels_lookback_bars": 50
+        },
+        "risk_management": {
+            "max_risk_per_trade_percent": 1.5
+        }
+    }
+    try:
+        if os.path.exists(CONFIG_PATH):
+            with open(CONFIG_PATH, "r", encoding="utf-8") as f:
+                cfg = json.load(f)
+                return cfg
+    except Exception as e:
+        print(f"[!] Warning reading {CONFIG_PATH}: {e}")
+    return default_cfg
 
 def calculate_synthetic_dxy(eurusd_rate, usdjpy_rate=145.50, gbpusd_rate=1.2850, usdcad_rate=1.3650, usdsek_rate=10.45, usdchf_rate=0.8420):
     """
