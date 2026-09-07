@@ -6,8 +6,8 @@
     <title>XAUUSD • MacroQuant Institutional Desk</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- TradingView Lightweight Charts Library (Official CDN) -->
-    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <!-- TradingView Lightweight Charts Library (Pinned v4.2.1 for universal stability) -->
+    <script src="https://unpkg.com/lightweight-charts@4.2.1/dist/lightweight-charts.standalone.production.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
         
@@ -258,7 +258,7 @@
 
                 <!-- 1. Native Lightweight Charts Engine Canvas -->
                 <div id="native_chart_wrapper" class="w-full flex-1 min-h-[500px] lg:min-h-[560px] rounded-2xl overflow-hidden bg-[#0A0D13]">
-                    <div id="lightweight_chart_container" class="w-full h-full min-h-[500px] lg:min-h-[560px]"></div>
+                    <div id="lightweight_chart_container" style="width: 100%; height: 560px; min-height: 500px;" class="w-full h-full min-h-[500px] lg:min-h-[560px]"></div>
                 </div>
 
                 <!-- 2. TradingView Advanced Widget Container (FA LEGACY) -->
@@ -634,9 +634,12 @@
 
             container.innerHTML = '';
 
+            const containerW = container.clientWidth || 800;
+            const containerH = container.clientHeight || 560;
+
             chart = LightweightCharts.createChart(container, {
-                width: container.clientWidth,
-                height: container.clientHeight,
+                width: containerW,
+                height: containerH,
                 layout: {
                     background: { color: '#0A0D13' },
                     textColor: '#94a3b8',
@@ -663,30 +666,45 @@
                 }
             });
 
-            // 1. Candlestick Series (Neo Volt / Coral Theme)
-            candleSeries = chart.addCandlestickSeries({
+            // 1. Candlestick Series (v4 & v5 compatible)
+            const candleOptions = {
                 upColor: '#10B981',
                 downColor: '#FF3B5C',
                 wickUpColor: '#10B981',
                 wickDownColor: '#FF3B5C',
                 borderVisible: false
-            });
+            };
+            if (typeof chart.addCandlestickSeries === 'function') {
+                candleSeries = chart.addCandlestickSeries(candleOptions);
+            } else if (typeof chart.addSeries === 'function' && typeof LightweightCharts.CandlestickSeries !== 'undefined') {
+                candleSeries = chart.addSeries(LightweightCharts.CandlestickSeries, candleOptions);
+            }
 
             // 2. EMA 8 Series (Green Line)
-            ema8Series = chart.addLineSeries({
+            const ema8Options = {
                 color: '#10B981',
                 lineWidth: 2,
                 title: 'EMA 8',
                 priceLineVisible: false
-            });
+            };
+            if (typeof chart.addLineSeries === 'function') {
+                ema8Series = chart.addLineSeries(ema8Options);
+            } else if (typeof chart.addSeries === 'function' && typeof LightweightCharts.LineSeries !== 'undefined') {
+                ema8Series = chart.addSeries(LightweightCharts.LineSeries, ema8Options);
+            }
 
             // 3. EMA 21 Series (Coral Red Line)
-            ema21Series = chart.addLineSeries({
+            const ema21Options = {
                 color: '#FF3B5C',
                 lineWidth: 2,
                 title: 'EMA 21',
                 priceLineVisible: false
-            });
+            };
+            if (typeof chart.addLineSeries === 'function') {
+                ema21Series = chart.addLineSeries(ema21Options);
+            } else if (typeof chart.addSeries === 'function' && typeof LightweightCharts.LineSeries !== 'undefined') {
+                ema21Series = chart.addSeries(LightweightCharts.LineSeries, ema21Options);
+            }
 
             // Instant Load of Default Seed Candles so chart is never empty
             const initialData = generateFallbackChartData(4448.20);
@@ -695,38 +713,41 @@
             // Responsive Resize Listener
             window.addEventListener('resize', () => {
                 if (chart && container) {
-                    chart.applyOptions({ width: container.clientWidth, height: container.clientHeight });
+                    chart.applyOptions({ 
+                        width: container.clientWidth || 800, 
+                        height: container.clientHeight || 560 
+                    });
                 }
             });
         }
 
         function updateChartWithPayload(chartData, latestTick) {
-            if (!chart) initNativeChart();
+            if (!chart || !candleSeries) initNativeChart();
             if (!chartData || !chartData.candles || chartData.candles.length === 0) return;
 
             // Initial full load
             if (!chartInitialized) {
-                candleSeries.setData(chartData.candles);
-                if (chartData.ema8)  ema8Series.setData(chartData.ema8);
-                if (chartData.ema21) ema21Series.setData(chartData.ema21);
+                if (candleSeries) candleSeries.setData(chartData.candles);
+                if (ema8Series && chartData.ema8)  ema8Series.setData(chartData.ema8);
+                if (ema21Series && chartData.ema21) ema21Series.setData(chartData.ema21);
 
                 // Draw Golden Dashed "King" Structural High/Low Lines
                 if (chartData.king_levels) {
                     drawKingLevels(chartData.king_levels.high, chartData.king_levels.low);
                 }
 
-                chart.timeScale().fitContent();
+                if (chart) chart.timeScale().fitContent();
                 chartInitialized = true;
             } else {
                 // Real-Time Update without re-rendering whole chart
-                if (chartData.candles.length > 0) {
+                if (chartData.candles.length > 0 && candleSeries) {
                     const lastCandle = chartData.candles[chartData.candles.length - 1];
                     candleSeries.update(lastCandle);
                 }
-                if (chartData.ema8 && chartData.ema8.length > 0) {
+                if (chartData.ema8 && chartData.ema8.length > 0 && ema8Series) {
                     ema8Series.update(chartData.ema8[chartData.ema8.length - 1]);
                 }
-                if (chartData.ema21 && chartData.ema21.length > 0) {
+                if (chartData.ema21 && chartData.ema21.length > 0 && ema21Series) {
                     ema21Series.update(chartData.ema21[chartData.ema21.length - 1]);
                 }
                 if (chartData.king_levels) {
