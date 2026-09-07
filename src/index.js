@@ -47,6 +47,15 @@ const DEFAULT_SEED_DATA = {
     eurusd: "DOWN (DROP)",
     usdjpy: "DOWN (YEN UP)",
     usdchf: "DOWN (CHF UP)"
+  },
+  daily_pivot: {
+    pivot: 4445.50,
+    r1: 4458.20,
+    r2: 4468.50,
+    r3: 4480.00,
+    s1: 4432.80,
+    s2: 4420.00,
+    s3: 4408.50
   }
 };
 

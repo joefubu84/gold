@@ -572,6 +572,62 @@
         let kingLowLine = null;
         let chartInitialized = false;
 
+        function generateFallbackChartData(basePrice = 4448.20) {
+            const candles = [];
+            const closes = [];
+            const nowSec = Math.floor(Date.now() / 1000);
+            const m15Sec = 15 * 60;
+            
+            // Generate 60 historical M15 candles
+            let current = basePrice - 18.0;
+            for (let i = 60; i >= 0; i--) {
+                const time = nowSec - (i * m15Sec);
+                const step = Math.sin(i * 0.3) * 2.8 + (Math.random() - 0.48) * 3.2;
+                const open = current;
+                const close = open + step;
+                const high = Math.max(open, close) + Math.random() * 2.5;
+                const low = Math.min(open, close) - Math.random() * 2.5;
+                current = close;
+                
+                candles.push({
+                    time: time,
+                    open: parseFloat(open.toFixed(2)),
+                    high: parseFloat(high.toFixed(2)),
+                    low: parseFloat(low.toFixed(2)),
+                    close: parseFloat(close.toFixed(2))
+                });
+                closes.push(parseFloat(close.toFixed(2)));
+            }
+            
+            function calcEma(values, period) {
+                const k = 2.0 / (period + 1.0);
+                let ema = values[0];
+                const res = [];
+                for (let i = 0; i < values.length; i++) {
+                    ema = (values[i] * k) + (ema * (1.0 - k));
+                    res.push({ time: candles[i].time, value: parseFloat(ema.toFixed(2)) });
+                }
+                return res;
+            }
+            
+            const ema8 = calcEma(closes, 8);
+            const ema21 = calcEma(closes, 21);
+            
+            const last50 = candles.slice(-50);
+            const kingHigh = Math.max(...last50.map(c => c.high));
+            const kingLow = Math.min(...last50.map(c => c.low));
+            
+            return {
+                candles,
+                ema8,
+                ema21,
+                king_levels: {
+                    high: parseFloat(kingHigh.toFixed(2)),
+                    low: parseFloat(kingLow.toFixed(2))
+                }
+            };
+        }
+
         function initNativeChart() {
             const container = document.getElementById('lightweight_chart_container');
             if (!container) return;
@@ -631,6 +687,10 @@
                 title: 'EMA 21',
                 priceLineVisible: false
             });
+
+            // Instant Load of Default Seed Candles so chart is never empty
+            const initialData = generateFallbackChartData(4448.20);
+            updateChartWithPayload(initialData, { bid: 4448.20 });
 
             // Responsive Resize Listener
             window.addEventListener('resize', () => {
