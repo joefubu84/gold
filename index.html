@@ -176,25 +176,13 @@
                         </div>
                     </div>
 
-                    <!-- Dual-Engine Tab Switcher (Screen 2: Activities vs Transactions Style) -->
-                    <div class="flex items-center gap-2 flex-wrap">
-                        <div class="bg-[#090C12] p-1 rounded-2xl border border-white/10 flex items-center gap-1">
-                            <button onclick="setChartEngine('native')" id="btn-engine-native" class="segmented-tab-active px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 transition">
-                                <span>⚡</span>
-                                <span>MT5 LIVE FEED</span>
-                            </button>
-                            <button onclick="setChartEngine('tv')" id="btn-engine-tv" class="segmented-tab-inactive px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 transition">
-                                <span>📈</span>
-                                <span>FA LEGACY TV</span>
-                            </button>
+                    <!-- Live MT5 Real-time Feed Indicator -->
+                    <div class="flex items-center gap-2">
+                        <div class="bg-[#090C12] px-4 py-2 rounded-2xl border border-[#10B981]/30 flex items-center gap-2 shadow-sm">
+                            <span class="w-2 h-2 rounded-full bg-[#10B981] animate-ping"></span>
+                            <span class="text-white font-extrabold text-xs tracking-tight">⚡ MT5 LIVE FEED</span>
+                            <span class="px-2 py-0.5 rounded-full bg-[#10B981]/15 text-[#10B981] text-[10px] font-bold font-mono">REALTIME</span>
                         </div>
-
-                        <!-- Direct Open Published Pine Script -->
-                        <a id="btn-open-tv" href="https://www.tradingview.com/script/AELHcy5s-FA-LEGACY-SMART-AUTO-KING-ONLY-EMA-CROSS-8-21/" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold text-xs flex items-center gap-1.5 transition">
-                            <span>🚀</span>
-                            <span class="hidden sm:inline">PINE SCRIPT</span>
-                            <span class="text-[10px] text-slate-400">↗</span>
-                        </a>
                     </div>
                 </div>
 
@@ -259,34 +247,6 @@
                 <!-- 1. Native Lightweight Charts Engine Canvas -->
                 <div id="native_chart_wrapper" class="w-full flex-1 min-h-[500px] lg:min-h-[560px] rounded-2xl overflow-hidden bg-[#0A0D13]">
                     <div id="lightweight_chart_container" style="width: 100%; height: 560px; min-height: 500px;" class="w-full h-full min-h-[500px] lg:min-h-[560px]"></div>
-                </div>
-
-                <!-- 2. TradingView Advanced Widget Container (FA LEGACY) -->
-                <div id="tv_chart_wrapper" class="hidden w-full flex-1 min-h-[500px] lg:min-h-[560px] rounded-2xl overflow-hidden bg-[#0A0D13]">
-                    <div class="tradingview-widget-container" style="height: 560px; width: 100%;">
-                        <div class="tradingview-widget-container__widget" style="height: calc(100% - 32px); width: 100%;"></div>
-                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advancedchart.js" async>
-                        {
-                            "autosize": true,
-                            "symbol": "VANTAGE:XAUUSD",
-                            "interval": "15",
-                            "timezone": "Etc/UTC",
-                            "theme": "dark",
-                            "style": "1",
-                            "locale": "en",
-                            "backgroundColor": "rgba(10, 13, 19, 1)",
-                            "gridColor": "rgba(255, 255, 255, 0.03)",
-                            "hide_top_toolbar": false,
-                            "hide_side_toolbar": false,
-                            "allow_symbol_change": true,
-                            "save_image": true,
-                            "studies": [
-                                "PUB;AELHcy5s"
-                            ],
-                            "support_host": "https://www.tradingview.com"
-                        }
-                        </script>
-                    </div>
                 </div>
             </div>
 
@@ -476,15 +436,9 @@
         <button onclick="setChartEngine('native')" class="text-slate-400 hover:text-white transition text-base" title="MT5 Native Feed">
             ⚡
         </button>
-        <button onclick="setChartEngine('tv')" class="text-slate-400 hover:text-white transition text-base" title="TradingView FA Legacy">
-            📈
-        </button>
         <button onclick="document.getElementById('calc-bal').focus()" class="text-slate-400 hover:text-white transition text-base" title="Lot Calculator">
             🧮
         </button>
-        <a href="https://www.tradingview.com/script/AELHcy5s-FA-LEGACY-SMART-AUTO-KING-ONLY-EMA-CROSS-8-21/" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white transition text-base" title="TradingView Script">
-            ↗
-        </a>
     </nav>
 
     <!-- FOOTER -->
@@ -652,17 +606,21 @@
                 },
                 crosshair: {
                     mode: LightweightCharts.CrosshairMode.Normal,
-                    vertLine: { color: 'rgba(212, 246, 61, 0.4)', width: 1, style: LightweightCharts.LineStyle.Dashed },
-                    horzLine: { color: 'rgba(212, 246, 61, 0.4)', width: 1, style: LightweightCharts.LineStyle.Dashed }
+                    vertLine: { color: 'rgba(212, 246, 61, 0.5)', width: 1, style: LightweightCharts.LineStyle.Dashed },
+                    horzLine: { color: 'rgba(212, 246, 61, 0.5)', width: 1, style: LightweightCharts.LineStyle.Dashed }
                 },
                 rightPriceScale: {
                     borderColor: 'rgba(255, 255, 255, 0.08)',
-                    scaleMargins: { top: 0.1, bottom: 0.1 }
+                    autoScale: true,
+                    scaleMargins: { top: 0.12, bottom: 0.12 }
                 },
                 timeScale: {
                     borderColor: 'rgba(255, 255, 255, 0.08)',
                     timeVisible: true,
-                    secondsVisible: false
+                    secondsVisible: false,
+                    barSpacing: 10,
+                    minBarSpacing: 5,
+                    rightOffset: 8
                 }
             });
 
@@ -672,7 +630,14 @@
                 downColor: '#FF3B5C',
                 wickUpColor: '#10B981',
                 wickDownColor: '#FF3B5C',
-                borderVisible: false
+                borderVisible: true,
+                borderUpColor: '#10B981',
+                borderDownColor: '#FF3B5C',
+                priceFormat: {
+                    type: 'price',
+                    precision: 2,
+                    minMove: 0.01
+                }
             };
             if (typeof chart.addCandlestickSeries === 'function') {
                 candleSeries = chart.addCandlestickSeries(candleOptions);
@@ -721,27 +686,31 @@
             });
         }
 
+        let hasLoadedRealData = false;
+
         function updateChartWithPayload(chartData, latestTick) {
             if (!chart || !candleSeries) initNativeChart();
             if (!chartData || !chartData.candles || chartData.candles.length === 0) return;
 
-            // Initial full load
-            if (!chartInitialized) {
+            const isRealFeed = chartData.candles.length > 5;
+
+            // When real live data from Pi/KV arrives for the first time, or if replacing fallback:
+            if (!hasLoadedRealData && isRealFeed) {
                 if (candleSeries) candleSeries.setData(chartData.candles);
                 if (ema8Series && chartData.ema8)  ema8Series.setData(chartData.ema8);
                 if (ema21Series && chartData.ema21) ema21Series.setData(chartData.ema21);
 
-                // Draw Golden Dashed "King" Structural High/Low Lines
                 if (chartData.king_levels) {
                     drawKingLevels(chartData.king_levels.high, chartData.king_levels.low);
                 }
 
                 if (chart) chart.timeScale().fitContent();
+                hasLoadedRealData = true;
                 chartInitialized = true;
-            } else {
-                // Real-Time Update without re-rendering whole chart
-                if (chartData.candles.length > 0 && candleSeries) {
-                    const lastCandle = chartData.candles[chartData.candles.length - 1];
+            } else if (chartInitialized) {
+                // Real-time update for the latest active candle & latest EMAs
+                const lastCandle = chartData.candles[chartData.candles.length - 1];
+                if (candleSeries && lastCandle) {
                     candleSeries.update(lastCandle);
                 }
                 if (chartData.ema8 && chartData.ema8.length > 0 && ema8Series) {
@@ -753,6 +722,13 @@
                 if (chartData.king_levels) {
                     drawKingLevels(chartData.king_levels.high, chartData.king_levels.low);
                 }
+            } else {
+                // Fallback initial load if no real feed yet
+                if (candleSeries) candleSeries.setData(chartData.candles);
+                if (ema8Series && chartData.ema8)  ema8Series.setData(chartData.ema8);
+                if (ema21Series && chartData.ema21) ema21Series.setData(chartData.ema21);
+                if (chart) chart.timeScale().fitContent();
+                chartInitialized = true;
             }
         }
 
@@ -979,42 +955,19 @@
 
             document.getElementById('active-symbol-badge').innerText = cfg.badge;
             document.getElementById('active-symbol-desc').innerText = cfg.desc;
-
-            const openLink = document.getElementById('btn-open-tv');
-            if (openLink) {
-                openLink.href = `https://www.tradingview.com/script/AELHcy5s-FA-LEGACY-SMART-AUTO-KING-ONLY-EMA-CROSS-8-21/`;
-            }
         }
 
         // -----------------------------------------------------------------
         // 6. DUAL-ENGINE SWITCHER (NATIVE MT5 vs TRADINGVIEW EMBED)
         // -----------------------------------------------------------------
         function setChartEngine(engine) {
+            // Native MT5 feed is the primary high-speed engine
             const nativeWrap = document.getElementById('native_chart_wrapper');
-            const tvWrap = document.getElementById('tv_chart_wrapper');
-            const btnNative = document.getElementById('btn-engine-native');
-            const btnTV = document.getElementById('btn-engine-tv');
-
-            if (engine === 'tv') {
-                nativeWrap.classList.add('hidden');
-                tvWrap.classList.remove('hidden');
-
-                btnNative.className = 'segmented-tab-inactive px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 transition';
-                btnTV.className = 'segmented-tab-active px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 transition';
-            } else {
-                tvWrap.classList.add('hidden');
-                nativeWrap.classList.remove('hidden');
-
-                btnNative.className = 'segmented-tab-active px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 transition';
-                btnTV.className = 'segmented-tab-inactive px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 transition';
-
-                // Resize native chart if needed
-                if (typeof chart !== 'undefined' && chart && nativeWrap) {
-                    chart.applyOptions({
-                        width: nativeWrap.clientWidth,
-                        height: nativeWrap.clientHeight
-                    });
-                }
+            if (chart && nativeWrap) {
+                chart.applyOptions({
+                    width: nativeWrap.clientWidth,
+                    height: nativeWrap.clientHeight
+                });
             }
         }
     </script>
